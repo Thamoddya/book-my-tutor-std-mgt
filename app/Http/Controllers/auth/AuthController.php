@@ -12,7 +12,7 @@ class AuthController extends Controller
     {
 
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'nic' => 'required',
             'password' => 'required',
         ]);
 
@@ -26,10 +26,10 @@ class AuthController extends Controller
             $roles = $user->getRoleNames();
 
             if ($roles[0] == "Super_Admin") {
-                return redirect()->route('SuperAdmin.Home');
+                return redirect()->route('index');
             }
         } else {
-            return back()->with('error', 'Invalid Email or Password');
+            return back()->with('error', 'Invalid Nic or Password');
         }
     }
 }
