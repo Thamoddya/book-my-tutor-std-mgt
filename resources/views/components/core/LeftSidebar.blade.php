@@ -23,8 +23,7 @@
         <!--- Sidemenu -->
         <ul class="side-nav">
             <li class="side-nav-title">Main</li>
-
-
+            
             <li class="side-nav-item ">
                 <a href="{{route('index')}}" class="side-nav-link">
                     <i class="ri-dashboard-2-fill"></i>
