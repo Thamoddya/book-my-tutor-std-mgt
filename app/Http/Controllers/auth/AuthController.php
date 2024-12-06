@@ -32,4 +32,11 @@ class AuthController extends Controller
             return back()->with('error', 'Invalid Nic or Password');
         }
     }
+
+    public function LogoutProcess()
+    {
+        Auth::logout();
+        session()->forget('token');
+        return redirect()->route('login');
+    }
 }
