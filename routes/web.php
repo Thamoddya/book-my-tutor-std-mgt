@@ -1,13 +1,12 @@
 <?php
 
+use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\RouterController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/login', function () {
-    return view('pages.auth.login');
-})->name('login');
+Route::get('/login', [RouterController::class, 'login'])->name('login');
+Route::get('/auth/login', [AuthController::class, 'LoginProcess'])->name('login');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/', function () {
-        return view('pages.protected.index');
-    });
+    Route::get('/', [RouterController::class, 'index'])->name('index');
 });
