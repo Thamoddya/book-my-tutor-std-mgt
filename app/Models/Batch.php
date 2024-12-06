@@ -9,8 +9,10 @@ class Batch extends Model
 {
     use HasFactory;
 
+    protected $primaryKey = 'id';
     protected $fillable = [
         'name',
+        'status',
     ];
 
     public function students()

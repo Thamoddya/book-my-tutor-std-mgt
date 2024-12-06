@@ -1,19 +1,11 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/store-batch-process', [\App\Http\Controllers\BatchController::class, 'store'])->name('store-batch-process');
+Route::post('/get-all-batches', [\App\Http\Controllers\BatchController::class, 'index'])->name('get-all-batches');
+Route::put('/batches/{batch}', [\App\Http\Controllers\BatchController::class, 'update'])->name('batches.update');
+Route::patch('/batches/{batch}/deactivate', [\App\Http\Controllers\BatchController::class, 'deactivate'])->name('batches.deactivate');
+Route::patch('/batches/{batch}/activate', [\App\Http\Controllers\BatchController::class, 'activate'])->name('batches.activate');
+

@@ -2,17 +2,17 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            <div class="bg-flower">
-                <img
-                    src="{{asset('assets/images/flowers/img-3.png')}}"
-                />
-            </div>
+            {{--            <div class="bg-flower">--}}
+            {{--                <img--}}
+            {{--                    src="{{asset('assets/images/flowers/img-3.png')}}"--}}
+            {{--                />--}}
+            {{--            </div>--}}
 
-            <div class="bg-flower-2">
-                <img
-                    src="{{asset('assets/images/flowers/img-1.png')}}"
-                />
-            </div>
+            {{--            <div class="bg-flower-2">--}}
+            {{--                <img--}}
+            {{--                    src="{{asset('assets/images/flowers/img-1.png')}}"--}}
+            {{--                />--}}
+            {{--            </div>--}}
 
             <div class="page-title-box">
                 <div class="page-title-right">
@@ -249,322 +249,77 @@
         <div class="col-xl-6">
             <div class="card">
                 <div
-                    class="d-flex card-header justify-content-between align-items-center"
-                >
+                    class="d-flex card-header justify-content-between align-items-center">
                     <h4 class="header-title">
-                        Revenue By Locations
+                        Latest Students
                     </h4>
-                    <div class="dropdown">
-                        <a
-                            href="#"
-                            class="dropdown-toggle arrow-none card-drop"
-                            data-bs-toggle="dropdown"
-                            aria-expanded="false"
-                        >
-                            <i class="ri-more-2-fill"></i>
-                        </a>
-                        <div
-                            class="dropdown-menu dropdown-menu-end"
-                        >
-                            <!-- item-->
-                            <a
-                                href="javascript:void(0);"
-                                class="dropdown-item"
-                            >Sales Report</a
-                            >
-                            <!-- item-->
-                            <a
-                                href="javascript:void(0);"
-                                class="dropdown-item"
-                            >Export Report</a
-                            >
-                            <!-- item-->
-                            <a
-                                href="javascript:void(0);"
-                                class="dropdown-item"
-                            >Profit</a
-                            >
-                            <!-- item-->
-                            <a
-                                href="javascript:void(0);"
-                                class="dropdown-item"
-                            >Action</a
-                            >
-                        </div>
-                    </div>
+                    <a href="javascript:void(0);" class="btn btn-sm btn-info">Export<i
+                            class="ri-download-line ms-1"></i></a>
                 </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table
+                            class="table table-borderless table-hover table-nowrap table-centered m-0">
+                            <thead class="border-top border-bottom bg-light-subtle border-light">
+                            <tr>
+                                <th class="py-1">
+                                    INV #
+                                </th>
+                                <th class="py-1">
+                                    Price
+                                </th>
+                                <th class="py-1">
+                                    Student Name
+                                </th>
+                                <th class="py-1">
+                                    Month
+                                </th>
+                                <th class="py-1">
+                                    Status
+                                </th>
+                                <th class="py-1">
+                                    Status
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>
+                                    <a href="javascript:void(0);" class="text-body fw-bold">#INV-001</a>
+                                </td>
+                                <td>
+                                    Rs. 5000.00
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0);" class="text-body fw-bold">John Doe</a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-soft-success text-success">
+                                        January
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-soft-success text-success">Paid</span>
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0);" class="text-primary fw-bold">View</a>
+                                </td>
+                            </tr>
 
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-12">
-                            <div
-                                id="world-map-markers"
-                                class="mt-3 mb-3"
-                                style="height: 298px"
-                            ></div>
-                        </div>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center">
+                        <a
+                            href="#!"
+                            class="text-primary text-decoration-underline fw-bold btn mb-2"
+                        >View All</a>
                     </div>
                 </div>
             </div>
-            <!-- end card-->
         </div>
-        <!-- end col -->
     </div>
-    {{--    <div class="row">--}}
-    {{--        <div class="col-lg-4">--}}
-    {{--            <div class="card">--}}
-    {{--                <div--}}
-    {{--                    class="d-flex card-header border-bottom-0 justify-content-between align-items-center"--}}
-    {{--                >--}}
-    {{--                    <h4 class="header-title">Revenue</h4>--}}
-    {{--                    <div class="dropdown">--}}
-    {{--                        <a--}}
-    {{--                            href="#"--}}
-    {{--                            class="dropdown-toggle arrow-none card-drop"--}}
-    {{--                            data-bs-toggle="dropdown"--}}
-    {{--                            aria-expanded="false"--}}
-    {{--                        >--}}
-    {{--                            <i class="ri-more-2-fill"></i>--}}
-    {{--                        </a>--}}
-    {{--                        <div--}}
-    {{--                            class="dropdown-menu dropdown-menu-end"--}}
-    {{--                        >--}}
-    {{--                            <!-- item-->--}}
-    {{--                            <a--}}
-    {{--                                href="javascript:void(0);"--}}
-    {{--                                class="dropdown-item"--}}
-    {{--                            >Sales Report</a--}}
-    {{--                            >--}}
-    {{--                            <!-- item-->--}}
-    {{--                            <a--}}
-    {{--                                href="javascript:void(0);"--}}
-    {{--                                class="dropdown-item"--}}
-    {{--                            >Export Report</a--}}
-    {{--                            >--}}
-    {{--                            <!-- item-->--}}
-    {{--                            <a--}}
-    {{--                                href="javascript:void(0);"--}}
-    {{--                                class="dropdown-item"--}}
-    {{--                            >Profit</a--}}
-    {{--                            >--}}
-    {{--                            <!-- item-->--}}
-    {{--                            <a--}}
-    {{--                                href="javascript:void(0);"--}}
-    {{--                                class="dropdown-item"--}}
-    {{--                            >Action</a--}}
-    {{--                            >--}}
-    {{--                        </div>--}}
-    {{--                    </div>--}}
-    {{--                </div>--}}
-    {{--                <div class="card-body pt-0">--}}
-    {{--                    <div dir="ltr">--}}
-    {{--                        <div--}}
-    {{--                            id="revenue-chart"--}}
-    {{--                            class="apex-charts mt-3"--}}
-    {{--                            data-colors="#6da09c,#47ad77"--}}
-    {{--                        ></div>--}}
-    {{--                    </div>--}}
-    {{--                </div>--}}
-    {{--                <!-- end card-body-->--}}
-    {{--            </div>--}}
-    {{--            <!-- end card-->--}}
-    {{--        </div>--}}
-    {{--        <!-- end col-->--}}
-    {{--        <div class="col-lg-4">--}}
-    {{--            <div class="card">--}}
-    {{--                <div--}}
-    {{--                    class="d-flex card-header justify-content-between border-bottom-0 align-items-center"--}}
-    {{--                >--}}
-    {{--                    <h4 class="header-title">--}}
-    {{--                        Total Sales--}}
-    {{--                    </h4>--}}
-    {{--                    <div class="dropdown">--}}
-    {{--                        <a--}}
-    {{--                            href="#"--}}
-    {{--                            class="dropdown-toggle arrow-none card-drop"--}}
-    {{--                            data-bs-toggle="dropdown"--}}
-    {{--                            aria-expanded="false"--}}
-    {{--                        >--}}
-    {{--                            <i class="ri-more-2-fill"></i>--}}
-    {{--                        </a>--}}
-    {{--                        <div--}}
-    {{--                            class="dropdown-menu dropdown-menu-end"--}}
-    {{--                        >--}}
-    {{--                            <!-- item-->--}}
-    {{--                            <a--}}
-    {{--                                href="javascript:void(0);"--}}
-    {{--                                class="dropdown-item"--}}
-    {{--                            >Sales Report</a--}}
-    {{--                            >--}}
-    {{--                            <!-- item-->--}}
-    {{--                            <a--}}
-    {{--                                href="javascript:void(0);"--}}
-    {{--                                class="dropdown-item"--}}
-    {{--                            >Export Report</a--}}
-    {{--                            >--}}
-    {{--                            <!-- item-->--}}
-    {{--                            <a--}}
-    {{--                                href="javascript:void(0);"--}}
-    {{--                                class="dropdown-item"--}}
-    {{--                            >Profit</a--}}
-    {{--                            >--}}
-    {{--                            <!-- item-->--}}
-    {{--                            <a--}}
-    {{--                                href="javascript:void(0);"--}}
-    {{--                                class="dropdown-item"--}}
-    {{--                            >Action</a--}}
-    {{--                            >--}}
-    {{--                        </div>--}}
-    {{--                    </div>--}}
-    {{--                </div>--}}
 
-    {{--                <div class="card-body pt-0">--}}
-    {{--                    <div--}}
-    {{--                        id="average-sales"--}}
-    {{--                        class="apex-charts mb-3"--}}
-    {{--                        data-colors="#6da09c"--}}
-    {{--                    ></div>--}}
-
-    {{--                    <h5 class="mb-1 mt-0 fw-normal">--}}
-    {{--                        Brooklyn, New York--}}
-    {{--                    </h5>--}}
-    {{--                    <div class="progress-w-percent">--}}
-    {{--                                            <span class="progress-value fw-bold"--}}
-    {{--                                            >72k--}}
-    {{--                                            </span>--}}
-    {{--                        <div class="progress progress-sm">--}}
-    {{--                            <div--}}
-    {{--                                class="progress-bar"--}}
-    {{--                                role="progressbar"--}}
-    {{--                                style="width: 72%"--}}
-    {{--                                aria-valuenow="72"--}}
-    {{--                                aria-valuemin="0"--}}
-    {{--                                aria-valuemax="100"--}}
-    {{--                            ></div>--}}
-    {{--                        </div>--}}
-    {{--                    </div>--}}
-
-    {{--                    <h5 class="mb-1 mt-0 fw-normal">--}}
-    {{--                        The Castro, San Francisco--}}
-    {{--                    </h5>--}}
-    {{--                    <div class="progress-w-percent mb-0">--}}
-    {{--                                            <span class="progress-value fw-bold"--}}
-    {{--                                            >39k--}}
-    {{--                                            </span>--}}
-    {{--                        <div class="progress progress-sm">--}}
-    {{--                            <div--}}
-    {{--                                class="progress-bar"--}}
-    {{--                                role="progressbar"--}}
-    {{--                                style="width: 39%"--}}
-    {{--                                aria-valuenow="39"--}}
-    {{--                                aria-valuemin="0"--}}
-    {{--                                aria-valuemax="100"--}}
-    {{--                            ></div>--}}
-    {{--                        </div>--}}
-    {{--                    </div>--}}
-    {{--                </div>--}}
-    {{--                <!-- end card-body-->--}}
-    {{--            </div>--}}
-    {{--            <!-- end card-->--}}
-    {{--        </div>--}}
-    {{--        <!-- end col-->--}}
-
-    {{--        <div class="col-lg-4">--}}
-    {{--            <div class="card">--}}
-    {{--                <div--}}
-    {{--                    class="d-flex card-header justify-content-between border-bottom-0 align-items-center"--}}
-    {{--                >--}}
-    {{--                    <h4 class="header-title">--}}
-    {{--                        Total Sales--}}
-    {{--                    </h4>--}}
-    {{--                    <div class="dropdown">--}}
-    {{--                        <a--}}
-    {{--                            href="#"--}}
-    {{--                            class="dropdown-toggle arrow-none card-drop"--}}
-    {{--                            data-bs-toggle="dropdown"--}}
-    {{--                            aria-expanded="false"--}}
-    {{--                        >--}}
-    {{--                            <i class="ri-more-2-fill"></i>--}}
-    {{--                        </a>--}}
-    {{--                        <div--}}
-    {{--                            class="dropdown-menu dropdown-menu-end"--}}
-    {{--                        >--}}
-    {{--                            <!-- item-->--}}
-    {{--                            <a--}}
-    {{--                                href="javascript:void(0);"--}}
-    {{--                                class="dropdown-item"--}}
-    {{--                            >Sales Report</a--}}
-    {{--                            >--}}
-    {{--                            <!-- item-->--}}
-    {{--                            <a--}}
-    {{--                                href="javascript:void(0);"--}}
-    {{--                                class="dropdown-item"--}}
-    {{--                            >Export Report</a--}}
-    {{--                            >--}}
-    {{--                            <!-- item-->--}}
-    {{--                            <a--}}
-    {{--                                href="javascript:void(0);"--}}
-    {{--                                class="dropdown-item"--}}
-    {{--                            >Profit</a--}}
-    {{--                            >--}}
-    {{--                            <!-- item-->--}}
-    {{--                            <a--}}
-    {{--                                href="javascript:void(0);"--}}
-    {{--                                class="dropdown-item"--}}
-    {{--                            >Action</a--}}
-    {{--                            >--}}
-    {{--                        </div>--}}
-    {{--                    </div>--}}
-    {{--                </div>--}}
-
-    {{--                <div class="card-body pt-0">--}}
-    {{--                    <div--}}
-    {{--                        id="country-chart"--}}
-    {{--                        class="apex-charts"--}}
-    {{--                        data-colors="#6da09c"--}}
-    {{--                    ></div>--}}
-
-    {{--                    <div class="mt-2 text-center">--}}
-    {{--                        <ul class="list-inline mb-0">--}}
-    {{--                            <li class="list-inline-item">--}}
-    {{--                                <img--}}
-    {{--                                    class="ms-3 pe-1"--}}
-    {{--                                    src="assets/images/browsers/chrome.png"--}}
-    {{--                                    height="18"--}}
-    {{--                                    alt="chrome"--}}
-    {{--                                /><span class="align-middle"--}}
-    {{--                                >45.87%</span--}}
-    {{--                                >--}}
-    {{--                            </li>--}}
-    {{--                            <li class="list-inline-item">--}}
-    {{--                                <img--}}
-    {{--                                    class="ms-3 pe-1"--}}
-    {{--                                    src="assets/images/browsers/firefox.png"--}}
-    {{--                                    height="18"--}}
-    {{--                                    alt="chrome"--}}
-    {{--                                /><span class="align-middle"--}}
-    {{--                                >3.25%</span--}}
-    {{--                                >--}}
-    {{--                            </li>--}}
-    {{--                            <li class="list-inline-item">--}}
-    {{--                                <img--}}
-    {{--                                    class="ms-3 pe-1"--}}
-    {{--                                    src="assets/images/browsers/safari.png"--}}
-    {{--                                    height="18"--}}
-    {{--                                    alt="chrome"--}}
-    {{--                                /><span class="align-middle"--}}
-    {{--                                >9.68%</span--}}
-    {{--                                >--}}
-    {{--                            </li>--}}
-    {{--                        </ul>--}}
-    {{--                    </div>--}}
-    {{--                </div>--}}
-    {{--                <!-- end card-body-->--}}
-    {{--            </div>--}}
-    {{--            <!-- end card-->--}}
-    {{--        </div>--}}
-    {{--        <!-- end col-->--}}
-    {{--    </div>--}}
     <!-- end row -->
 
 

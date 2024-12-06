@@ -23,7 +23,7 @@
         <!--- Sidemenu -->
         <ul class="side-nav">
             <li class="side-nav-title">Main</li>
-            
+
             <li class="side-nav-item ">
                 <a href="{{route('index')}}" class="side-nav-link">
                     <i class="ri-dashboard-2-fill"></i>
@@ -38,7 +38,7 @@
                 </a>
             </li>
             <li class="side-nav-item active">
-                <a href="#" class="side-nav-link">
+                <a href="{{route('batch')}}" class="side-nav-link">
                     <i class="ri-user-star-fill"></i>
                     <span> Batch </span>
                 </a>

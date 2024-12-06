@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Batch;
 use Illuminate\Http\Request;
 
 class RouterController extends Controller
@@ -20,5 +21,13 @@ class RouterController extends Controller
     public function index()
     {
         return view('pages.protected.index');
+    }
+
+    public function batchManagement()
+    {
+        $batches = Batch::all();
+        return view('pages.protected.batch', compact([
+            'batches'
+        ]));
     }
 }

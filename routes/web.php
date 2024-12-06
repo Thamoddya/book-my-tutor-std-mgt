@@ -9,6 +9,7 @@ Route::post('/auth/login', [AuthController::class, 'LoginProcess'])->name('login
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [RouterController::class, 'index'])->name('index');
+    Route::get('/batch-management', [RouterController::class, 'batchManagement'])->name('batch');
 
     Route::get('/logout', [AuthController::class, 'LogoutProcess'])->name('logout');
 });

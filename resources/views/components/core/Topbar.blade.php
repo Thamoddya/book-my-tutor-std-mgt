@@ -59,7 +59,7 @@
                     </a>
                 </div>
             </li>
-            <li class="d-none d-sm-inline-block">
+            <li class="">
                 <div class="nav-link" id="light-dark-mode">
                     <i class="ri-moon-line fs-22"></i>
                 </div>
