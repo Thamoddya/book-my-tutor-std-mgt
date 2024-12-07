@@ -17,7 +17,7 @@
           href="{{ asset('assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') }}"/>
 @endif
 
-@if(in_array(Route::currentRouteName(), ['batch', 'management']))
+@if(in_array(Route::currentRouteName(), ['batch', 'management','students']))
     <link href="{{asset('assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet"
           type="text/css"/>
     <link href="{{asset('assets/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css')}}'"
@@ -31,6 +31,8 @@
     <link href="{{asset('assets/vendor/datatables.net-select-bs5/css/select.bootstrap5.min.css')}}'" rel="stylesheet"
           type="text/css"/>
 @endif
+
+<link href="{{asset('assets/vendor/select2/css/select2.min.css')}}" rel="stylesheet" type="text/css" />
 
 <!-- Theme Config Js -->
 <script src="{{ asset('assets/js/config.js') }}"></script>

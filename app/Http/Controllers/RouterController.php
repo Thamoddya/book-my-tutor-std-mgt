@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Batch;
+use App\Models\School;
+use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -10,8 +12,6 @@ class RouterController extends Controller
 {
     public function login()
     {
-        //If the user is logged in, redirect to the index page
-
         if (auth()->check()) {
             return $this->index();
         }
@@ -21,7 +21,12 @@ class RouterController extends Controller
 
     public function index()
     {
-        return view('pages.protected.index');
+        $batchCount = Batch::count();
+        $batchCountThisMonth = Batch::whereMonth('created_at', now()->month)->count();
+        return view('pages.protected.index', compact([
+            'batchCount',
+            'batchCountThisMonth'
+        ]));
     }
 
     public function batchManagement()
@@ -37,6 +42,19 @@ class RouterController extends Controller
         $managementOfficers = User::role('management_officer')->get();
         return view('pages.protected.management', compact([
             'managementOfficers'
+        ]));
+    }
+
+    public function students()
+    {
+
+        $students = Student::all();
+        $batches = Batch::all();
+        $schools = School::all();
+        return view('pages.protected.students', compact([
+            'students',
+            'batches',
+            'schools'
         ]));
     }
 }

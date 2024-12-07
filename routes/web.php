@@ -11,6 +11,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/', [RouterController::class, 'index'])->name('index');
     Route::get('/batch-management', [RouterController::class, 'batchManagement'])->name('batch');
     Route::get('/management-officers', [RouterController::class, 'managementOfficers'])->name('management');
+    Route::get('/students', [RouterController::class, 'students'])->name('students');
 
     //API Batches
     Route::post('/store-batch-process', [\App\Http\Controllers\BatchController::class, 'store'])->name('store-batch-process');
@@ -25,6 +26,19 @@ Route::middleware('auth')->group(function () {
     Route::put('/management-officers/{id}/deactivate', [\App\Http\Controllers\ManagementOfficerController::class, 'deactivate']);
     Route::put('/management-officers/{id}/activate', [\App\Http\Controllers\ManagementOfficerController::class, 'activate']);
 
+    //API Students
+    Route::post('/students', [\App\Http\Controllers\StudentController::class, 'store'])->name('students.store');
+    Route::put('/students/{student}', [\App\Http\Controllers\StudentController::class, 'update'])->name('students.update');
+    Route::get('/students/{student}', [\App\Http\Controllers\StudentController::class, 'show'])->name('students.update');
+    Route::patch('/students/{student}/activate', [\App\Http\Controllers\StudentController::class, 'activate'])->name('students.activate');
+    Route::patch('/students/{student}/deactivate', [\App\Http\Controllers\StudentController::class, 'deactivate'])->name('students.deactivate');
+
 
     Route::get('/logout', [AuthController::class, 'LogoutProcess'])->name('logout');
+});
+
+Route::get('/api/schools', [\App\Http\Controllers\ScoolController::class, 'searchSchools'])->name('api.schools.search');
+Route::get('/api/schools/{id}', function ($id) {
+    $school = App\Models\School::findOrFail($id);
+    return response()->json($school);
 });

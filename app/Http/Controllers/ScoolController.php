@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\School;
 use App\Models\Scool;
 use App\Http\Requests\StoreScoolRequest;
 use App\Http\Requests\UpdateScoolRequest;
+use Illuminate\Http\Request;
 
 class ScoolController extends Controller
 {
@@ -62,5 +64,15 @@ class ScoolController extends Controller
     public function destroy(Scool $scool)
     {
         //
+    }
+
+    public function searchSchools(Request $request)
+    {
+        $search = $request->input('search');
+        $schools = School::where('name', 'LIKE', "%$search%")
+            ->limit(10)
+            ->get(['id', 'name']);
+
+        return response()->json($schools);
     }
 }

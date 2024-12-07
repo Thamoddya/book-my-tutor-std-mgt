@@ -13,8 +13,10 @@ return new class extends Migration
             $table->id();
             $table->string('reg_no')->unique();
             $table->string('name');
-            $table->integer('call_no')->nullable();
-            $table->integer('wtp_no')->nullable();
+            $table->string('call_no')->nullable();
+            $table->string('wtp_no')->nullable();
+            $table->string('email')->nullable();
+            $table->string('address')->nullable();
             $table->foreignId('batch_id')->nullable()->constrained('batches');
             $table->foreignId('school_id')->nullable()->constrained('schools');
             $table->foreignId('created_by')->nullable()->constrained('users');

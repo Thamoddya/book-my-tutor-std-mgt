@@ -44,7 +44,7 @@
                 </a>
             </li>
             <li class="side-nav-item active">
-                <a href="#" class="side-nav-link">
+                <a href="{{route('students')}}" class="side-nav-link">
                     <i class="ri-user-2-fill"></i>
                     <span> Students </span>
                 </a>

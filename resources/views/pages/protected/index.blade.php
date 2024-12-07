@@ -113,9 +113,9 @@
                             <h5 class="text-muted fw-normal mt-0 text-truncate" title="Deals">
                                 Batch Count
                             </h5>
-                            <h3 class="my-1 py-1">2</h3>
+                            <h3 class="my-1 py-1">{{$batchCountThisMonth}}</h3>
                             <p class="mb-0 text-muted">
-                                <span class="text-success me-2">200 Total</span>
+                                <span class="text-success me-2">{{$batchCount}} Total</span>
                             </p>
                         </div>
                         <div class="col-6">
