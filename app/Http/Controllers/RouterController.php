@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Batch;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class RouterController extends Controller
@@ -28,6 +29,14 @@ class RouterController extends Controller
         $batches = Batch::all();
         return view('pages.protected.batch', compact([
             'batches'
+        ]));
+    }
+
+    public function managementOfficers()
+    {
+        $managementOfficers = User::role('management_officer')->get();
+        return view('pages.protected.management', compact([
+            'managementOfficers'
         ]));
     }
 }

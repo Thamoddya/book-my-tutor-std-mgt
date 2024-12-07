@@ -1,7 +1,7 @@
 <!-- Vendor js -->
 <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
 
-@if(Route::currentRouteName() == 'batch')
+@if(in_array(Route::currentRouteName(), ['batch', 'management']))
     <script src="{{asset('assets/vendor/datatables.net/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js')}}"></script>
     <script src="{{asset('assets/vendor/datatables.net-responsive/js/dataTables.responsive.min.js')}}"></script>
@@ -22,7 +22,7 @@
 <script src="{{ asset('assets/vendor/daterangepicker/moment.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/daterangepicker/daterangepicker.js') }}"></script>
 
-@if(Route::currentRouteName() == 'index')
+@if(Route::currentRouteName() == ['index'])
     <!-- Apex Charts js -->
     <script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
     <!-- Dashboard App js -->

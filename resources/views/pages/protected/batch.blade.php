@@ -199,7 +199,7 @@
             batchNameError.removeClass("d-block");
 
             $.ajax({
-                url: `api/batches/${batchId}`,
+                url: `/batches/${batchId}`,
                 method: "PUT",
                 headers: {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
@@ -238,7 +238,7 @@
 
         function deactivateBatch(batchId) {
             $.ajax({
-                url: `/api/batches/${batchId}/deactivate`, // Update the URL if necessary
+                url: `/batches/${batchId}/deactivate`, // Update the URL if necessary
                 method: "PATCH",
                 headers: {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -261,7 +261,7 @@
 
         function activateBatch(batchId) {
             $.ajax({
-                url: `/api/batches/${batchId}/activate`, // Update the URL if necessary
+                url: `/batches/${batchId}/activate`, // Update the URL if necessary
                 method: "PATCH",
                 headers: {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),

@@ -17,7 +17,7 @@
           href="{{ asset('assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') }}"/>
 @endif
 
-@if(Route::currentRouteName() == 'batch')
+@if(in_array(Route::currentRouteName(), ['batch', 'management']))
     <link href="{{asset('assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet"
           type="text/css"/>
     <link href="{{asset('assets/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css')}}'"

@@ -32,7 +32,7 @@
             </li>
 
             <li class="side-nav-item active">
-                <a href="#" class="side-nav-link">
+                <a href="{{route('management')}}" class="side-nav-link">
                     <i class="ri-briefcase-fill"></i>
                     <span> Management </span>
                 </a>
