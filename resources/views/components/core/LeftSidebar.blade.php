@@ -50,7 +50,7 @@
                 </a>
             </li>
             <li class="side-nav-item active">
-                <a href="#" class="side-nav-link">
+                <a href="{{route('payments')}}" class="side-nav-link">
                     <i class="ri-money-cny-box-fill"></i>
                     <span> Payments </span>
                 </a>

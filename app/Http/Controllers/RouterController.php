@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Batch;
+use App\Models\Payment;
 use App\Models\School;
 use App\Models\Student;
 use App\Models\User;
@@ -55,6 +56,16 @@ class RouterController extends Controller
             'students',
             'batches',
             'schools'
+        ]));
+    }
+
+    public function payments()
+    {
+        $payments = Payment::with('student')
+        ->orderBy('created_at', 'desc')
+            ->get();
+        return view('pages.protected.payment',compact([
+            'payments'
         ]));
     }
 }

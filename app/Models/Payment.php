@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Payment extends Model
 {
@@ -19,55 +20,80 @@ class Payment extends Model
         'paid_month',
         'paid_year',
         'receipt_picture',
+        'processed_by',
     ];
+    protected $dates = ['paid_at'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($payment) {
+            $latestInvoice = Payment::latest('id')->first();
+            $lastNumber = $latestInvoice ? (int)Str::after($latestInvoice->invoice_number, 'BMTIN') : 0;
+
+            $payment->invoice_number = 'BMTIN' . str_pad($lastNumber + 1, 3, '0', STR_PAD_LEFT);
+        });
+    }
+
+    // Enum options for payment_method
+    public static function paymentMethods()
+    {
+        return ['online', 'cash', 'wp_receipt'];
+    }
+
+    // Enum options for status
+    public static function statuses()
+    {
+        return ['pending', 'paid', 'due'];
+    }
+
+
+    // Enum options for paid_month
+    public static function months()
+    {
+        return [
+            'january', 'february', 'march', 'april', 'may', 'june',
+            'july', 'august', 'september', 'october', 'november', 'december'
+        ];
+    }
+
+    // Enum options for paid_year
+    public static function years()
+    {
+        return ['2024', '2025', '2026', '2027', '2028', '2029', '2030'];
+    }
 
     public function student()
     {
         return $this->belongsTo(Student::class);
     }
 
-    public function getAmountAttribute($value)
+    public function getProcessedUser()
     {
-        return number_format($value, 2);
+        return $this->belongsTo(User::class, 'processed_by');
     }
 
-    public function setAmountAttribute($value)
+    public static function getNowMonthTotal()
     {
-        $this->attributes['amount'] = str_replace(',', '', $value);
+        return Payment::where('paid_month', now()->format('F'))
+            ->where('status', 'paid')
+            ->sum('amount');
     }
 
-    public function getReceiptPictureAttribute($value)
+    public static function getNowYearTotal()
     {
-        return $value ? asset('storage/' . $value) : null;
+        return Payment::where('paid_year', now()->format('Y'))
+            ->where('status', 'paid')
+            ->sum('amount');
     }
 
-    public function getPaymentMethodAttribute($value)
+    public static function getTotalPaymentsTotalInThisMonth()
     {
-        return ucfirst($value);
+        return Payment::where('status', 'paid')
+            ->whereMonth('created_at', now()->month)
+            ->whereYear('created_at', now()->year)
+            ->sum('amount');  // Sum the 'amount' field
     }
 
-    public function getStatusAttribute($value)
-    {
-        return ucfirst($value);
-    }
-
-    public function getPaidAtAttribute($value)
-    {
-        return $value ? date('F d, Y h:i A', strtotime($value)) : null;
-    }
-
-    public function getCreatedAtAttribute($value)
-    {
-        return date('F d, Y h:i A', strtotime($value));
-    }
-
-    public function getUpdatedAtAttribute($value)
-    {
-        return date('F d, Y h:i A', strtotime($value));
-    }
-
-    public function getDueAmountAttribute()
-    {
-        return $this->amount - $this->student->payments->where('status', 'paid')->sum('amount');
-    }
 }

@@ -48,6 +48,7 @@ return new class extends Migration
                 '2030',
             ])->nullable()->default(now()->format('Y'));
             $table->string('receipt_picture')->nullable();
+            $table->foreignId('processed_by')->nullable()->constrained('users');
             $table->timestamps();
         });
     }

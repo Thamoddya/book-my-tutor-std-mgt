@@ -12,6 +12,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/batch-management', [RouterController::class, 'batchManagement'])->name('batch');
     Route::get('/management-officers', [RouterController::class, 'managementOfficers'])->name('management');
     Route::get('/students', [RouterController::class, 'students'])->name('students');
+    Route::get('/payments', [RouterController::class, 'payments'])->name('payments');
 
     //API Batches
     Route::post('/store-batch-process', [\App\Http\Controllers\BatchController::class, 'store'])->name('store-batch-process');
@@ -33,6 +34,24 @@ Route::middleware('auth')->group(function () {
     Route::patch('/students/{student}/activate', [\App\Http\Controllers\StudentController::class, 'activate'])->name('students.activate');
     Route::patch('/students/{student}/deactivate', [\App\Http\Controllers\StudentController::class, 'deactivate'])->name('students.deactivate');
 
+    //API Payments
+    Route::post('/payments/store', [\App\Http\Controllers\PaymentController::class, 'store'])->name('payments.store');
+
+
+    //RECEIPT
+    Route::get('/receipt/{filename}', function ($filename) {
+        $path = public_path('storage/receipts/' . $filename);
+
+        // Log the path to ensure it is correct
+        \Log::info("Receipt file path: " . $path);
+
+        if (file_exists($path)) {
+            return response()->file($path);
+        }
+
+        abort(404);
+    })->name('receipt.view');
+
 
     Route::get('/logout', [AuthController::class, 'LogoutProcess'])->name('logout');
 });
@@ -42,3 +61,6 @@ Route::get('/api/schools/{id}', function ($id) {
     $school = App\Models\School::findOrFail($id);
     return response()->json($school);
 });
+
+
+

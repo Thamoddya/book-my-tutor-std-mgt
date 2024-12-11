@@ -83,7 +83,7 @@
                             >
                                 Total Payments (This Month)
                             </h5>
-                            <h3 class="my-1 py-1">3,254</h3>
+                            <h3 class="my-1 py-1">{{App\Models\Payment::getNowMonthTotal()}}</h3>
                             <p class="mb-0 text-muted">
                                 <span class="text-success me-2">Rs.5200.00</span>
                             </p>
@@ -148,9 +148,9 @@
                             >
                                 Total Revenue (This Month)
                             </h5>
-                            <h3 class="my-1 py-1">Rs.35000.00</h3>
+                            <h3 class="my-1 py-1">Rs.{{App\Models\Payment::getTotalPaymentsTotalInThisMonth()}}.00</h3>
                             <p class="mb-0 text-muted">
-                                <span class="text-white text-opacity-75 me-2">Rs.6800000.00 /yr</span>
+                                <span class="text-white text-opacity-75 me-2">Rs.{{App\Models\Payment::getNowYearTotal()}}.00 /yr</span>
                             </p>
                         </div>
                         <div class="col-6">
