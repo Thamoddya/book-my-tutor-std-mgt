@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function () {
 
     //API Payments
     Route::post('/payments/store', [\App\Http\Controllers\PaymentController::class, 'store'])->name('payments.store');
+    Route::get('/payments/{payment}', [\App\Http\Controllers\PaymentController::class, 'show'])->name('payments.show');
 
 
     //RECEIPT

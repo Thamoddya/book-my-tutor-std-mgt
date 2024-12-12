@@ -90,7 +90,16 @@ class PaymentController extends Controller
      */
     public function show(Payment $payment)
     {
-        //
+        // Check if the user is authorized to view the payment
+        if (Auth::id() !== $payment->processed_by) {
+            return response()->json(['error' => 'Unauthorized access'], 403);
+        }
+
+        // Return the payment record with the student details
+        return response()->json([
+            'payment' => $payment,
+            'student' => $payment->student,
+        ]);
     }
 
     /**

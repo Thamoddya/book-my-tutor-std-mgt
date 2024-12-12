@@ -69,8 +69,8 @@
                             </td>
 
                             <td>
-                               @role('Super_Admin')
-                                <button class="btn btn-sm btn-warning edit-payment" data-id="{{ $payment->id }}">
+                                @role('Super_Admin')
+                                <button class="btn btn-sm btn-warning " onclick="viewPayment('{{ $payment->id }}')">
                                     View Payment
                                 </button>
                                 @endrole
@@ -166,6 +166,60 @@
         </div>
     </div>
 
+    {{--    View Payment Modal--}}
+    <div class="modal fade" id="viewPaymentModal" tabindex="-1" aria-labelledby="viewPaymentModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewPaymentModalLabel">View Payment</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-3">
+                                <label for="viewPaymentMethod" class="form-label fw-bold">Payment Method</label>
+                                <input type="text" id="viewPaymentMethod" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="viewPaidMonth" class="form-label fw-bold">Paid Month</label>
+                                <input type="text" id="viewPaidMonth" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="viewPaidYear" class="form-label fw-bold">Paid Year</label>
+                                <input type="text" id="viewPaidYear" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="viewAmount" class="form-label fw-bold">Amount</label>
+                                <input type="text" id="viewAmount" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="viewStudentId" class="form-label fw-bold">Student ID</label>
+                                <input type="text" id="viewStudentId" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="viewStudentName" class="form-label fw-bold">Student Name</label>
+                                <input type="text" id="viewStudentName" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="viewPaymentStatus" class="form-label fw-bold">Status</label>
+                                <input type="text" id="viewPaymentStatus" class="form-control" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="viewReceiptPicture" class="form-label fw-bold">Receipt Picture</label>
+                                <a id="viewReceiptPicture" class="form-control" target="_blank">View Receipt</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('script')
     <script>
@@ -216,6 +270,45 @@
                 });
             });
         });
+
+        function viewPayment(paymentId) {
+
+            // Clear previous errors
+            $('.form-control').removeClass('is-invalid');
+            $('.invalid-feedback').text('');
+
+            // Clear previous data
+            $('#viewPaymentMethod').val('');
+            $('#viewPaidMonth').val('');
+            $('#viewPaidYear').val('');
+            $('#viewAmount').val('');
+            $('#viewStudentId').val('');
+            $('#viewPaymentStatus').val('');
+            $('#viewReceiptPicture').attr('href', '');
+
+
+            $.ajax({
+                url: `/payments/${paymentId}`,
+                method: 'GET',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    $('#viewPaymentMethod').val(response.payment.payment_method);
+                    $('#viewPaidMonth').val(response.payment.paid_month);
+                    $('#viewPaidYear').val(response.payment.paid_year);
+                    $('#viewAmount').val(response.payment.amount);
+                    $('#viewStudentId').val(response.student.reg_no);
+                    $('#viewStudentName').val(response.student.name);
+                    $('#viewPaymentStatus').val(response.payment.status);
+                    $('#viewReceiptPicture').attr('href', `storage/${response.payment.receipt_picture}`);
+                    $('#viewPaymentModal').modal('show');
+                },
+                error: function (xhr) {
+                    alert('Something went wrong. Please try again.');
+                }
+            });
+        }
     </script>
 
 @endsection
