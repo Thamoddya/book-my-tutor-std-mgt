@@ -62,10 +62,18 @@ class RouterController extends Controller
     public function payments()
     {
         $payments = Payment::with('student')
-        ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->get();
-        return view('pages.protected.payment',compact([
+        return view('pages.protected.payment', compact([
             'payments'
+        ]));
+    }
+
+    public function studentReports()
+    {
+        $students = Student::all();
+        return view('pages.protected.studentReports', compact([
+            'students'
         ]));
     }
 }

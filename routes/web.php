@@ -13,6 +13,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/management-officers', [RouterController::class, 'managementOfficers'])->name('management');
     Route::get('/students', [RouterController::class, 'students'])->name('students');
     Route::get('/payments', [RouterController::class, 'payments'])->name('payments');
+    Route::get('/studentReports', [RouterController::class, 'studentReports'])->name('studentReports');
 
     //API Batches
     Route::post('/store-batch-process', [\App\Http\Controllers\BatchController::class, 'store'])->name('store-batch-process');

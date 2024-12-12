@@ -59,7 +59,7 @@
             <li class="side-nav-title">Reports</li>
 
             <li class="side-nav-item">
-                <a href="#" class="side-nav-link">
+                <a href="{{route('studentReports')}}" class="side-nav-link">
                     <i class="ri-file-list-3-fill"></i>
                     <span> Student Reports </span>
                 </a>
