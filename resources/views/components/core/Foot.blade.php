@@ -1,7 +1,7 @@
 <!-- Vendor js -->
 <script src="{{ asset('assets/js/vendor.min.js') }}"></script>
 
-@if(in_array(Route::currentRouteName(), ['batch', 'management','students','payments','studentReports']))
+@if(in_array(Route::currentRouteName(), ['batch', 'management','students','payments','studentReports','PaymentReports']))
     <script src="{{asset('assets/vendor/datatables.net/js/jquery.dataTables.min.js')}}"></script>
     <script src="{{asset('assets/vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js')}}"></script>
     <script src="{{asset('assets/vendor/datatables.net-responsive/js/dataTables.responsive.min.js')}}"></script>

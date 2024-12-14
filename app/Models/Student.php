@@ -20,7 +20,8 @@ class Student extends Model
         'school_id',
         'created_by',
         'email',
-        'address'
+        'address',
+        'status'
     ];
 
     public function batch()
@@ -52,5 +53,10 @@ class Student extends Model
         return $this->hasMany(Payment::class)
             ->whereMonth('created_at', now()->subMonths(2)->month)
             ->exists();
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'created_by');
     }
 }

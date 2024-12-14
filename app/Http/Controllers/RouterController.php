@@ -7,6 +7,7 @@ use App\Models\Payment;
 use App\Models\School;
 use App\Models\Student;
 use App\Models\User;
+use App\Models\UserLog;
 use Illuminate\Http\Request;
 
 class RouterController extends Controller
@@ -74,6 +75,22 @@ class RouterController extends Controller
         $students = Student::all();
         return view('pages.protected.studentReports', compact([
             'students'
+        ]));
+    }
+
+    public function PaymentReports()
+    {
+        $payments = Payment::all();
+        return view('pages.protected.PaymentReports', compact([
+            'payments'
+        ]));
+    }
+
+    public function systemLog()
+    {
+        $logs = UserLog::all();
+        return view('pages.protected.UserLog', compact([
+            'logs'
         ]));
     }
 }

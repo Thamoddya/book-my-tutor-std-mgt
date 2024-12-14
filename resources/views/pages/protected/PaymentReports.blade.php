@@ -10,10 +10,10 @@
                                 #BookMyTutor
                             </a></li>
                         <li class="breadcrumb-item"><a href="javascript: void(0);">Reports</a></li>
-                        <li class="breadcrumb-item active">Student</li>
+                        <li class="breadcrumb-item active">Payments</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Student Reports</h4>
+                <h4 class="page-title">Payments Reports</h4>
             </div>
         </div>
     </div>
@@ -24,33 +24,37 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="text-center">
-                            <h4 class="mb-0">Student Reports</h4>
+                            <h4 class="mb-0">Payment Reports</h4>
                         </div>
                         <div class="table-responsive">
                             <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
                                 <thead>
                                 <tr>
-                                    <th>Student ID</th>
+                                    <th>Invoice No</th>
+                                    <th>Payment Method</th>
+                                    <th>Paid For</th>
                                     <th>Student Name</th>
-                                    <th>Batch</th>
-                                    <th>Contact No</th>
-                                    <th>Added By</th>
-                                    <th>Registered Date</th>
+                                    <th>Processed By</th>
+                                    <th>Amount</th>
+                                    <th>Added Date</th>
                                     <th>Status</th>
                                 </tr>
                                 </thead>
                                 <tbody>
 
-                                @foreach($students as $student)
+                                @foreach($payments as $payment)
                                     <tr>
-                                        <td>{{$student->reg_no}}</td>
-                                        <td>{{$student->name}}</td>
-                                        <td>{{$student->batch->name}}</td>
-                                        <td>{{$student->call_no}}</td>
-                                        <td>{{$student->user->name}}</td>
-                                        <td>{{\Carbon\Carbon::parse($student->created_at)->format("d-M-Y")}}</td>
+                                        <td>{{$payment->invoice_number}}</td>
+                                        <td>{{$payment->payment_method}}</td>
                                         <td>
-                                            @if($student->status == 1)
+                                            {{ $payment->paid_month . " " . $payment->paid_year}}
+                                        </td>
+                                        <td>{{$payment->student->name}}</td>
+                                        <td>{{$payment->user->name}}</td>
+                                        <td>{{$payment->amount}}</td>
+                                        <td>{{\Carbon\Carbon::parse($payment->created_at)->format("d-M-Y")}}</td>
+                                        <td>
+                                            @if($payment->status == "paid")
                                                 <span class="btn btn-primary">Active</span>
                                             @else
                                                 <span class="btn btn-danger">Inactive</span>
@@ -67,8 +71,4 @@
             </div>
         </div>
     </div>
-
-@endsection
-@section('script')
-
 @endsection

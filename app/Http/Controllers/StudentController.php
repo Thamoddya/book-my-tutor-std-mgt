@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Models\UserLog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -41,9 +42,25 @@ class StudentController extends Controller
         // Add the new reg_no to the validated data
         $studentData = $request->validated();
         $studentData['reg_no'] = $newRegNo;
+        $studentData['created_by'] = auth()->id();
 
         // Create the student record
         $student = Student::create($studentData);
+
+        // Log the user action
+        UserLog::create([
+            'user_id' => auth()->id(),
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'action' => 'create',
+            'description' => 'Created a new student record',
+            'route' => 'students.store',
+            'method' => $request->method(),
+            'status_code' => 201,
+            'response_time' => '0.01s',
+            'response_size' => '0.1kb',
+            'response_message' => 'Student created successfully!'
+        ]);
 
         // Return success response
         return response()->json(['message' => 'Student created successfully!', 'student' => $student], 201);
@@ -73,16 +90,31 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'call_no' => 'required|digits:10|unique:students,call_no,' . $student->id,
-            'wtp_no' => 'required|digits:10',
-            'school_id' => 'required|exists:schools,id',
-            'batch_id' => 'sometimes|nullable|exists:batches,id',
-            'email' => 'sometimes|nullable|email|unique:students,email,' . $student->id,
-            'address' => 'sometimes|nullable|string|max:255',
+            'name' => 'required | string | max:255',
+            'call_no' => 'required | digits:10 | unique:students,call_no,' . $student->id,
+            'wtp_no' => 'required | digits:10',
+            'school_id' => 'required | exists:schools,id',
+            'batch_id' => 'sometimes | nullable | exists:batches,id',
+            'email' => 'sometimes | nullable | email | unique:students,email,' . $student->id,
+            'address' => 'sometimes | nullable | string | max:255',
         ]);
 
         $student->update($data);
+
+        // Log the user action
+        UserLog::create([
+            'user_id' => auth()->id(),
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'action' => 'update',
+            'description' => 'Updated student record',
+            'route' => 'students.update',
+            'method' => $request->method(),
+            'status_code' => 200,
+            'response_time' => '0.01s',
+            'response_size' => '0.1kb',
+            'response_message' => 'Student updated successfully!'
+        ]);
 
         return response()->json(['message' => 'Student updated successfully!', 'student' => $student], 200);
     }
@@ -101,9 +133,6 @@ class StudentController extends Controller
         return response()->json(['message' => 'Student deactivated successfully!'], 200);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Student $student)
     {
         //

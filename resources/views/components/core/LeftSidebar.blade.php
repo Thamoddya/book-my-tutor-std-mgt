@@ -65,7 +65,7 @@
                 </a>
             </li>
             <li class="side-nav-item">
-                <a href="#" class="side-nav-link">
+                <a href="{{route('PaymentReports')}}" class="side-nav-link">
                     <i class="ri-file-chart-2-line"></i>
                     <span> Payment Reports </span>
                 </a>
@@ -74,11 +74,18 @@
             <li class="side-nav-title">Settings</li>
 
             <li class="side-nav-item">
+                <a href="{{route('systemLog')}}" class="side-nav-link">
+                    <i class="ri-file-list-3-fill"></i>
+                    <span> System Log </span>
+                </a>
+            </li>
+            <li class="side-nav-item">
                 <a href="#" class="side-nav-link">
                     <i class="ri-settings-3-fill"></i>
                     <span> Profile </span>
                 </a>
             </li>
+
         </ul>
         <!--- End Sidemenu -->
 

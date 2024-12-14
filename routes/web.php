@@ -14,6 +14,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/students', [RouterController::class, 'students'])->name('students');
     Route::get('/payments', [RouterController::class, 'payments'])->name('payments');
     Route::get('/studentReports', [RouterController::class, 'studentReports'])->name('studentReports');
+    Route::get('/PaymentReports', [RouterController::class, 'PaymentReports'])->name('PaymentReports');
+    Route::get('/systemLog', [RouterController::class, 'systemLog'])->name('systemLog');
 
     //API Batches
     Route::post('/store-batch-process', [\App\Http\Controllers\BatchController::class, 'store'])->name('store-batch-process');

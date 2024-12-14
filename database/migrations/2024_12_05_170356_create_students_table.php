@@ -20,6 +20,8 @@ return new class extends Migration
             $table->foreignId('batch_id')->nullable()->constrained('batches');
             $table->foreignId('school_id')->nullable()->constrained('schools');
             $table->foreignId('created_by')->nullable()->constrained('users');
+            $table->softDeletes();
+            $table->integer('status')->default(1);
             $table->timestamps();
         });
     }

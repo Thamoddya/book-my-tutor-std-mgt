@@ -96,4 +96,9 @@ class Payment extends Model
             ->sum('amount');  // Sum the 'amount' field
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'processed_by');
+    }
+
 }
