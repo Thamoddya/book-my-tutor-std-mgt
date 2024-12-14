@@ -65,8 +65,6 @@ class AuthController extends Controller
         ]);
         Auth::logout();
         session()->forget('token');
-
-
         return redirect()->route('login');
     }
 }

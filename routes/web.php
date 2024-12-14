@@ -10,12 +10,20 @@ Route::post('/auth/login', [AuthController::class, 'LoginProcess'])->name('login
 Route::middleware('auth')->group(function () {
     Route::get('/', [RouterController::class, 'index'])->name('index');
     Route::get('/batch-management', [RouterController::class, 'batchManagement'])->name('batch');
-    Route::get('/management-officers', [RouterController::class, 'managementOfficers'])->name('management');
+
     Route::get('/students', [RouterController::class, 'students'])->name('students');
     Route::get('/payments', [RouterController::class, 'payments'])->name('payments');
-    Route::get('/studentReports', [RouterController::class, 'studentReports'])->name('studentReports');
-    Route::get('/PaymentReports', [RouterController::class, 'PaymentReports'])->name('PaymentReports');
-    Route::get('/systemLog', [RouterController::class, 'systemLog'])->name('systemLog');
+    Route::get('/profile', [RouterController::class, 'profile'])->name('profile');
+
+    Route::put('/profile', [\App\Http\Controllers\Controller::class, 'update'])->name('profile.update');
+
+    //Super_admin middleware
+    Route::middleware('role:Super_Admin')->group(function () {
+        Route::get('/systemLog', [RouterController::class, 'systemLog'])->name('systemLog');
+        Route::get('/management-officers', [RouterController::class, 'managementOfficers'])->name('management');
+        Route::get('/studentReports', [RouterController::class, 'studentReports'])->name('studentReports');
+        Route::get('/PaymentReports', [RouterController::class, 'PaymentReports'])->name('PaymentReports');
+    });
 
     //API Batches
     Route::post('/store-batch-process', [\App\Http\Controllers\BatchController::class, 'store'])->name('store-batch-process');

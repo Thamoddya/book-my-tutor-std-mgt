@@ -25,9 +25,18 @@ class RouterController extends Controller
     {
         $batchCount = Batch::count();
         $batchCountThisMonth = Batch::whereMonth('created_at', now()->month)->count();
+        $registeredStudentsInThisMonth = Student::whereMonth('created_at', now()->month)->count();
+        $lastTenPayments = Payment::with('student')
+            ->orderBy('created_at', 'desc')
+            ->take(10)
+            ->get();
+        $lastRegisteredStudents = Student::orderBy('created_at', 'desc')->take(10)->get();
         return view('pages.protected.index', compact([
             'batchCount',
-            'batchCountThisMonth'
+            'batchCountThisMonth',
+            'registeredStudentsInThisMonth',
+            'lastTenPayments',
+            'lastRegisteredStudents'
         ]));
     }
 
@@ -92,5 +101,10 @@ class RouterController extends Controller
         return view('pages.protected.UserLog', compact([
             'logs'
         ]));
+    }
+
+    public function profile()
+    {
+        return view('pages.protected.Profile');
     }
 }

@@ -30,13 +30,14 @@
                     <span> Home </span>
                 </a>
             </li>
-
+            @role('Super_Admin')
             <li class="side-nav-item active">
                 <a href="{{route('management')}}" class="side-nav-link">
                     <i class="ri-briefcase-fill"></i>
                     <span> Management </span>
                 </a>
             </li>
+            @endrole
             <li class="side-nav-item active">
                 <a href="{{route('batch')}}" class="side-nav-link">
                     <i class="ri-user-star-fill"></i>
@@ -56,6 +57,7 @@
                 </a>
             </li>
 
+            @role('Super_Admin')
             <li class="side-nav-title">Reports</li>
 
             <li class="side-nav-item">
@@ -70,17 +72,20 @@
                     <span> Payment Reports </span>
                 </a>
             </li>
+            @endrole
+
 
             <li class="side-nav-title">Settings</li>
-
+            @role('Super_Admin')
             <li class="side-nav-item">
                 <a href="{{route('systemLog')}}" class="side-nav-link">
                     <i class="ri-file-list-3-fill"></i>
                     <span> System Log </span>
                 </a>
             </li>
+            @endrole
             <li class="side-nav-item">
-                <a href="#" class="side-nav-link">
+                <a href="{{route('profile')}}" class="side-nav-link">
                     <i class="ri-settings-3-fill"></i>
                     <span> Profile </span>
                 </a>

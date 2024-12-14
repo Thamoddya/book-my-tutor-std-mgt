@@ -41,7 +41,9 @@
                         <th>Status</th>
                         <th>Amount</th>
                         <th>Receipt PIC</th>
+                        @role('Super_Admin')
                         <th>Actions</th>
+                        @endrole
                     </tr>
                     </thead>
                     <tbody>

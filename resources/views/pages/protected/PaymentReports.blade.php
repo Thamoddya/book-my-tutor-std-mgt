@@ -54,11 +54,7 @@
                                         <td>{{$payment->amount}}</td>
                                         <td>{{\Carbon\Carbon::parse($payment->created_at)->format("d-M-Y")}}</td>
                                         <td>
-                                            @if($payment->status == "paid")
-                                                <span class="btn btn-primary">Active</span>
-                                            @else
-                                                <span class="btn btn-danger">Inactive</span>
-                                            @endif
+                                                <span class="btn btn-primary">{{$payment->status}}</span>
                                         </td>
                                     </tr>
                                 @endforeach

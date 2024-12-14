@@ -6,6 +6,7 @@ use App\Models\Payment;
 use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Student;
+use App\Models\UserLog;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,6 +66,20 @@ class PaymentController extends Controller
             $path = $file->store('receipts', 'public');
             $paymentData['receipt_picture'] = $path;
         }
+
+        // Log the user action
+        UserLog::create([
+            'user_id' => Auth::id(),
+            'ip_address' => $request->ip(),
+            'user_agent' => $request->userAgent(),
+            'action' => 'payment',
+            'description' => 'Processed a payment for ' . $student->name,
+            'route' => 'payments.store',
+            'method' => $request->method(),
+            'status_code' => 201,
+            'response_time' => '0.01s',
+            'response_message' => 'Payment processed successfully'
+        ]);
 
         // If payment exists, update the record, else create a new one
         if ($existingPayment) {

@@ -50,10 +50,10 @@
                             >
                                 Students Registered (This Month)
                             </h5>
-                            <h3 class="my-1 py-1">100</h3>
-                            <p class="mb-0 text-muted">
-                                <span class="text-success me-2"><i class="ri-arrow-up-line"></i>3.27%</span>
-                            </p>
+                            <h3 class="my-1 py-1">
+                                {{$registeredStudentsInThisMonth}}
+                            </h3>
+
                         </div>
                         <div class="col-6">
                             <div class="text-end">
@@ -84,9 +84,9 @@
                                 Total Payments (This Month)
                             </h5>
                             <h3 class="my-1 py-1">{{App\Models\Payment::getNowMonthTotal()}}</h3>
-                            <p class="mb-0 text-muted">
-                                <span class="text-success me-2">Rs.5200.00</span>
-                            </p>
+                            {{--                            <p class="mb-0 text-muted">--}}
+                            {{--                                <span class="text-success me-2">Rs.5200.00</span>--}}
+                            {{--                            </p>--}}
                         </div>
                         <div class="col-6">
                             <div class="text-end">
@@ -203,41 +203,42 @@
                                 <th class="py-1">
                                     Status
                                 </th>
-                                <th class="py-1">
-                                    Status
-                                </th>
+
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>
-                                    <a href="javascript:void(0);" class="text-body fw-bold">#INV-001</a>
-                                </td>
-                                <td>
-                                    Rs. 5000.00
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0);" class="text-body fw-bold">John Doe</a>
-                                </td>
-                                <td>
-                                    <span class="badge bg-soft-success text-success">
-                                        January
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="badge bg-soft-success text-success">Paid</span>
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0);" class="text-primary fw-bold">View</a>
-                                </td>
-                            </tr>
+
+                            @foreach($lastTenPayments as $payment)
+                                <tr>
+                                    <td>
+                                        <a href="javascript:void(0);"
+                                           class="text-body fw-bold">#INV-{{$payment->id}}</a>
+                                    </td>
+                                    <td>
+                                        Rs. {{$payment->amount}}.00
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0);"
+                                           class="text-body fw-bold">{{$payment->student->name}}</a>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-soft-success text-success text-capitalize">
+                                            FOR - {{$payment->paid_month}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span class="badge bg-soft-success text-success">Paid</span>
+                                    </td>
+                                </tr>
+
+                            @endforeach
 
                             </tbody>
                         </table>
                     </div>
                     <div class="text-center">
                         <a
-                            href="#!"
+                            href="{{route('payments')}}"
                             class="text-primary text-decoration-underline fw-bold btn mb-2"
                         >View All</a>
                     </div>
@@ -263,7 +264,7 @@
                             <thead class="border-top border-bottom bg-light-subtle border-light">
                             <tr>
                                 <th class="py-1">
-                                    INV #
+                                    Reg ID
                                 </th>
                                 <th class="py-1">
                                     Price
@@ -271,47 +272,40 @@
                                 <th class="py-1">
                                     Student Name
                                 </th>
-                                <th class="py-1">
-                                    Month
-                                </th>
-                                <th class="py-1">
-                                    Status
-                                </th>
-                                <th class="py-1">
-                                    Status
+                                <th >
+                                    Created At
                                 </th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>
-                                    <a href="javascript:void(0);" class="text-body fw-bold">#INV-001</a>
-                                </td>
-                                <td>
-                                    Rs. 5000.00
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0);" class="text-body fw-bold">John Doe</a>
-                                </td>
-                                <td>
-                                    <span class="badge bg-soft-success text-success">
-                                        January
-                                    </span>
-                                </td>
-                                <td>
-                                    <span class="badge bg-soft-success text-success">Paid</span>
-                                </td>
-                                <td>
-                                    <a href="javascript:void(0);" class="text-primary fw-bold">View</a>
-                                </td>
-                            </tr>
+
+                            @foreach($lastRegisteredStudents     as $student)
+                                <tr>
+                                    <td>
+                                        <a href="javascript:void(0);"
+                                           class="text-body fw-bold">#REG-{{$student->id}}</a>
+                                    </td>
+                                    <td>
+                                        Rs. {{$student->price}}.00
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0);"
+                                           class="text-body fw-bold">{{$student->name}}</a>
+                                    </td>
+                                    <td>
+                                        <a href="javascript:void(0);"
+                                           class="text-body fw-bold">{{\Carbon\Carbon::parse($student->created_at)->format('d-m-Y')}}</a>
+                                    </td>
+                                </tr>
+
+                            @endforeach
 
                             </tbody>
                         </table>
                     </div>
                     <div class="text-center">
                         <a
-                            href="#!"
+                            href="{{route('students')}}"
                             class="text-primary text-decoration-underline fw-bold btn mb-2"
                         >View All</a>
                     </div>
