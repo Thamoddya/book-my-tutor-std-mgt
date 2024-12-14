@@ -29,7 +29,7 @@
                     This page shows the system log of the system. This page is only accessible to the admin.
                 </p>
 
-                <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
+                <table id="row-callback-datatable" class="table table-striped dt-responsive nowrap w-100">
                     <thead>
                     <tr>
                         <th>Log ID</th>
@@ -41,7 +41,6 @@
                         <th>Log Date</th>
                         <th>Status Code</th>
                         <th>Route</th>
-
                     </tr>
                     </thead>
 

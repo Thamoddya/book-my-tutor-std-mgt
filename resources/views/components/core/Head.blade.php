@@ -1,4 +1,5 @@
 <meta charset="utf-8"/>
+<meta name="theme-color" content="#1CBD77" />
 <title>
     Book My Tutor | Student Management System
 </title>
@@ -17,7 +18,7 @@
           href="{{ asset('assets/vendor/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css') }}"/>
 @endif
 
-@if(in_array(Route::currentRouteName(), ['batch', 'management','students','payments','studentReports','PaymentReports']))
+@if(in_array(Route::currentRouteName(), ['batch', 'management','students','payments','studentReports','PaymentReports','systemLog']))
     <link href="{{asset('assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css')}}" rel="stylesheet"
           type="text/css"/>
     <link href="{{asset('assets/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css')}}'"

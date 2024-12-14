@@ -2,29 +2,24 @@
 @section('content')
     <div class="row">
         <div class="col-12">
-            {{--            <div class="bg-flower">--}}
-            {{--                <img--}}
-            {{--                    src="{{asset('assets/images/flowers/img-3.png')}}"--}}
-            {{--                />--}}
-            {{--            </div>--}}
+            {{--            <div class="bg-flower"> --}}
+            {{--                <img --}}
+            {{--                    src="{{asset('assets/images/flowers/img-3.png')}}" --}}
+            {{--                /> --}}
+            {{--            </div> --}}
 
-            {{--            <div class="bg-flower-2">--}}
-            {{--                <img--}}
-            {{--                    src="{{asset('assets/images/flowers/img-1.png')}}"--}}
-            {{--                />--}}
-            {{--            </div>--}}
+            {{--            <div class="bg-flower-2"> --}}
+            {{--                <img --}}
+            {{--                    src="{{asset('assets/images/flowers/img-1.png')}}" --}}
+            {{--                /> --}}
+            {{--            </div> --}}
 
             <div class="page-title-box">
                 <div class="page-title-right">
                     <form class="d-flex">
                         <div class="input-group">
-                            <input
-                                type="text"
-                                class="form-control"
-                                id="dash-daterange"
-                            />
-                            <span
-                                class="input-group-text bg-primary border-primary text-white">
+                            <input type="text" class="form-control" id="dash-daterange" />
+                            <span class="input-group-text bg-primary border-primary text-white">
                                 <i class="ri-calendar-todo-fill fs-13"></i>
                             </span>
                         </div>
@@ -44,23 +39,17 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <h5
-                                class="text-muted fw-normal mt-0 text-truncate"
-                                title="Campaign Sent"
-                            >
+                            <h5 class="text-muted fw-normal mt-0 text-truncate" title="Campaign Sent">
                                 Students Registered (This Month)
                             </h5>
                             <h3 class="my-1 py-1">
-                                {{$registeredStudentsInThisMonth}}
+                                {{ $registeredStudentsInThisMonth }}
                             </h3>
 
                         </div>
                         <div class="col-6">
                             <div class="text-end">
-                                <div
-                                    id="campaign-sent-chart"
-                                    data-colors="#6da09c"
-                                ></div>
+                                <div id="campaign-sent-chart" data-colors="#1CBD77"></div>
                             </div>
                         </div>
                     </div>
@@ -77,23 +66,17 @@
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <h5
-                                class="text-muted fw-normal mt-0 text-truncate"
-                                title="New Leads"
-                            >
+                            <h5 class="text-muted fw-normal mt-0 text-truncate" title="New Leads">
                                 Total Payments (This Month)
                             </h5>
-                            <h3 class="my-1 py-1">{{App\Models\Payment::getNowMonthTotal()}}</h3>
-                            {{--                            <p class="mb-0 text-muted">--}}
-                            {{--                                <span class="text-success me-2">Rs.5200.00</span>--}}
-                            {{--                            </p>--}}
+                            <h3 class="my-1 py-1">{{ App\Models\Payment::getNowMonthTotal() }}</h3>
+                            {{--                            <p class="mb-0 text-muted"> --}}
+                            {{--                                <span class="text-success me-2">Rs.5200.00</span> --}}
+                            {{--                            </p> --}}
                         </div>
                         <div class="col-6">
                             <div class="text-end">
-                                <div
-                                    id="new-leads-chart"
-                                    data-colors="#87bf8a"
-                                ></div>
+                                <div id="new-leads-chart" data-colors="#87bf8a"></div>
                             </div>
                         </div>
                     </div>
@@ -113,17 +96,14 @@
                             <h5 class="text-muted fw-normal mt-0 text-truncate" title="Deals">
                                 Batch Count
                             </h5>
-                            <h3 class="my-1 py-1">{{$batchCountThisMonth}}</h3>
+                            <h3 class="my-1 py-1">{{ $batchCountThisMonth }}</h3>
                             <p class="mb-0 text-muted">
-                                <span class="text-success me-2">{{$batchCount}} Total</span>
+                                <span class="text-success me-2">{{ $batchCount }} Total</span>
                             </p>
                         </div>
                         <div class="col-6">
                             <div class="text-end">
-                                <div
-                                    id="deals-chart"
-                                    data-colors="#e7607b"
-                                ></div>
+                                <div id="deals-chart" data-colors="#e7607b"></div>
                             </div>
                         </div>
                     </div>
@@ -136,29 +116,23 @@
         <!-- end col -->
 
         <div class="col-sm-6 col-xxl-3">
-            <div
-                class="card text-bg-primary border-primary"
-            >
+            <div class="card text-bg-primary border-primary">
                 <div class="card-body">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <h5
-                                class="text-white text-opacity-75 fw-normal mt-0 text-truncate"
-                                title="Booked Revenue"
-                            >
+                            <h5 class="text-white text-opacity-75 fw-normal mt-0 text-truncate" title="Booked Revenue">
                                 Total Revenue (This Month)
                             </h5>
-                            <h3 class="my-1 py-1">Rs.{{App\Models\Payment::getTotalPaymentsTotalInThisMonth()}}.00</h3>
+                            <h3 class="my-1 py-1">Rs.{{ App\Models\Payment::getTotalPaymentsTotalInThisMonth() }}.00</h3>
                             <p class="mb-0 text-muted">
-                                <span class="text-white text-opacity-75 me-2">Rs.{{App\Models\Payment::getNowYearTotal()}}.00 /yr</span>
+                                <span
+                                    class="text-white text-opacity-75 me-2">Rs.{{ App\Models\Payment::getNowYearTotal() }}.00
+                                    /yr</span>
                             </p>
                         </div>
                         <div class="col-6">
                             <div class="text-end">
-                                <div
-                                    id="booked-revenue-chart"
-                                    data-colors="#d89e70"
-                                ></div>
+                                <div id="booked-revenue-chart" data-colors="#d89e70"></div>
                             </div>
                         </div>
                     </div>
@@ -174,8 +148,7 @@
     <div class="row">
         <div class="col-xl-6">
             <div class="card">
-                <div
-                    class="d-flex card-header justify-content-between align-items-center">
+                <div class="d-flex card-header justify-content-between align-items-center">
                     <h4 class="header-title">
                         Latest Payments
                     </h4>
@@ -184,63 +157,59 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table
-                            class="table table-borderless table-hover table-nowrap table-centered m-0">
+                        <table class="table table-borderless table-hover table-nowrap table-centered m-0">
                             <thead class="border-top border-bottom bg-light-subtle border-light">
-                            <tr>
-                                <th class="py-1">
-                                    INV #
-                                </th>
-                                <th class="py-1">
-                                    Price
-                                </th>
-                                <th class="py-1">
-                                    Student Name
-                                </th>
-                                <th class="py-1">
-                                    Month
-                                </th>
-                                <th class="py-1">
-                                    Status
-                                </th>
+                                <tr>
+                                    <th class="py-1">
+                                        INV #
+                                    </th>
+                                    <th class="py-1">
+                                        Price
+                                    </th>
+                                    <th class="py-1">
+                                        Student Name
+                                    </th>
+                                    <th class="py-1">
+                                        Month
+                                    </th>
+                                    <th class="py-1">
+                                        Status
+                                    </th>
 
-                            </tr>
+                                </tr>
                             </thead>
                             <tbody>
 
-                            @foreach($lastTenPayments as $payment)
-                                <tr>
-                                    <td>
-                                        <a href="javascript:void(0);"
-                                           class="text-body fw-bold">#INV-{{$payment->id}}</a>
-                                    </td>
-                                    <td>
-                                        Rs. {{$payment->amount}}.00
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);"
-                                           class="text-body fw-bold">{{$payment->student->name}}</a>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-soft-success text-success text-capitalize">
-                                            FOR - {{$payment->paid_month}}
-                                        </span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-soft-success text-success">Paid</span>
-                                    </td>
-                                </tr>
-
-                            @endforeach
+                                @foreach ($lastTenPayments as $payment)
+                                    <tr>
+                                        <td>
+                                            <a href="javascript:void(0);"
+                                                class="text-body fw-bold">#INV-{{ $payment->id }}</a>
+                                        </td>
+                                        <td>
+                                            Rs. {{ $payment->amount }}.00
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0);"
+                                                class="text-body fw-bold">{{ $payment->student->name }}</a>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-soft-success text-success text-capitalize">
+                                                FOR - {{ $payment->paid_month }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-soft-success text-success">Paid</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
                             </tbody>
                         </table>
                     </div>
                     <div class="text-center">
-                        <a
-                            href="{{route('payments')}}"
-                            class="text-primary text-decoration-underline fw-bold btn mb-2"
-                        >View All</a>
+                        <a href="{{ route('payments') }}"
+                            class="text-primary text-decoration-underline fw-bold btn mb-2">View All</a>
                     </div>
                 </div>
             </div>
@@ -249,8 +218,7 @@
 
         <div class="col-xl-6">
             <div class="card">
-                <div
-                    class="d-flex card-header justify-content-between align-items-center">
+                <div class="d-flex card-header justify-content-between align-items-center">
                     <h4 class="header-title">
                         Latest Students
                     </h4>
@@ -259,55 +227,51 @@
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
-                        <table
-                            class="table table-borderless table-hover table-nowrap table-centered m-0">
+                        <table class="table table-borderless table-hover table-nowrap table-centered m-0">
                             <thead class="border-top border-bottom bg-light-subtle border-light">
-                            <tr>
-                                <th class="py-1">
-                                    Reg ID
-                                </th>
-                                <th class="py-1">
-                                    Price
-                                </th>
-                                <th class="py-1">
-                                    Student Name
-                                </th>
-                                <th >
-                                    Created At
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th class="py-1">
+                                        Reg ID
+                                    </th>
+                                    <th class="py-1">
+                                        Price
+                                    </th>
+                                    <th class="py-1">
+                                        Student Name
+                                    </th>
+                                    <th>
+                                        Created At
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
 
-                            @foreach($lastRegisteredStudents     as $student)
-                                <tr>
-                                    <td>
-                                        <a href="javascript:void(0);"
-                                           class="text-body fw-bold">#REG-{{$student->id}}</a>
-                                    </td>
-                                    <td>
-                                        Rs. {{$student->price}}.00
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);"
-                                           class="text-body fw-bold">{{$student->name}}</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);"
-                                           class="text-body fw-bold">{{\Carbon\Carbon::parse($student->created_at)->format('d-m-Y')}}</a>
-                                    </td>
-                                </tr>
-
-                            @endforeach
+                                @foreach ($lastRegisteredStudents as $student)
+                                    <tr>
+                                        <td>
+                                            <a href="javascript:void(0);"
+                                                class="text-body fw-bold">#REG-{{ $student->id }}</a>
+                                        </td>
+                                        <td>
+                                            Rs. {{ $student->price }}.00
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0);"
+                                                class="text-body fw-bold">{{ $student->name }}</a>
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0);"
+                                                class="text-body fw-bold">{{ \Carbon\Carbon::parse($student->created_at)->format('d-m-Y') }}</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
                             </tbody>
                         </table>
                     </div>
                     <div class="text-center">
-                        <a
-                            href="{{route('students')}}"
-                            class="text-primary text-decoration-underline fw-bold btn mb-2"
-                        >View All</a>
+                        <a href="{{ route('students') }}"
+                            class="text-primary text-decoration-underline fw-bold btn mb-2">View All</a>
                     </div>
                 </div>
             </div>
