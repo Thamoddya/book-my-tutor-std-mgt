@@ -76,8 +76,16 @@
                 <a class="nav-link dropdown-toggle arrow-none nav-user px-2" data-bs-toggle="dropdown"
                    href="#" role="button" aria-haspopup="false" aria-expanded="false">
                                 <span class="account-user-avatar">
-                                    <img src="{{asset('assets/images/users/avatar-1.jpg')}}" alt="user-image" width="32"
-                                         class="rounded-circle">
+                                    @if(auth()->user()->profile_image)
+                                        <img src="{{ asset('profile/' . auth()->user()->profile_image) }}"
+                                             alt="user-image"
+                                             style="border-radius: 1000px;width: 32px;height: 32px">
+                                    @else
+                                        <img src="{{asset('assets/images/users/avatar-1.jpg')}}" alt="user-image"
+                                             width="32"
+                                             class="rounded-circle">
+                                    @endif
+
                                 </span>
                     <span class="d-lg-flex flex-column gap-1 d-none">
                                     <h5 class="my-0">{{Auth::user()->name  ?? 'Guest'}}</h5>
@@ -97,16 +105,16 @@
                     </div>
 
                     <!-- item-->
-                    <a href="#" class="dropdown-item">
+                    <a href="{{route('profile')}}" class="dropdown-item">
                         <i class="ri-account-circle-line fs-18 align-middle me-1"></i>
                         <span>My Account</span>
                     </a>
 
                     <!-- item-->
-                    <a href="#" class="dropdown-item">
-                        <i class="ri-settings-4-line fs-18 align-middle me-1"></i>
-                        <span>Settings</span>
-                    </a>
+                    {{--                    <a href="#" class="dropdown-item">--}}
+                    {{--                        <i class="ri-settings-4-line fs-18 align-middle me-1"></i>--}}
+                    {{--                        <span>Settings</span>--}}
+                    {{--                    </a>--}}
 
                     <!-- item-->
                     <a href="https://wa.me/94769458554" target="_blank" class="dropdown-item">

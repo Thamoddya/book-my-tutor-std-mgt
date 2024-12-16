@@ -13,9 +13,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/students', [RouterController::class, 'students'])->name('students');
     Route::get('/payments', [RouterController::class, 'payments'])->name('payments');
-    Route::get('/profile', [RouterController::class, 'profile'])->name('profile');
+    Route::get('/profile-user', [RouterController::class, 'profile'])->name('profile');
 
-    Route::put('/profile', [\App\Http\Controllers\Controller::class, 'update'])->name('profile.update');
+    Route::put('/profile-update', [\App\Http\Controllers\Controller::class, 'update'])->name('profile.update');
 
     //Super_admin middleware
     Route::middleware('role:Super_Admin')->group(function () {

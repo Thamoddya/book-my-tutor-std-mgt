@@ -196,6 +196,7 @@ html[data-bs-theme=dark][data-topbar-color=dark] {
     --ct-form-valid-border-color: #87bf8a;
     --ct-form-invalid-color: #e7607b;
     --ct-form-invalid-border-color: #e7607b;
+    --ct-body-text-align: left;
 }
 
 [data-bs-theme=dark] {
@@ -250,6 +251,7 @@ html[data-bs-theme=dark][data-topbar-color=dark] {
     --ct-form-valid-border-color: #b7d9b9;
     --ct-form-invalid-color: #f1a0b0;
     --ct-form-invalid-border-color: #f1a0b0;
+    --ct-body-text-align: left;
 }
 
 *,

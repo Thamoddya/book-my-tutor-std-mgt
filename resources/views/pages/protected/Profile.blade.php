@@ -46,9 +46,21 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('profile.update') }}" method="POST">
+                    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
+
+                        <!-- Profile Image -->
+                        <div class="mb-3">
+                            <label for="profile_image" class="form-label">Profile Image</label>
+                            <input type="file" name="profile_image" id="profile_image" class="form-control">
+                            @if(auth()->user()->profile_image)
+                                <div class="mt-3">
+                                    <img src="{{ asset('profile/' . auth()->user()->profile_image) }}"
+                                         alt="Profile Image" class="img-thumbnail" width="150">
+                                </div>
+                            @endif
+                        </div>
 
                         <!-- Name -->
                         <div class="mb-3">

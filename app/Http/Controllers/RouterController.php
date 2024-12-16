@@ -31,14 +31,29 @@ class RouterController extends Controller
             ->take(10)
             ->get();
         $lastRegisteredStudents = Student::orderBy('created_at', 'desc')->take(10)->get();
+
+        $paymentsLastFiveMonths = Payment::selectRaw('SUM(amount) as total, MONTHNAME(MIN(paid_at)) as month_name')
+            ->whereBetween('paid_at', [now()->subMonths(5), now()])
+            ->groupByRaw('YEAR(paid_at), MONTH(paid_at)')
+            ->orderByRaw('YEAR(paid_at), MONTH(paid_at)')
+            ->get();
+        $studentCountLastFiveMonths = Student::selectRaw('COUNT(id) as total, MONTHNAME(MIN(created_at)) as month_name')
+            ->whereBetween('created_at', [now()->subMonths(5), now()])
+            ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+            ->orderByRaw('YEAR(created_at), MONTH(created_at)')
+            ->get();
+
         return view('pages.protected.index', compact([
             'batchCount',
             'batchCountThisMonth',
             'registeredStudentsInThisMonth',
             'lastTenPayments',
-            'lastRegisteredStudents'
+            'lastRegisteredStudents',
+            'paymentsLastFiveMonths',
+            'studentCountLastFiveMonths'
         ]));
     }
+
 
     public function batchManagement()
     {
