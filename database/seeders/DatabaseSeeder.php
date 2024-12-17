@@ -78,57 +78,15 @@ class DatabaseSeeder extends Seeder
         $superAdminOne = User::create(
             [
                 'name' => 'Super Admin',
-                'email' => 'sa',
-                'nic' => '123456789V',
+                'email' => 'ifix.digitalmedia@gmail.com',
+                'nic' => '199528903459',
                 'password' => Hash::make('1234'),
-                'phone' => '0712345678',
-                'address' => 'Colombo',
+                'phone' => '0715880633',
+                'address' => 'Eppawala',
                 'status' => 1,
             ]
         );
 
         $superAdminOne->assignRole('Super_Admin');
-
-        $managementOfficerOne = User::create(
-            [
-                'name' => 'Management Officer',
-                'email' => 'mo',
-                'nic' => '123456789V',
-                'password' => Hash::make('1234'),
-                'phone' => '0712345678',
-                'address' => 'Colombo',
-                'status' => 1,
-            ]
-        );
-
-        $managementOfficerOne->assignRole('management_officer');
-
-        $managementOfficerTwo = User::create(
-            [
-                'name' => 'Management Officer',
-                'email' => 'mo2',
-                'nic' => '123456789V',
-                'password' => Hash::make('1234'),
-                'phone' => '0712345678',
-                'address' => 'Colombo',
-                'status' => 1,
-            ]
-        );
-
-        $managementOfficerTwo->assignRole('management_officer');
-
-        $managementOfficerThree = User::create(
-            [
-                'name' => 'Management Officer',
-                'email' => 'mo3',
-                'nic' => '123456789V',
-                'password' => Hash::make('1234'),
-                'phone' => '0712345678',
-                'address' => 'Colombo',
-                'status' => 1,
-            ]
-        );
-
-        $managementOfficerThree->assignRole('management_officer');
     }
 }
