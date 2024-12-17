@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\School;
-use App\Models\Scool;
 use App\Http\Requests\StoreScoolRequest;
 use App\Http\Requests\UpdateScoolRequest;
 use Illuminate\Http\Request;
@@ -37,7 +36,7 @@ class ScoolController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Scool $scool)
+    public function show(School $scool)
     {
         //
     }
@@ -45,7 +44,7 @@ class ScoolController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Scool $scool)
+    public function edit(School $scool)
     {
         //
     }
@@ -53,15 +52,12 @@ class ScoolController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateScoolRequest $request, Scool $scool)
-    {
-        //
-    }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Scool $scool)
+    public function destroy(School $scool)
     {
         //
     }
