@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\School;
 use App\Http\Requests\StoreScoolRequest;
-use App\Http\Requests\UpdateScoolRequest;
 use Illuminate\Http\Request;
 
 class ScoolController extends Controller

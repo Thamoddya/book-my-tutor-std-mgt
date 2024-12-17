@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
-use App\Http\Requests\UpdateStudentRequest;
 use App\Models\UserLog;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class StudentController extends Controller

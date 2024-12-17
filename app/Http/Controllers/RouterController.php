@@ -8,7 +8,7 @@ use App\Models\School;
 use App\Models\Student;
 use App\Models\User;
 use App\Models\UserLog;
-use Illuminate\Http\Request;
+
 
 class RouterController extends Controller
 {
