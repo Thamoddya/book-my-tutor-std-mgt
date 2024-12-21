@@ -12,6 +12,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/batch-management', [RouterController::class, 'batchManagement'])->name('batch');
 
     Route::get('/students', [RouterController::class, 'students'])->name('students');
+    Route::get('/schools', [RouterController::class, 'schools'])->name('schools');
     Route::get('/payments', [RouterController::class, 'payments'])->name('payments');
     Route::get('/profile-user', [RouterController::class, 'profile'])->name('profile');
 
@@ -73,3 +74,11 @@ Route::get('/api/schools/{id}', function ($id) {
     $school = App\Models\School::findOrFail($id);
     return response()->json($school);
 });
+
+
+Route::get('/schools/create', [RouterController::class, 'createSchool'])->name('schools.create');
+Route::post('/schools/store', [\App\Http\Controllers\ScoolController::class, 'store'])->name('schools.store');
+Route::get('/schools/{school}/edit', [\App\Http\Controllers\ScoolController::class, 'edit'])->name('schools.edit');
+Route::put('/schools/{school}', [\App\Http\Controllers\ScoolController::class, 'update'])->name('schools.update');
+Route::delete('/schools/{school}', [\App\Http\Controllers\ScoolController::class, 'destroy'])->name('schools.destroy');
+Route::get('/schools/{school}', [\App\Http\Controllers\ScoolController::class, 'show'])->name('schools.show');

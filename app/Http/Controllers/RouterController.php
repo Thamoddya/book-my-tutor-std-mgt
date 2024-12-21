@@ -94,6 +94,14 @@ class RouterController extends Controller
         ]));
     }
 
+    public function schools()
+    {
+        $schools = School::all();
+        return view('pages.protected.schools', compact([
+            'schools'
+        ]));
+    }
+
     public function studentReports()
     {
         $students = Student::all();

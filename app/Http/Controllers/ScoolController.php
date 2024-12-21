@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\School;
-use App\Http\Requests\StoreScoolRequest;
 use Illuminate\Http\Request;
 
 class ScoolController extends Controller
@@ -13,7 +12,10 @@ class ScoolController extends Controller
      */
     public function index()
     {
-        //
+        $schools = School::all();
+        return view('pages.protected.schools', compact([
+            'schools'
+        ]));
     }
 
     /**
@@ -27,10 +29,23 @@ class ScoolController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreScoolRequest $request)
+    public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        try {
+            School::create([
+                'name' => $request->input('name'),
+            ]);
+
+            return response()->json(['success' => 'School added successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
+
 
     /**
      * Display the specified resource.
@@ -43,9 +58,20 @@ class ScoolController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(School $scool)
+    public function edit(School $scool) {}
+
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+
+        $school = School::findOrFail($id);
+        $school->update([
+            'name' => $request->input('name'),
+        ]);
+
+        return response()->json(['success' => 'School updated successfully']);
     }
 
     /**
