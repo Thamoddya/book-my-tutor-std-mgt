@@ -1,5 +1,5 @@
 <meta charset="utf-8" />
-<meta name="theme-color" content="#1CBD77" />
+<meta name="theme-color" content="#22cc9d" />
 <title>
     Book My Tutor | Student Management System
 </title>

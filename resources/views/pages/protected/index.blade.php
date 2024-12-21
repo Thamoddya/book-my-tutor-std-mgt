@@ -7,7 +7,7 @@
                 <div class="page-title-right">
                     <form class="d-flex">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="dash-daterange"/>
+                            <input type="text" class="form-control" id="dash-daterange" />
                             <span class="input-group-text bg-primary border-primary text-white">
                                 <i class="ri-calendar-todo-fill fs-13"></i>
                             </span>
@@ -50,7 +50,7 @@
                         </div>
                         <div class="col-6">
                             <div class="text-end">
-                                <div id="campaign-sent-chart" data-colors="#1CBD77"></div>
+                                <div id="campaign-sent-chart" data-colors="#22cc9d"></div>
                             </div>
                         </div>
                     </div>
@@ -164,57 +164,57 @@
                     <div class="table-responsive">
                         <table class="table table-borderless table-hover table-nowrap table-centered m-0">
                             <thead class="border-top border-bottom bg-light-subtle border-light">
-                            <tr>
-                                <th class="py-1">
-                                    INV #
-                                </th>
-                                <th class="py-1">
-                                    Price
-                                </th>
-                                <th class="py-1">
-                                    Student Name
-                                </th>
-                                <th class="py-1">
-                                    Month
-                                </th>
-                                <th class="py-1">
-                                    Status
-                                </th>
+                                <tr>
+                                    <th class="py-1">
+                                        INV #
+                                    </th>
+                                    <th class="py-1">
+                                        Price
+                                    </th>
+                                    <th class="py-1">
+                                        Student Name
+                                    </th>
+                                    <th class="py-1">
+                                        Month
+                                    </th>
+                                    <th class="py-1">
+                                        Status
+                                    </th>
 
-                            </tr>
+                                </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($lastTenPayments as $payment)
-                                <tr>
-                                    <td>
-                                        <a href="javascript:void(0);"
-                                           class="text-body fw-bold">#INV-{{ $payment->id }}</a>
-                                    </td>
-                                    <td>
-                                        Rs. {{ $payment->amount }}.00
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);"
-                                           class="text-body fw-bold">{{ $payment->student->name }}</a>
-                                    </td>
-                                    <td>
+                                @foreach ($lastTenPayments as $payment)
+                                    <tr>
+                                        <td>
+                                            <a href="javascript:void(0);"
+                                                class="text-body fw-bold">#INV-{{ $payment->id }}</a>
+                                        </td>
+                                        <td>
+                                            Rs. {{ $payment->amount }}.00
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0);"
+                                                class="text-body fw-bold">{{ $payment->student->name }}</a>
+                                        </td>
+                                        <td>
                                             <span class="badge bg-soft-success text-success text-capitalize">
                                                 FOR - {{ $payment->paid_month }}
                                             </span>
-                                    </td>
-                                    <td>
-                                        <span class="badge bg-soft-success text-success">Paid</span>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-soft-success text-success">Paid</span>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
                             </tbody>
                         </table>
                     </div>
                     <div class="text-center">
                         <a href="{{ route('payments') }}"
-                           class="text-primary text-decoration-underline fw-bold btn mb-2">View All</a>
+                            class="text-primary text-decoration-underline fw-bold btn mb-2">View All</a>
                     </div>
                 </div>
             </div>
@@ -234,49 +234,49 @@
                     <div class="table-responsive">
                         <table class="table table-borderless table-hover table-nowrap table-centered m-0">
                             <thead class="border-top border-bottom bg-light-subtle border-light">
-                            <tr>
-                                <th class="py-1">
-                                    Reg ID
-                                </th>
-                                <th class="py-1">
-                                    Price
-                                </th>
-                                <th class="py-1">
-                                    Student Name
-                                </th>
-                                <th>
-                                    Created At
-                                </th>
-                            </tr>
+                                <tr>
+                                    <th class="py-1">
+                                        Reg ID
+                                    </th>
+                                    <th class="py-1">
+                                        Price
+                                    </th>
+                                    <th class="py-1">
+                                        Student Name
+                                    </th>
+                                    <th>
+                                        Created At
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
 
-                            @foreach ($lastRegisteredStudents as $student)
-                                <tr>
-                                    <td>
-                                        <a href="javascript:void(0);"
-                                           class="text-body fw-bold">#REG-{{ $student->id }}</a>
-                                    </td>
-                                    <td>
-                                        Rs. {{ $student->price }}.00
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);"
-                                           class="text-body fw-bold">{{ $student->name }}</a>
-                                    </td>
-                                    <td>
-                                        <a href="javascript:void(0);"
-                                           class="text-body fw-bold">{{ \Carbon\Carbon::parse($student->created_at)->format('d-m-Y') }}</a>
-                                    </td>
-                                </tr>
-                            @endforeach
+                                @foreach ($lastRegisteredStudents as $student)
+                                    <tr>
+                                        <td>
+                                            <a href="javascript:void(0);"
+                                                class="text-body fw-bold">#REG-{{ $student->id }}</a>
+                                        </td>
+                                        <td>
+                                            Rs. {{ $student->price }}.00
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0);"
+                                                class="text-body fw-bold">{{ $student->name }}</a>
+                                        </td>
+                                        <td>
+                                            <a href="javascript:void(0);"
+                                                class="text-body fw-bold">{{ \Carbon\Carbon::parse($student->created_at)->format('d-m-Y') }}</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
 
                             </tbody>
                         </table>
                     </div>
                     <div class="text-center">
                         <a href="{{ route('students') }}"
-                           class="text-primary text-decoration-underline fw-bold btn mb-2">View All</a>
+                            class="text-primary text-decoration-underline fw-bold btn mb-2">View All</a>
                     </div>
                 </div>
             </div>
@@ -293,7 +293,7 @@
 @section('script')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function () {
+        document.addEventListener('DOMContentLoaded', function() {
             // Payment Bar Chart
             const paymentCtx = document.getElementById('paymentBarChart').getContext('2d');
             const paymentData = @json($paymentsLastFiveMonths);
@@ -318,7 +318,7 @@
                         y: {
                             beginAtZero: true,
                             ticks: {
-                                callback: function (value) {
+                                callback: function(value) {
                                     return 'Rs.' + value;
                                 }
                             }
