@@ -39,20 +39,16 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row align-items-center">
-                        <div class="col-6">
-                            <h5 class="text-muted fw-normal mt-0 text-truncate" title="Campaign Sent">
-                                Students Registered (This Month)
+                        <div class="col-12">
+                            <h5 class="text-muted fw-normal mt-0 w-full" title="Campaign Sent">
+                                Students Registered ({{ \Carbon\Carbon::now()->format('F') }})
                             </h5>
                             <h3 class="my-1 py-1">
                                 {{ $registeredStudentsInThisMonth }}
                             </h3>
 
                         </div>
-                        <div class="col-6">
-                            <div class="text-end">
-                                <div id="campaign-sent-chart" data-colors="#22cc9d"></div>
-                            </div>
-                        </div>
+
                     </div>
                     <!-- end row-->
                 </div>
@@ -66,20 +62,16 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row align-items-center">
-                        <div class="col-6">
-                            <h5 class="text-muted fw-normal mt-0 text-truncate" title="New Leads">
-                                Total Payments (This Month)
+                        <div class="col-12">
+                            <h5 class="text-muted fw-normal mt-0" title="New Leads">
+                                Total Payments ({{ \Carbon\Carbon::now()->format('F') }})
                             </h5>
                             <h3 class="my-1 py-1">{{ App\Models\Payment::getNowMonthTotal() }}</h3>
                             {{--                            <p class="mb-0 text-muted"> --}}
                             {{--                                <span class="text-success me-2">Rs.5200.00</span> --}}
                             {{--                            </p> --}}
                         </div>
-                        <div class="col-6">
-                            <div class="text-end">
-                                <div id="new-leads-chart" data-colors="#87bf8a"></div>
-                            </div>
-                        </div>
+
                     </div>
                     <!-- end row-->
                 </div>
@@ -93,20 +85,14 @@
             <div class="card">
                 <div class="card-body">
                     <div class="row align-items-center">
-                        <div class="col-6">
-                            <h5 class="text-muted fw-normal mt-0 text-truncate" title="Deals">
+                        <div class="col-12">
+                            <h5 class="text-muted fw-normal mt-0" title="Deals">
                                 Batch Count
                             </h5>
                             <h3 class="my-1 py-1">{{ $batchCountThisMonth }}</h3>
-                            <p class="mb-0 text-muted">
-                                <span class="text-success me-2">{{ $batchCount }} Total</span>
-                            </p>
+
                         </div>
-                        <div class="col-6">
-                            <div class="text-end">
-                                <div id="deals-chart" data-colors="#e7607b"></div>
-                            </div>
-                        </div>
+
                     </div>
                     <!-- end row-->
                 </div>
@@ -114,28 +100,16 @@
             </div>
             <!-- end card -->
         </div>
-        <!-- end col -->
 
         <div class="col-sm-6 col-xxl-3">
             <div class="card text-bg-primary border-primary">
                 <div class="card-body">
                     <div class="row align-items-center">
-                        <div class="col-6">
-                            <h5 class="text-white text-opacity-75 fw-normal mt-0 text-truncate" title="Booked Revenue">
-                                Total Revenue (This Month)
+                        <div class="col-12">
+                            <h5 class=" text-white fw-normal mt-0" title="Deals">
+                                Total Revenue ({{ \Carbon\Carbon::now()->format('F') }})
                             </h5>
-                            <h3 class="my-1 py-1">Rs.{{ App\Models\Payment::getTotalPaymentsTotalInThisMonth() }}
-                                .00</h3>
-                            <p class="mb-0 text-muted">
-                                <span
-                                    class="text-white text-opacity-75 me-2">Rs.{{ App\Models\Payment::getNowYearTotal() }}.00
-                                    /yr</span>
-                            </p>
-                        </div>
-                        <div class="col-6">
-                            <div class="text-end">
-                                <div id="booked-revenue-chart" data-colors="#d89e70"></div>
-                            </div>
+                            <h3 class="my-1 py-1">Rs.{{ App\Models\Payment::getTotalPaymentsTotalInThisMonth() }}.00</h3>
                         </div>
                     </div>
                     <!-- end row-->
@@ -144,7 +118,7 @@
             </div>
             <!-- end card -->
         </div>
-        <!-- end col -->
+
     </div>
 
     {{-- end row --}}

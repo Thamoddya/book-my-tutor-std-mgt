@@ -54,10 +54,13 @@
                                 <td>{{ ucfirst($payment->paid_month) }}</td>
                                 <td>{{ \Carbon\Carbon::parse($payment->paid_at)->format('Y-m-d') }}</td>
                                 <td>
-                                    <span
-                                        class="badge bg-{{ $payment->status === 'Paid' ? 'success' : ($payment->status === 'due' ? 'danger' : 'warning') }}">
-                                        {{ ucfirst($payment->status) }}
-                                    </span>
+                                    @if ($payment->status == 'paid')
+                                        <span class="badge bg-success">Paid</span>
+                                    @elseif ($payment->status == 'pending')
+                                        <span class="badge bg-warning">Pending</span>
+                                    @else
+                                        <span class="badge bg-danger">Due</span>
+                                    @endif
                                 </td>
                                 <td>{{ $payment->amount }}</td>
                                 <td>
