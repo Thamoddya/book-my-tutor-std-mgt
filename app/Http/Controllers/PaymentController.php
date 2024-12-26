@@ -7,47 +7,23 @@ use App\Http\Requests\StorePaymentRequest;
 use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Student;
 use App\Models\UserLog;
-use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
+    public function index() {}
+    public function create() {}
     public function store(StorePaymentRequest $request)
     {
-        // Find student by registration number
         $student = Student::where('reg_no', $request->student_id)->first();
-
-        // If student not found, return an error
         if (!$student) {
             return response()->json(['error' => 'Student not found'], 404);
         }
-
-        // Check if a payment record exists for this student with the same month and year
         $existingPayment = Payment::where('student_id', $student->id)
             ->where('paid_month', $request->paid_month)
             ->where('paid_year', $request->paid_year)
             ->first();
-
-        // If a record exists, update it, otherwise create a new one
         $paymentData = [
             'invoice_number' => 'BMTIN' . str_pad(Payment::count() + 1, 6, '0', STR_PAD_LEFT),
             'payment_method' => $request->payment_method,
@@ -59,15 +35,11 @@ class PaymentController extends Controller
             'paid_year' => $request->paid_year,
             'processed_by' => Auth::id(),
         ];
-
-        // Handle receipt picture
         if ($request->hasFile('receipt_picture')) {
             $file = $request->file('receipt_picture');
             $path = $file->store('receipts', 'public');
             $paymentData['receipt_picture'] = $path;
         }
-
-        // Log the user action
         UserLog::create([
             'user_id' => Auth::id(),
             'ip_address' => $request->ip(),
@@ -80,10 +52,7 @@ class PaymentController extends Controller
             'response_time' => '0.01s',
             'response_message' => 'Payment processed successfully'
         ]);
-
-        // If payment exists, update the record, else create a new one
         if ($existingPayment) {
-            // Update the existing record
             $existingPayment->update($paymentData);
             return response()->json([
                 'message' => 'Payment updated successfully',
@@ -99,64 +68,56 @@ class PaymentController extends Controller
         }
     }
 
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Payment $payment)
     {
-        // Check if the user is authorized to view the payment
         if (Auth::id() !== $payment->processed_by) {
             return response()->json(['error' => 'Unauthorized access'], 403);
         }
-
-        // Return the payment record with the student details
         return response()->json([
             'payment' => $payment,
             'student' => $payment->student,
         ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdatePaymentRequest $request, Payment $payment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Payment $payment)
-    {
-        //
-    }
-
+    public function destroy(Payment $payment) {}
     public function viewReceipt($filename)
     {
-        // Check if the user is authorized to view the receipt
         $payment = Payment::where('receipt_picture', 'receipts/' . $filename)->first();
 
         if (!$payment || Auth::id() !== $payment->processed_by) {
             abort(403, 'Unauthorized access');
         }
-
         // Serve the file securely
         $path = storage_path('app/secure/receipts/' . $filename);
 
         if (!file_exists($path)) {
             abort(404, 'File not found');
         }
-
         return response()->file($path);
+    }
+
+    public function edit(Payment $payment)
+    {
+        return response()->json([
+            'payment' => $payment,
+        ]);
+    }
+
+    public function update(Request $request, Payment $payment)
+    {
+        $validated = $request->validate([
+            'payment_method' => 'required|in:' . implode(',', Payment::paymentMethods()),
+            'paid_month' => 'required|in:' . implode(',', Payment::months()),
+            'paid_year' => 'required|in:' . implode(',', Payment::years()),
+            'amount' => 'required|numeric|min:0',
+            'status' => 'required|in:' . implode(',', Payment::statuses()),
+        ]);
+
+        $payment->update($validated);
+
+        return response()->json([
+            'message' => 'Payment updated successfully',
+            'payment' => $payment,
+        ]);
     }
 }

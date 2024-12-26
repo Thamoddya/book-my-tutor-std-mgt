@@ -50,6 +50,8 @@ Route::middleware('auth')->group(function () {
     Route::post('/payments/store', [\App\Http\Controllers\PaymentController::class, 'store'])->name('payments.store');
     Route::get('/payments/{payment}', [\App\Http\Controllers\PaymentController::class, 'show'])->name('payments.show');
 
+    Route::get('/payments/{payment}/edit', [\App\Http\Controllers\PaymentController::class, 'edit'])->name('payments.edit');
+    Route::put('/payments/{payment}', [\App\Http\Controllers\PaymentController::class, 'update'])->name('payments.update');
 
     //RECEIPT
     Route::get('/receipt/{filename}', function ($filename) {

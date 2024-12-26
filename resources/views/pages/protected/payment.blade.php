@@ -1,6 +1,5 @@
 @extends('layout.MainLayout')
 @section('content')
-
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
@@ -33,52 +32,55 @@
 
                 <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
                     <thead>
-                    <tr>
-                        <th>INV NO</th>
-                        <th>STD ID</th>
-                        <th>Month</th>
-                        <th>Payment Date</th>
-                        <th>Status</th>
-                        <th>Amount</th>
-                        <th>Receipt PIC</th>
-                        @role('Super_Admin')
-                        <th>Actions</th>
-                        @endrole
-                    </tr>
+                        <tr>
+                            <th>INV NO</th>
+                            <th>STD ID</th>
+                            <th>Month</th>
+                            <th>Payment Date</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                            <th>Receipt PIC</th>
+                            @role('Super_Admin')
+                                <th>Actions</th>
+                            @endrole
+                        </tr>
                     </thead>
                     <tbody>
 
-                    @foreach($payments as $payment)
-                        <tr>
-                            <td>{{ $payment->invoice_number }}</td>
-                            <td>{{ $payment->student->reg_no }}</td>
-                            <td>{{ ucfirst($payment->paid_month) }}</td>
-                            <td>{{ \Carbon\Carbon::parse($payment->paid_at)->format('Y-m-d') }}</td>
-                            <td>
-                                <span
-                                    class="badge bg-{{ $payment->status === 'Paid' ? 'success' : ($payment->status === 'due' ? 'danger' : 'warning') }}">
-                                    {{ ucfirst($payment->status) }}
-                                </span>
-                            </td>
-                            <td>{{$payment->amount }}</td>
-                            <td>
-                                @if($payment->receipt_picture)
-                                    <a href="{{ route('receipt.view', ['filename' => basename($payment->receipt_picture)]) }}"
-                                       target="_blank" class="">View</a>
-                                @else
-                                    No Receipt
-                                @endif
-                            </td>
+                        @foreach ($payments as $payment)
+                            <tr>
+                                <td>{{ $payment->invoice_number }}</td>
+                                <td>{{ $payment->student->reg_no }}</td>
+                                <td>{{ ucfirst($payment->paid_month) }}</td>
+                                <td>{{ \Carbon\Carbon::parse($payment->paid_at)->format('Y-m-d') }}</td>
+                                <td>
+                                    <span
+                                        class="badge bg-{{ $payment->status === 'Paid' ? 'success' : ($payment->status === 'due' ? 'danger' : 'warning') }}">
+                                        {{ ucfirst($payment->status) }}
+                                    </span>
+                                </td>
+                                <td>{{ $payment->amount }}</td>
+                                <td>
+                                    @if ($payment->receipt_picture)
+                                        <a href="{{ route('receipt.view', ['filename' => basename($payment->receipt_picture)]) }}"
+                                            target="_blank" class="">View</a>
+                                    @else
+                                        No Receipt
+                                    @endif
+                                </td>
 
-                            <td>
-                                @role('Super_Admin')
-                                <button class="btn btn-sm btn-warning " onclick="viewPayment('{{ $payment->id }}')">
-                                    View Payment
-                                </button>
-                                @endrole
-                            </td>
-                        </tr>
-                    @endforeach
+                                <td>
+                                    @role('Super_Admin')
+                                        <button class="btn btn-sm btn-warning " onclick="viewPayment('{{ $payment->id }}')">
+                                            View Payment
+                                        </button>
+                                        <button class="btn btn-sm btn-secondary" onclick="editPayment('{{ $payment->id }}')">
+                                            Edit Payment
+                                        </button>
+                                    @endrole
+                                </td>
+                            </tr>
+                        @endforeach
 
                     </tbody>
                 </table>
@@ -100,7 +102,7 @@
                         <div class="form-group mt-2">
                             <label for="payment_method">Payment Method</label>
                             <select name="payment_method" id="payment_method" class="form-control">
-                                @foreach(App\Models\Payment::paymentMethods() as $method)
+                                @foreach (App\Models\Payment::paymentMethods() as $method)
                                     <option value="{{ $method }}">{{ ucfirst($method) }}</option>
                                 @endforeach
                             </select>
@@ -110,9 +112,9 @@
                         <div class="form-group mt-2">
                             <label for="paid_month">Paid Month</label>
                             <select name="paid_month" id="paid_month" class="form-control">
-                                @foreach(App\Models\Payment::months() as $month)
-                                    <option
-                                        value="{{ $month }}" {{ strtolower($month) == strtolower(now()->format('F')) ? 'selected' : '' }}>
+                                @foreach (App\Models\Payment::months() as $month)
+                                    <option value="{{ $month }}"
+                                        {{ strtolower($month) == strtolower(now()->format('F')) ? 'selected' : '' }}>
                                         {{ ucfirst($month) }}
                                     </option>
                                 @endforeach
@@ -122,8 +124,9 @@
                         <div class="form-group mt-2">
                             <label for="paid_year">Paid Year</label>
                             <select name="paid_year" id="paid_year" class="form-control">
-                                @foreach(App\Models\Payment::years() as $year)
-                                    <option value="{{ $year }}" {{ $year == now()->format('Y') ? 'selected' : '' }}>
+                                @foreach (App\Models\Payment::years() as $year)
+                                    <option value="{{ $year }}"
+                                        {{ $year == now()->format('Y') ? 'selected' : '' }}>
                                         {{ $year }}
                                     </option>
                                 @endforeach
@@ -145,7 +148,7 @@
                         <div class="form-group mt-2">
                             <label for="payment_status">Status</label>
                             <select name="payment_status" id="payment_status" class="form-control d-flex">
-                                @foreach(App\Models\Payment::statuses() as $status)
+                                @foreach (App\Models\Payment::statuses() as $status)
                                     <option value="{{ $status }}" {{ $status == 'paid' ? 'selected' : '' }}>
                                         {{ ucfirst($status) }}
                                     </option>
@@ -168,9 +171,9 @@
         </div>
     </div>
 
-    {{--    View Payment Modal--}}
+    {{--    View Payment Modal --}}
     <div class="modal fade" id="viewPaymentModal" tabindex="-1" aria-labelledby="viewPaymentModalLabel"
-         aria-hidden="true">
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -222,11 +225,76 @@
         </div>
     </div>
 
+    {{-- Edit Payment Modal --}}
+    <div class="modal fade" id="editPaymentModal" tabindex="-1" aria-labelledby="editPaymentModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="editPaymentForm" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editPaymentModalLabel">Edit Payment</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group mt-2">
+                            <label for="edit_payment_method">Payment Method</label>
+                            <select name="payment_method" id="edit_payment_method" class="form-control">
+                                @foreach (App\Models\Payment::paymentMethods() as $method)
+                                    <option value="{{ $method }}">{{ ucfirst($method) }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback" id="edit_payment_methodError"></div>
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <label for="edit_paid_month">Paid Month</label>
+                            <select name="paid_month" id="edit_paid_month" class="form-control">
+                                @foreach (App\Models\Payment::months() as $month)
+                                    <option value="{{ $month }}">{{ ucfirst($month) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <label for="edit_paid_year">Paid Year</label>
+                            <select name="paid_year" id="edit_paid_year" class="form-control">
+                                @foreach (App\Models\Payment::years() as $year)
+                                    <option value="{{ $year }}">{{ $year }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <label for="edit_amount">Amount</label>
+                            <input type="number" name="amount" id="edit_amount" class="form-control" required>
+                            <div class="invalid-feedback" id="edit_amountError"></div>
+                        </div>
+
+                        <div class="form-group mt-2">
+                            <label for="edit_payment_status">Status</label>
+                            <select name="status" id="edit_payment_status" class="form-control">
+                                @foreach (App\Models\Payment::statuses() as $status)
+                                    <option value="{{ $status }}">{{ ucfirst($status) }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback" id="edit_payment_statusError"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('script')
     <script>
-        $(document).ready(function () {
-            $('#paymentForm').on('submit', function (e) {
+        $(document).ready(function() {
+            $('#paymentForm').on('submit', function(e) {
                 e.preventDefault();
 
                 // Clear previous errors
@@ -241,13 +309,14 @@
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function (response) {
+                    success: function(response) {
                         // Success feedback
                         $('#paymentModal').modal('hide');
                         $('#paymentForm')[0].reset();
-                        alert(response.message); // Optional success message
+                        alert(response.message);
+                        window.location.reload();
                     },
-                    error: function (xhr) {
+                    error: function(xhr) {
                         if (xhr.status === 422) {
                             // Validation errors
                             let errors = xhr.responseJSON.errors;
@@ -295,7 +364,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function (response) {
+                success: function(response) {
                     $('#viewPaymentMethod').val(response.payment.payment_method);
                     $('#viewPaidMonth').val(response.payment.paid_month);
                     $('#viewPaidYear').val(response.payment.paid_year);
@@ -306,11 +375,69 @@
                     $('#viewReceiptPicture').attr('href', `storage/${response.payment.receipt_picture}`);
                     $('#viewPaymentModal').modal('show');
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     alert('Something went wrong. Please try again.');
                 }
             });
         }
-    </script>
 
+        function editPayment(paymentId) {
+            // Clear errors
+            $('.form-control').removeClass('is-invalid');
+            $('.invalid-feedback').text('');
+
+            // Fetch payment details
+            $.ajax({
+                url: `/payments/${paymentId}/edit`,
+                method: 'GET',
+                success: function(response) {
+                    // Populate the edit form with fetched data
+                    $('#edit_payment_method').val(response.payment.payment_method);
+                    $('#edit_paid_month').val(response.payment.paid_month);
+                    $('#edit_paid_year').val(response.payment.paid_year);
+                    $('#edit_amount').val(response.payment.amount);
+                    $('#edit_payment_status').val(response.payment.status);
+
+                    // Show the modal
+                    $('#editPaymentModal').modal('show');
+
+                    // Set form action dynamically
+                    $('#editPaymentForm').off('submit').on('submit', function(e) {
+                        e.preventDefault();
+                        updatePayment(paymentId);
+                    });
+                },
+                error: function() {
+                    alert('Failed to fetch payment details.');
+                },
+            });
+        }
+
+        function updatePayment(paymentId) {
+            let formData = $('#editPaymentForm').serialize();
+
+            $.ajax({
+                url: `/payments/${paymentId}`,
+                method: 'PUT',
+                data: formData,
+                success: function(response) {
+                    $('#editPaymentModal').modal('hide');
+                    alert(response.message);
+                    location.reload();
+                },
+                error: function(xhr) {
+                    if (xhr.status === 422) {
+                        // Validation errors
+                        let errors = xhr.responseJSON.errors;
+                        for (const field in errors) {
+                            $(`#edit_${field}`).addClass('is-invalid');
+                            $(`#edit_${field}Error`).text(errors[field][0]);
+                        }
+                    } else {
+                        alert('Something went wrong. Please try again.');
+                    }
+                },
+            });
+        }
+    </script>
 @endsection
