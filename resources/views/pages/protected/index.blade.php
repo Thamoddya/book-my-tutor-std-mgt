@@ -169,7 +169,7 @@
                                         INV #
                                     </th>
                                     <th class="py-1">
-                                        Price
+                                        PriceP
                                     </th>
                                     <th class="py-1">
                                         Student Name
@@ -284,11 +284,6 @@
 
 
     </div>
-
-    <!-- end row -->
-
-
-    <!-- end row -->
 @endsection
 @section('script')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -296,7 +291,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             // Payment Bar Chart
             const paymentCtx = document.getElementById('paymentBarChart').getContext('2d');
-            const paymentData = @json($paymentsLastFiveMonths);
+            const paymentData = @json($paymentsLastSixMonths);
             const paymentLabels = paymentData.map(item => item.month_name);
             const paymentAmounts = paymentData.map(item => item.total);
 
@@ -305,7 +300,7 @@
                 data: {
                     labels: paymentLabels,
                     datasets: [{
-                        label: 'Payment Amount (Last 5 Months)',
+                        label: 'Payment Amount (Last 6 Months)',
                         data: paymentAmounts,
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',

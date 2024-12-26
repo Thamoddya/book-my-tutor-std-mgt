@@ -21,6 +21,7 @@ class Payment extends Model
         'paid_year',
         'receipt_picture',
         'processed_by',
+        'created_at',
     ];
     protected $dates = ['paid_at'];
 
@@ -53,8 +54,18 @@ class Payment extends Model
     public static function months()
     {
         return [
-            'january', 'february', 'march', 'april', 'may', 'june',
-            'july', 'august', 'september', 'october', 'november', 'december'
+            'january',
+            'february',
+            'march',
+            'april',
+            'may',
+            'june',
+            'july',
+            'august',
+            'september',
+            'october',
+            'november',
+            'december'
         ];
     }
 
@@ -100,5 +111,4 @@ class Payment extends Model
     {
         return $this->belongsTo(User::class, 'processed_by');
     }
-
 }

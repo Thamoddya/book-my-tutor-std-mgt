@@ -43,6 +43,12 @@ class RouterController extends Controller
             ->orderByRaw('YEAR(created_at), MONTH(created_at)')
             ->get();
 
+        $paymentsLastSixMonths = Payment::selectRaw('SUM(amount) as total, MONTHNAME(MIN(created_at)) as month_name')
+            ->where('created_at', '>=', now()->subMonths(5)->startOfMonth())
+            ->groupByRaw('YEAR(created_at), MONTH(created_at)')
+            ->orderByRaw('YEAR(created_at), MONTH(created_at)')
+            ->get();
+
         return view('pages.protected.index', compact([
             'batchCount',
             'batchCountThisMonth',
@@ -50,7 +56,8 @@ class RouterController extends Controller
             'lastTenPayments',
             'lastRegisteredStudents',
             'paymentsLastFiveMonths',
-            'studentCountLastFiveMonths'
+            'studentCountLastFiveMonths',
+            'paymentsLastSixMonths'
         ]));
     }
 

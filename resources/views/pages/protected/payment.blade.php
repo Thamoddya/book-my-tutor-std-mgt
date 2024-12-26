@@ -110,6 +110,12 @@
                         </div>
 
                         <div class="form-group mt-2">
+                            <label for="created_at">Created At (Optional)</label>
+                            <input type="datetime-local" name="created_at" id="created_at" class="form-control">
+                            <div class="invalid-feedback" id="created_atError"></div>
+                        </div>
+
+                        <div class="form-group mt-2">
                             <label for="paid_month">Paid Month</label>
                             <select name="paid_month" id="paid_month" class="form-control">
                                 @foreach (App\Models\Payment::months() as $month)

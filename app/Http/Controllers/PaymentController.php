@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Payment;
 use App\Http\Requests\StorePaymentRequest;
-use App\Http\Requests\UpdatePaymentRequest;
 use App\Models\Student;
 use App\Models\UserLog;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,59 +14,80 @@ class PaymentController extends Controller
 {
     public function index() {}
     public function create() {}
+
+
     public function store(StorePaymentRequest $request)
     {
         $student = Student::where('reg_no', $request->student_id)->first();
+
         if (!$student) {
             return response()->json(['error' => 'Student not found'], 404);
         }
-        $existingPayment = Payment::where('student_id', $student->id)
-            ->where('paid_month', $request->paid_month)
-            ->where('paid_year', $request->paid_year)
-            ->first();
-        $paymentData = [
-            'invoice_number' => 'BMTIN' . str_pad(Payment::count() + 1, 6, '0', STR_PAD_LEFT),
-            'payment_method' => $request->payment_method,
-            'amount' => $request->amount,
-            'student_id' => $student->id,
-            'status' => $request->payment_status,
-            'paid_at' => now(),
-            'paid_month' => $request->paid_month,
-            'paid_year' => $request->paid_year,
-            'processed_by' => Auth::id(),
-        ];
-        if ($request->hasFile('receipt_picture')) {
-            $file = $request->file('receipt_picture');
-            $path = $file->store('receipts', 'public');
-            $paymentData['receipt_picture'] = $path;
-        }
-        UserLog::create([
-            'user_id' => Auth::id(),
-            'ip_address' => $request->ip(),
-            'user_agent' => $request->userAgent(),
-            'action' => 'payment',
-            'description' => 'Processed a payment for ' . $student->name,
-            'route' => 'payments.store',
-            'method' => $request->method(),
-            'status_code' => 201,
-            'response_time' => '0.01s',
-            'response_message' => 'Payment processed successfully'
-        ]);
-        if ($existingPayment) {
-            $existingPayment->update($paymentData);
+
+        DB::beginTransaction();
+
+        try {
+            $existingPayment = Payment::where('student_id', $student->id)
+                ->where('paid_month', $request->paid_month)
+                ->where('paid_year', $request->paid_year)
+                ->first();
+
+            $paymentData = [
+                'invoice_number' => 'BMTIN' . str_pad(Payment::count() + 1, 6, '0', STR_PAD_LEFT),
+                'payment_method' => $request->payment_method,
+                'amount' => $request->amount,
+                'student_id' => $student->id,
+                'status' => $request->payment_status,
+                'paid_at' => now(),
+                'paid_month' => $request->paid_month,
+                'paid_year' => $request->paid_year,
+                'processed_by' => Auth::id(),
+                'created_at' => $request->created_at,
+            ];
+
+            if ($request->hasFile('receipt_picture')) {
+                $file = $request->file('receipt_picture');
+                $path = $file->store('receipts', 'public');
+                $paymentData['receipt_picture'] = $path;
+            }
+
+            $payment = $existingPayment
+                ? $existingPayment->update($paymentData)
+                : Payment::create($paymentData);
+
+            UserLog::create([
+                'user_id' => Auth::id(),
+                'ip_address' => $request->ip(),
+                'user_agent' => $request->userAgent(),
+                'action' => 'payment',
+                'description' => 'Processed a payment for ' . $student->name,
+                'route' => 'payments.store',
+                'method' => $request->method(),
+                'status_code' => $existingPayment ? 200 : 201,
+                'response_time' => '0.01s',
+                'response_message' => $existingPayment
+                    ? 'Payment updated successfully'
+                    : 'Payment created successfully',
+            ]);
+
+            DB::commit();
+
             return response()->json([
-                'message' => 'Payment updated successfully',
-                'payment' => $existingPayment,
-            ], 200);
-        } else {
-            // Create a new payment record
-            $payment = Payment::create($paymentData);
-            return response()->json([
-                'message' => 'Payment created successfully',
+                'message' => $existingPayment
+                    ? 'Payment updated successfully'
+                    : 'Payment created successfully',
                 'payment' => $payment,
-            ], 201);
+            ], $existingPayment ? 200 : 201);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return response()->json([
+                'error' => 'An error occurred while processing the payment.',
+                'details' => $e->getMessage(),
+            ], 500);
         }
     }
+
 
     public function show(Payment $payment)
     {

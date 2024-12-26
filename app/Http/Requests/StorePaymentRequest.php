@@ -23,6 +23,7 @@ class StorePaymentRequest extends FormRequest
             'amount' => 'required|integer|min:0',
             'student_id' => 'required|exists:students,reg_no',
             'receipt_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
+            'created_at' => 'nullable|date',
         ];
     }
 
