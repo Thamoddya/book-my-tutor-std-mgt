@@ -1,6 +1,5 @@
 @extends('layout.MainLayout')
 @section('content')
-
     <div class="row">
         <div class="col-12">
             <div class="page-title-box">
@@ -29,36 +28,36 @@
                     List of all students registered in the system.
                 </p>
                 <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal"
-                        data-bs-target="#addStudentModal">
+                    data-bs-target="#addStudentModal">
                     Add New Student
                 </button>
 
                 <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
                     <thead>
-                    <tr>
-                        <th>STD ID</th>
-                        <th>Full Name :</th>
-                        <th>Call No :</th>
-                        <th>Whatsapp No :</th>
-                        <th>Email :</th>
-                        <th>Actions</th>
-                    </tr>
+                        <tr>
+                            <th>STD ID</th>
+                            <th>Full Name :</th>
+                            <th>Call No :</th>
+                            <th>Whatsapp No :</th>
+                            <th>Email :</th>
+                            <th>Actions</th>
+                        </tr>
                     </thead>
                     <tbody>
 
-                    @foreach($students as $student)
-                        <tr>
-                            <td>{{$student->reg_no}}</td>
-                            <td>{{$student->name}}</td>
-                            <td>{{$student->call_no}}</td>
-                            <td>{{$student->wtp_no}}</td>
-                            <td>{{$student->email}}</td>
-                            <td>
-                                <a class="btn btn-primary btn-sm" onclick="openEditModal({{ $student->id }})">Edit</a>
-                                <a class="btn btn-danger btn-sm">Delete</a>
-                            </td>
-                        </tr>
-                    @endforeach
+                        @foreach ($students as $student)
+                            <tr>
+                                <td>{{ $student->reg_no }}</td>
+                                <td>{{ $student->name }}</td>
+                                <td>{{ $student->call_no }}</td>
+                                <td>{{ $student->wtp_no }}</td>
+                                <td>{{ $student->email }}</td>
+                                <td>
+                                    <a class="btn btn-primary btn-sm" onclick="openEditModal({{ $student->id }})">Edit</a>
+                                    <a class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                        @endforeach
 
                     </tbody>
                 </table>
@@ -67,8 +66,7 @@
     </div>
 
     <!-- Add Student Modal -->
-    <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel"
-         aria-hidden="true">
+    <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -85,11 +83,11 @@
                         <div class="mb-3">
                             <label for="callNo" class="form-label">Call No</label>
                             <input type="number" maxlength="10" class="form-control" id="callNo"
-                                   placeholder="Enter Call No">
+                                placeholder="Enter Call No">
                             <div class="invalid-feedback" id="call_noError"></div>
                             <div class="form-check form-checkbox-success mt-1">
                                 <input type="checkbox" class="form-check-input" id="markCallNoAsWhatsappNo"
-                                       onclick="setWhatsappNo()">
+                                    onclick="setWhatsappNo()">
                                 <label class="form-check-label" for="markCallNoAsWhatsappNo">
                                     Same as Call No
                                 </label>
@@ -100,10 +98,15 @@
                             <input type="number" class="form-control" id="whatsappNo" placeholder="Enter WhatsApp No">
                             <div class="invalid-feedback" id="wtp_noError"></div>
                         </div>
+                        <div class="form-group mt-2">
+                            <label for="created_at">Created At (Optional)</label>
+                            <input type="datetime-local" name="created_at" id="created_at" class="form-control">
+                            <div class="invalid-feedback" id="created_atError"></div>
+                        </div>
                         <div class="mb-3">
                             <label for="schoolSearch" class="form-label">Search School</label>
                             <input type="text" id="schoolSearch" class="form-control"
-                                   placeholder="Type to search school">
+                                placeholder="Type to search school">
                             <input type="hidden" id="schoolId">
                             <ul id="schoolSuggestions" class="list-group"
                                 style="position: absolute; z-index: 1050; display: none;"></ul>
@@ -114,8 +117,8 @@
                             <label for="batch" class="form-label select2">Batch</label>
                             <select class="form-select select2" id="batch" data-toggle="select2">
                                 <option selected>Select Batch</option>
-                                @foreach($batches as $batch)
-                                    <option value="{{$batch->id}}">{{$batch->name}}</option>
+                                @foreach ($batches as $batch)
+                                    <option value="{{ $batch->id }}">{{ $batch->name }}</option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback" id="batch_idError"></div>
@@ -143,7 +146,7 @@
 
     <!-- Edit Student Modal -->
     <div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel"
-         aria-hidden="true">
+        aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -180,8 +183,8 @@
                             <label for="editBatch" class="form-label select2">Batch</label>
                             <select class="form-select select2" id="editBatch">
                                 <option selected>Select Batch</option>
-                                @foreach($batches as $batch)
-                                    <option value="{{$batch->id}}">{{$batch->name}}</option>
+                                @foreach ($batches as $batch)
+                                    <option value="{{ $batch->id }}">{{ $batch->name }}</option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback" id="editBatch_idError"></div>
@@ -206,24 +209,24 @@
             </div>
         </div>
     </div>
-
 @endsection
 @section('script')
-
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             const schoolSearchInput = $('#schoolSearch');
             const schoolSuggestions = $('#schoolSuggestions');
             const schoolIdInput = $('#schoolId');
 
-            schoolSearchInput.on('input', function () {
+            schoolSearchInput.on('input', function() {
                 const query = $(this).val();
                 if (query.length >= 2) {
                     $.ajax({
                         url: '/api/schools',
                         method: 'GET',
-                        data: {search: query},
-                        success: function (response) {
+                        data: {
+                            search: query
+                        },
+                        success: function(response) {
                             schoolSuggestions.empty().show();
                             if (response.length > 0) {
                                 response.forEach(school => {
@@ -236,10 +239,11 @@
                             `);
                                 });
                             } else {
-                                schoolSuggestions.append(`<li class="list-group-item">No results found</li>`);
+                                schoolSuggestions.append(
+                                    `<li class="list-group-item">No results found</li>`);
                             }
                         },
-                        error: function () {
+                        error: function() {
                             schoolSuggestions.hide();
                         }
                     });
@@ -249,7 +253,7 @@
             });
 
             // Handle click on suggestion
-            schoolSuggestions.on('click', 'li', function () {
+            schoolSuggestions.on('click', 'li', function() {
                 const schoolName = $(this).data('name');
                 const schoolId = $(this).data('id');
 
@@ -259,14 +263,14 @@
             });
 
             // Hide suggestions when clicking outside
-            $(document).on('click', function (e) {
+            $(document).on('click', function(e) {
                 if (!$(e.target).closest('#schoolSearch, #schoolSuggestions').length) {
                     schoolSuggestions.hide();
                 }
             });
 
             // Ensure WhatsApp No is updated if Call No is edited and checkbox is checked
-            $('#callNo').on('input', function () {
+            $('#callNo').on('input', function() {
                 const checkbox = $('#markCallNoAsWhatsappNo');
                 const whatsappNoField = $('#whatsappNo');
 
@@ -285,6 +289,7 @@
                 batch_id: $('#batch').val(),
                 email: $('#email').val().trim(),
                 address: $('#address').val().trim(),
+                created_at: $('#created_at').val(),
                 _token: $('meta[name="csrf-token"]').attr('content') // CSRF Token
             };
 
@@ -297,11 +302,11 @@
                 url: '/students', // Adjust this URL to match your store route
                 method: 'POST',
                 data: formData,
-                success: function (response) {
+                success: function(response) {
                     alert(response.message);
                     location.reload(); // Reload the page or reset the form
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     if (xhr.status === 422) {
                         // Validation errors from Laravel
                         const errors = xhr.responseJSON.errors;
@@ -347,7 +352,7 @@
             $.ajax({
                 url: `/students/${id}`,
                 method: 'GET',
-                success: function (response) {
+                success: function(response) {
                     // Populate the fields with the student data
                     $('#editStudentId').val(response.student.id);
                     $('#editFullName').val(response.student.name);
@@ -362,12 +367,12 @@
                     $.ajax({
                         url: `/api/schools/${response.student.school_id}`, // Assuming this endpoint returns school details by ID
                         method: 'GET',
-                        success: function (schoolResponse) {
+                        success: function(schoolResponse) {
                             $('#editSchool').html(`
                         <option value="${schoolResponse.id}" selected>${schoolResponse.name}</option>
                     `);
                         },
-                        error: function () {
+                        error: function() {
                             alert('Failed to fetch school details.');
                         }
                     });
@@ -378,7 +383,7 @@
                     // Show the edit modal
                     $('#editStudentModal').modal('show');
                 },
-                error: function () {
+                error: function() {
                     alert('An error occurred while fetching student details.');
                 }
             });
@@ -402,17 +407,19 @@
                 url: `/students/${id}`,
                 method: 'PUT',
                 data: formData,
-                success: function (response) {
+                success: function(response) {
                     alert(response.message);
                     location.reload(); // Reload the page
                 },
-                error: function (xhr) {
+                error: function(xhr) {
                     console.log(xhr);
                     if (xhr.status === 422) {
                         // Handle validation errors
                         const errors = xhr.responseJSON.errors;
                         for (let field in errors) {
-                            $(`#edit${field.charAt(0).toUpperCase() + field.slice(1)}Error`).text(errors[field][0]).show();
+                            $(`#edit${field.charAt(0).toUpperCase() + field.slice(1)}Error`).text(errors[field][
+                                0
+                            ]).show();
                         }
                     } else {
                         alert('An error occurred. Please try again.');
@@ -420,8 +427,5 @@
                 }
             });
         }
-
-
     </script>
-
 @endsection

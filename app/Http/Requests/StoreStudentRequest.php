@@ -21,6 +21,7 @@ class StoreStudentRequest extends FormRequest
             'batch_id' => 'sometimes|nullable|exists:batches,id',
             'email' => 'sometimes|nullable|email|unique:students,email',
             'address' => 'sometimes|nullable|string|max:255',
+            'created_at' => 'nullable|date',
         ];
     }
 

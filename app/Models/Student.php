@@ -21,7 +21,8 @@ class Student extends Model
         'created_by',
         'email',
         'address',
-        'status'
+        'status',
+        'created_at',
     ];
 
     public function batch()
