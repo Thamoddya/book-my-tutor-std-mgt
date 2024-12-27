@@ -172,6 +172,15 @@
                             <div class="invalid-feedback" id="editWhatsappNoError"></div>
                         </div>
                         <div class="mb-3">
+                            <label for="editSchoolSearch" class="form-label">Search New School</label>
+                            <input type="text" id="editSchoolSearch" class="form-control"
+                                placeholder="Type to search school">
+                            <input type="hidden" id="editSchoolId">
+                            <ul id="editSchoolSuggestions" class="list-group"
+                                style="position: absolute; z-index: 1050; display: none;"></ul>
+                            <div class="invalid-feedback" id="editSchool_idError"></div>
+                        </div>
+                        <div class="mb-3">
                             <label for="editSchool" class="form-label select2">School</label>
                             <input type="hidden" id="editSchoolId">
                             <select class="form-select select2" id="editSchool">
@@ -188,6 +197,12 @@
                                 @endforeach
                             </select>
                             <div class="invalid-feedback" id="editBatch_idError"></div>
+                        </div>
+                        {{-- Edit Created at --}}
+                        <div class="form-group mt-2">
+                            <label for="editCreatedAt">Created At (Optional)</label>
+                            <input type="datetime-local" name="created_at" id="editCreatedAt" class="form-control">
+                            <div class="invalid-feedback" id="editCreatedAtError"></div>
                         </div>
                         <div class="mb-3">
                             <label for="editEmail" class="form-label">Email</label>
@@ -280,6 +295,63 @@
             });
         });
 
+        $(document).ready(function() {
+            const editSchoolSearchInput = $('#editSchoolSearch');
+            const editSchoolSuggestions = $('#editSchoolSuggestions');
+            const editSchoolIdInput = $('#editSchoolId');
+
+            editSchoolSearchInput.on('input', function() {
+                const query = $(this).val();
+                if (query.length >= 2) {
+                    $.ajax({
+                        url: '/api/schools',
+                        method: 'GET',
+                        data: {
+                            search: query
+                        },
+                        success: function(response) {
+                            editSchoolSuggestions.empty().show();
+                            if (response.length > 0) {
+                                response.forEach(school => {
+                                    editSchoolSuggestions.append(`
+                                <li class="list-group-item list-group-item-action"
+                                    data-id="${school.id}"
+                                    data-name="${school.name}">
+                                    ${school.name}
+                                </li>
+                            `);
+                                });
+                            } else {
+                                editSchoolSuggestions.append(
+                                    `<li class="list-group-item">No results found</li>`);
+                            }
+                        },
+                        error: function() {
+                            editSchoolSuggestions.hide();
+                        }
+                    });
+                } else {
+                    editSchoolSuggestions.hide();
+                }
+            });
+
+            editSchoolSuggestions.on('click', 'li', function() {
+                const schoolName = $(this).data('name');
+                const schoolId = $(this).data('id');
+
+                editSchoolSearchInput.val(schoolName);
+                editSchoolIdInput.val(schoolId); // Save the selected school's ID
+                editSchoolSuggestions.hide();
+            });
+
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('#editSchoolSearch, #editSchoolSuggestions').length) {
+                    editSchoolSuggestions.hide();
+                }
+            });
+        });
+
+
         function addNewStudentProcess() {
             const formData = {
                 name: $('#fullName').val().trim(),
@@ -362,7 +434,6 @@
                     $('#editAddress').val(response.student.address);
                     $('#editSchoolId').val(response.student.school_id);
 
-
                     // Fetch and display the school name
                     $.ajax({
                         url: `/api/schools/${response.student.school_id}`, // Assuming this endpoint returns school details by ID
@@ -380,6 +451,16 @@
                     // Pre-select the batch in the dropdown
                     $('#editBatch').val(response.student.batch_id);
 
+                    // Format and set the created_at value
+                    if (response.student.created_at) {
+                        const createdAt = new Date(response.student.created_at);
+                        const formattedCreatedAt = createdAt.toISOString().slice(0,
+                            16); // Format for datetime-local
+                        $('#editCreatedAt').val(formattedCreatedAt);
+                    } else {
+                        $('#editCreatedAt').val(''); // Clear if no value
+                    }
+
                     // Show the edit modal
                     $('#editStudentModal').modal('show');
                 },
@@ -388,6 +469,7 @@
                 }
             });
         }
+
 
 
         function updateStudentProcess() {
@@ -399,6 +481,7 @@
                 school_id: $('#editSchoolId').val(),
                 batch_id: $('#editBatch').val(),
                 email: $('#editEmail').val(),
+                created_at: $('#editCreatedAt').val(),
                 address: $('#editAddress').val(),
                 _token: $('meta[name="csrf-token"]').attr('content')
             };

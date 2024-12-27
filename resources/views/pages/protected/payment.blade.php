@@ -282,6 +282,12 @@
                         </div>
 
                         <div class="form-group mt-2">
+                            <label for="edit_created_at">Created At</label>
+                            <input type="datetime-local" name="created_at" id="edit_created_at" class="form-control">
+                            <div class="invalid-feedback" id="edit_created_atError"></div>
+                        </div>
+
+                        <div class="form-group mt-2">
                             <label for="edit_payment_status">Status</label>
                             <select name="status" id="edit_payment_status" class="form-control">
                                 @foreach (App\Models\Payment::statuses() as $status)
@@ -407,6 +413,16 @@
                     $('#edit_amount').val(response.payment.amount);
                     $('#edit_payment_status').val(response.payment.status);
 
+                    // Format and set created_at value
+                    if (response.payment.created_at) {
+                        const createdAt = new Date(response.payment.created_at);
+                        const formattedCreatedAt = createdAt.toISOString().slice(0,
+                            16); // Format for datetime-local
+                        $('#edit_created_at').val(formattedCreatedAt);
+                    } else {
+                        $('#edit_created_at').val(''); // Clear if no value
+                    }
+
                     // Show the modal
                     $('#editPaymentModal').modal('show');
 
@@ -423,7 +439,7 @@
         }
 
         function updatePayment(paymentId) {
-            let formData = $('#editPaymentForm').serialize();
+            const formData = $('#editPaymentForm').serialize();
 
             $.ajax({
                 url: `/payments/${paymentId}`,
@@ -437,7 +453,7 @@
                 error: function(xhr) {
                     if (xhr.status === 422) {
                         // Validation errors
-                        let errors = xhr.responseJSON.errors;
+                        const errors = xhr.responseJSON.errors;
                         for (const field in errors) {
                             $(`#edit_${field}`).addClass('is-invalid');
                             $(`#edit_${field}Error`).text(errors[field][0]);

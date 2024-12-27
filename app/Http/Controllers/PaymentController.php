@@ -132,8 +132,10 @@ class PaymentController extends Controller
             'paid_year' => 'required|in:' . implode(',', Payment::years()),
             'amount' => 'required|numeric|min:0',
             'status' => 'required|in:' . implode(',', Payment::statuses()),
+            'created_at' => 'nullable|date', // Allow updating created_at
         ]);
 
+        // Update the payment with the validated data
         $payment->update($validated);
 
         return response()->json([

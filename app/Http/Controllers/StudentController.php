@@ -88,13 +88,14 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
         $data = $request->validate([
-            'name' => 'required | string | max:255',
-            'call_no' => 'required | digits:10 | unique:students,call_no,' . $student->id,
-            'wtp_no' => 'required | digits:10',
-            'school_id' => 'required | exists:schools,id',
-            'batch_id' => 'sometimes | nullable | exists:batches,id',
-            'email' => 'sometimes | nullable | email | unique:students,email,' . $student->id,
-            'address' => 'sometimes | nullable | string | max:255',
+            'name' => 'required|string|max:255',
+            'call_no' => 'required|digits:10|unique:students,call_no,' . $student->id,
+            'wtp_no' => 'required|digits:10',
+            'school_id' => 'required|exists:schools,id',
+            'batch_id' => 'nullable|exists:batches,id',
+            'email' => 'nullable|email|unique:students,email,' . $student->id,
+            'address' => 'nullable|string|max:255',
+            'created_at' => 'nullable|date',
         ]);
 
         $student->update($data);
