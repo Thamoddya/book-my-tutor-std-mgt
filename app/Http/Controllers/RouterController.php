@@ -119,11 +119,28 @@ class RouterController extends Controller
 
     public function PaymentReports()
     {
+        // Group payments by month and calculate totals
+        $monthlyTotals = Payment::whereYear('created_at', now()->year)
+            ->where('status', 'paid')
+            ->selectRaw('MONTH(created_at) as month, SUM(amount) as total')
+            ->groupBy('month')
+            ->orderBy('month')
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'month' => \Carbon\Carbon::create()->month($item->month)->format('F'),
+                    'total' => $item->total,
+                ];
+            });
+
         $payments = Payment::all();
+
         return view('pages.protected.PaymentReports', compact([
-            'payments'
+            'payments',
+            'monthlyTotals',
         ]));
     }
+
 
     public function systemLog()
     {
