@@ -100,7 +100,17 @@ class PaymentController extends Controller
         ]);
     }
 
-    public function destroy(Payment $payment) {}
+    public function destroy(Payment $payment)
+    {
+        if (Auth::id() !== $payment->processed_by) {
+            return response()->json(['error' => 'Unauthorized access'], 403);
+        }
+        $payment->delete();
+
+        return response()->json([
+            'message' => 'Payment deleted successfully',
+        ]);
+    }
     public function viewReceipt($filename)
     {
         $payment = Payment::where('receipt_picture', 'receipts/' . $filename)->first();

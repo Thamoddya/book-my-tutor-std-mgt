@@ -57,7 +57,7 @@
                                     @if ($payment->status == 'paid')
                                         <span class="badge bg-success">Paid</span>
                                     @elseif ($payment->status == 'pending')
-                                        <span class="badge bg-warning">Pending</span>
+                                        <span class="badge" style="background-color: blue">Pending</span>
                                     @else
                                         <span class="badge bg-danger">Due</span>
                                     @endif
@@ -79,6 +79,9 @@
                                         </button>
                                         <button class="btn btn-sm btn-secondary" onclick="editPayment('{{ $payment->id }}')">
                                             Edit Payment
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" onclick="deletePayment('{{ $payment->id }}')">
+                                            Delete Payment
                                         </button>
                                     @endrole
                                 </td>
@@ -463,6 +466,25 @@
                     }
                 },
             });
+        }
+
+        function deletePayment(paymentId) {
+            if (confirm('Are you sure you want to delete this payment?')) {
+                $.ajax({
+                    url: `/payments/${paymentId}`,
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        location.reload();
+                    },
+                    error: function() {
+                        alert('Failed to delete payment.');
+                    },
+                });
+            }
         }
     </script>
 @endsection
