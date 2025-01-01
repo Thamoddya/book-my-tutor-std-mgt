@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Batch;
+use App\Models\Classes;
 use App\Models\Payment;
 use App\Models\School;
 use App\Models\Student;
@@ -156,5 +157,11 @@ class RouterController extends Controller
     public function profile()
     {
         return view('pages.protected.Profile');
+    }
+
+    public function classes()
+    {
+        $classes = Classes::all();
+        return view('pages.protected.classes', compact(['classes']));
     }
 }

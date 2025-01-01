@@ -15,6 +15,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/schools', [RouterController::class, 'schools'])->name('schools');
     Route::get('/payments', [RouterController::class, 'payments'])->name('payments');
     Route::get('/profile-user', [RouterController::class, 'profile'])->name('profile');
+    Route::get('/classes', [RouterController::class, 'classes'])->name('classes');
 
     Route::put('/profile-update', [\App\Http\Controllers\Controller::class, 'updateUser'])->name('profile.update');
 
