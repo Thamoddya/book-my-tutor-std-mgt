@@ -72,4 +72,9 @@ class Student extends Model
     {
         return $this->belongsTo(User::class, 'created_by');
     }
+
+    public function studentClasses()
+    {
+        return $this->hasMany(StudentClasses::class, 'student_id');
+    }
 }
