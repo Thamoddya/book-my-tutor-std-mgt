@@ -120,8 +120,44 @@
         </div>
 
     </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="header-title mb-3">Recent Payments</h4>
+                    <div class="table-responsive">
+                        <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Student ID</th>
+                                    <th scope="col">Student Name</th>
+                                    <th scope="col">Paid To ({{ now()->subMonths(2)->format('F Y') }})</th>
+                                    <th scope="col">Paid To ({{ now()->subMonth()->format('F Y') }})</th>
+                                    <th scope="col">Paid To ({{ now()->format('F Y') }})</th>
+                                </tr>
+                            </thead>
+                            <tbody>
 
+                                @foreach ($students as $student)
+                                    <tr>
+                                        <td>{{ $student->reg_no }}</td>
+                                        <td>{{ $student->name }}</td>
+                                        <td>{{ $student->paidToTwoMonthsAgo() ? 'Paid' : 'Not Paid' }}</td>
+                                        <td>{{ $student->paidToLastMonth() ? 'Paid' : 'Not Paid' }}</td>
+                                        <td>{{ $student->paidToThisMonth() ? 'Paid' : 'Not Paid' }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
 
+                    </div>
+                    <!-- end table-responsive -->
+                </div>
+                <!-- end card-body -->
+            </div>
+            <!-- end card -->
+        </div>
+        <!-- end col -->
 
     </div>
 @endsection

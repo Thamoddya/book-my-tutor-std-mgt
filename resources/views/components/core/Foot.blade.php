@@ -10,6 +10,7 @@
         'PaymentReports',
         'systemLog',
         'schools',
+        'index',
     ]))
     <script src="{{ asset('assets/vendor/datatables.net/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>

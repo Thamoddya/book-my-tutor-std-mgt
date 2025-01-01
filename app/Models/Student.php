@@ -35,26 +35,38 @@ class Student extends Model
         return $this->belongsTo(School::class);
     }
 
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+
     public function paidToThisMonth(): bool
     {
-        return $this->hasMany(Payment::class)
-            ->whereMonth('created_at', now()->month)
+        return $this->payments()
+            ->where('paid_month', now()->format('F'))
+            ->where('paid_year', now()->format('Y'))
             ->exists();
     }
 
     public function paidToLastMonth(): bool
     {
-        return $this->hasMany(Payment::class)
-            ->whereMonth('created_at', now()->subMonth()->month)
+        $lastMonth = now()->subMonth();
+        return $this->payments()
+            ->where('paid_month', $lastMonth->format('F'))
+            ->where('paid_year', $lastMonth->format('Y'))
             ->exists();
     }
 
     public function paidToTwoMonthsAgo(): bool
     {
-        return $this->hasMany(Payment::class)
-            ->whereMonth('created_at', now()->subMonths(2)->month)
+        $twoMonthsAgo = now()->subMonths(2);
+        return $this->payments()
+            ->where('paid_month', $twoMonthsAgo->format('F'))
+            ->where('paid_year', $twoMonthsAgo->format('Y'))
             ->exists();
     }
+
 
     public function user()
     {

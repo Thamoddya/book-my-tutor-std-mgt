@@ -27,6 +27,7 @@
         'PaymentReports',
         'systemLog',
         'schools',
+        'index',
     ]))
     <link href="{{ asset('assets/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet"
         type="text/css" />

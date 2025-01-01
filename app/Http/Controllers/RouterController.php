@@ -49,6 +49,8 @@ class RouterController extends Controller
             ->orderByRaw('YEAR(created_at), MONTH(created_at)')
             ->get();
 
+        $students = Student::all();
+
         return view('pages.protected.index', compact([
             'batchCount',
             'batchCountThisMonth',
@@ -57,7 +59,8 @@ class RouterController extends Controller
             'lastRegisteredStudents',
             'paymentsLastFiveMonths',
             'studentCountLastFiveMonths',
-            'paymentsLastSixMonths'
+            'paymentsLastSixMonths',
+            'students'
         ]));
     }
 
