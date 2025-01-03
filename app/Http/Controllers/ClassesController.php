@@ -7,57 +7,82 @@ use Illuminate\Http\Request;
 
 class ClassesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+
+    public function loadData()
+    {
+        $classes = Classes::with('students')->get();
+
+        $classesData = $classes->map(function ($class) {
+            return [
+                'id' => $class->id,
+                'name' => $class->name,
+                'code' => $class->code,
+                'description' => $class->description,
+                'teacher' => $class->teacher,
+                'students' => $class->students->count(),
+            ];
+        });
+
+        return response()->json($classesData);
+    }
+
+    public function storeAjax(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'teacher' => 'required|string|max:255',
+        ]);
+
+        // Create the class entry without the code
+        $class = Classes::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'teacher' => $request->teacher,
+        ]);
+
+        // Generate the unique code
+        $class->code = 'BMTC' . $class->id;
+        $class->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Class created successfully!',
+            'class' => $class,
+        ]);
+    }
+
     public function index()
     {
         //
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     */
+
     public function show(Classes $classes)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Classes $classes)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Classes $classes)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+
     public function destroy(Classes $classes)
     {
         //

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\auth\AuthController;
+use App\Http\Controllers\ClassesController;
 use App\Http\Controllers\RouterController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +55,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/payments/{payment}/edit', [\App\Http\Controllers\PaymentController::class, 'edit'])->name('payments.edit');
     Route::put('/payments/{payment}', [\App\Http\Controllers\PaymentController::class, 'update'])->name('payments.update');
     Route::delete('/payments/{payment}', [\App\Http\Controllers\PaymentController::class, 'destroy'])->name('payments.destroy');
+
+    //API Classes
+    Route::post('/classes/store-ajax', [ClassesController::class, 'storeAjax'])->name('classes.store.ajax');
+    Route::get('/classes/load-data', [ClassesController::class, 'loadData'])->name('classes.load.data');
 
     //RECEIPT
     Route::get('/receipt/{filename}', function ($filename) {

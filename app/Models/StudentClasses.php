@@ -16,11 +16,13 @@ class StudentClasses extends Model
         'class_id',
     ];
 
+    // Belongs to Student
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id');
     }
 
+    // Belongs to Class
     public function class()
     {
         return $this->belongsTo(Classes::class, 'class_id');
