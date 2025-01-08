@@ -8,7 +8,7 @@ Route::post('/student/token', [ApiAuthController::class, 'login']);
 Route::post('/upload/images', [ApiController::class, 'uploadImage']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/student', [ApiController::class, 'getStudent']);
+    Route::get('/student-details', [ApiController::class, 'getStudent']);
     Route::put('/student/update-profile-pic', [ApiController::class, 'updateStudentProfilePic']);
     Route::get('/student/payments', [ApiController::class, 'getStudentPayments']);
 });

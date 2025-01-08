@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
-use Storage;
 
 class ApiController extends Controller
 {
@@ -28,7 +27,7 @@ class ApiController extends Controller
 
         return response()->json([
             'data' => $responseData,
-        ]);
+        ], 200);
     }
 
 

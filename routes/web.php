@@ -44,7 +44,7 @@ Route::middleware('auth')->group(function () {
     //API Students
     Route::post('/students', [\App\Http\Controllers\StudentController::class, 'store'])->name('students.store');
     Route::put('/students/{student}', [\App\Http\Controllers\StudentController::class, 'update'])->name('students.update');
-    Route::get('/students/{student}', [\App\Http\Controllers\StudentController::class, 'show'])->name('students.update');
+    Route::get('/students/{student}', [\App\Http\Controllers\StudentController::class, 'show'])->name('students.get');
     Route::patch('/students/{student}/activate', [\App\Http\Controllers\StudentController::class, 'activate'])->name('students.activate');
     Route::patch('/students/{student}/deactivate', [\App\Http\Controllers\StudentController::class, 'deactivate'])->name('students.deactivate');
 
