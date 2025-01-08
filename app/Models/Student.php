@@ -24,6 +24,7 @@ class Student extends Model
         'address',
         'status',
         'created_at',
+        'profile_pic'
     ];
 
     public function batch()

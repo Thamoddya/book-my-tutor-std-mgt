@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('wtp_no')->nullable();
             $table->string('email')->nullable();
             $table->string('address')->nullable();
+            $table->text('profile_pic')->nullable();
             $table->foreignId('batch_id')->nullable()->constrained('batches');
             $table->foreignId('school_id')->nullable()->constrained('schools');
             $table->foreignId('created_by')->nullable()->constrained('users');
