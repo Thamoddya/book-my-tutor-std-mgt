@@ -30,9 +30,9 @@ class ClassScheduleController extends Controller
             return [
                 'id' => $schedule->id,
                 'class_name' => $schedule->class->name ?? 'Unknown',
-                'day' => \Carbon\Carbon::parse($schedule->day)->format('F j, Y'), // Format date
-                'start_time' => \Carbon\Carbon::parse($schedule->start_time)->format('g:i A'), // Format time
-                'end_time' => \Carbon\Carbon::parse($schedule->end_time)->format('g:i A'), // Format time
+                'day' => \Carbon\Carbon::parse($schedule->day)->format('F j, Y'),
+                'start_time' => \Carbon\Carbon::parse($schedule->start_time)->format('g:i A'),
+                'end_time' => \Carbon\Carbon::parse($schedule->end_time)->format('g:i A'),
                 'tutor' => $schedule->tutor,
                 'mode' => ucfirst($schedule->mode),
                 'link' => $schedule->link,

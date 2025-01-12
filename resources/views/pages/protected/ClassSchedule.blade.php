@@ -170,16 +170,19 @@
         $(document).ready(function() {
             const table = $('#schedulesTable').DataTable({
                 "processing": true,
-                "serverSide": true,
+                "serverSide": false,
+                "order": [],
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
                 "ajax": {
                     url: "{{ route('class-schedules.load') }}",
                     type: "GET",
                     dataSrc: function(json) {
-                        console.log('API Response:', json); // Log the response data
-                        return json.data; // Return the data array to DataTables
+                        return json.data;
                     },
                     error: function(xhr, status, error) {
-                        console.error('DataTables Error:', error); // Log any AJAX errors
+                        console.error('DataTables Error:', error);
                     }
                 },
                 "columns": [{
@@ -211,14 +214,13 @@
                         title: 'Actions',
                         render: function(data) {
                             return `
-                        <button class="btn btn-sm btn-warning edit-schedule" data-id="${data}">Edit</button>
-                        <button class="btn btn-sm btn-danger delete-schedule" data-id="${data}">Delete</button>
-                    `;
+                    <button class="btn btn-sm btn-warning edit-schedule" data-id="${data}">Edit</button>
+                    <button class="btn btn-sm btn-danger delete-schedule" data-id="${data}">Delete</button>
+                `;
                         }
                     }
                 ]
             });
-
 
             // Add Schedule
             $('#addScheduleForm').on('submit', function(e) {
