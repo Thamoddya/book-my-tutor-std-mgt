@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreClassScheduleRequest;
+use App\Http\Requests\UpdateClassScheduleRequest;
 use App\Models\ClassSchedule;
 use App\Models\Classes;
 use Request;
@@ -13,6 +14,12 @@ class ClassScheduleController extends Controller
     {
         $classes = Classes::all();
         return view('class-schedule.index', compact('classes'));
+    }
+
+    public function show($id)
+    {
+        $schedule = ClassSchedule::findOrFail($id);
+        return response()->json($schedule);
     }
 
     public function loadSchedules(Request $request)
@@ -47,25 +54,13 @@ class ClassScheduleController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(UpdateClassScheduleRequest $request, $id)
     {
         $schedule = ClassSchedule::findOrFail($id);
 
-        $request->validate([
-            'class_id' => 'required|exists:classes,id',
-            'day' => 'required|date', // Validate as date
-            'start_time' => 'required|date_format:H:i',
-            'end_time' => 'required|date_format:H:i|after:start_time',
-            'tutor' => 'required|string',
-            'mode' => 'required|in:online,physical',
-            'link' => 'nullable|string',
-            'any_material_url' => 'nullable|string',
-            'note' => 'nullable|string',
-        ]);
+        $schedule->update($request->validated());
 
-        $schedule->update($request->all());
-
-        return response()->json(['message' => 'Class schedule updated successfully!']);
+        return response()->json(['message' => 'Schedule updated successfully!']);
     }
 
     public function destroy($id)

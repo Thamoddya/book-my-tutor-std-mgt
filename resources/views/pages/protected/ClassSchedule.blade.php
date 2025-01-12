@@ -96,6 +96,73 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit Schedule Modal -->
+    <div class="modal fade" id="editScheduleModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form id="editScheduleForm">
+                    @csrf
+                    @method('PUT') <!-- For PUT method -->
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Schedule</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="edit_schedule_id" name="id">
+                        <div class="mb-3">
+                            <label for="edit_class_id" class="form-label">Class</label>
+                            <select name="class_id" id="edit_class_id" class="form-control" required>
+                                @foreach ($classes as $class)
+                                    <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_day" class="form-label">Date</label>
+                            <input type="date" id="edit_day" name="day" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_start_time" class="form-label">Start Time</label>
+                            <input type="time" id="edit_start_time" name="start_time" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_end_time" class="form-label">End Time</label>
+                            <input type="time" id="edit_end_time" name="end_time" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_tutor" class="form-label">Tutor</label>
+                            <input type="text" id="edit_tutor" name="tutor" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_mode" class="form-label">Mode</label>
+                            <select id="edit_mode" name="mode" class="form-control" required>
+                                <option value="online">Online</option>
+                                <option value="physical">Physical</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_link" class="form-label">Link (if online)</label>
+                            <input type="url" id="edit_link" name="link" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_any_material_url" class="form-label">Material URL</label>
+                            <input type="url" id="edit_any_material_url" name="any_material_url"
+                                class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="edit_note" class="form-label">Note</label>
+                            <textarea id="edit_note" name="note" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
@@ -144,9 +211,9 @@
                         title: 'Actions',
                         render: function(data) {
                             return `
-                    <button class="btn btn-sm btn-warning edit-schedule" data-id="${data}">Edit</button>
-                    <button class="btn btn-sm btn-danger delete-schedule" data-id="${data}">Delete</button>
-                `;
+                        <button class="btn btn-sm btn-warning edit-schedule" data-id="${data}">Edit</button>
+                        <button class="btn btn-sm btn-danger delete-schedule" data-id="${data}">Delete</button>
+                    `;
                         }
                     }
                 ]
@@ -201,6 +268,62 @@
                         }
                     });
                 }
+            });
+
+            // Open Edit Modal
+            $('#schedulesTable').on('click', '.edit-schedule', function() {
+                const scheduleId = $(this).data('id');
+                $.ajax({
+                    url: `/class-schedules/${scheduleId}`,
+                    method: "GET",
+                    success: function(response) {
+                        // Populate the form with the schedule data
+                        $('#edit_schedule_id').val(response.id);
+                        $('#edit_class_id').val(response.class_id);
+                        $('#edit_day').val(response.day);
+                        $('#edit_start_time').val(response.start_time);
+                        $('#edit_end_time').val(response.end_time);
+                        $('#edit_tutor').val(response.tutor);
+                        $('#edit_mode').val(response.mode);
+                        $('#edit_link').val(response.link);
+                        $('#edit_any_material_url').val(response.any_material_url);
+                        $('#edit_note').val(response.note);
+
+                        // Show the modal
+                        $('#editScheduleModal').modal('show');
+                    },
+                    error: function(response) {
+                        alert('Error fetching schedule data');
+                        console.log(response);
+                    }
+                });
+            });
+
+            // Update Schedule
+            $('#editScheduleForm').on('submit', function(e) {
+                e.preventDefault();
+
+                const scheduleId = $('#edit_schedule_id').val();
+                const formData = $(this).serialize();
+
+                $.ajax({
+                    url: `/class-schedules/${scheduleId}`,
+                    method: "PUT",
+                    data: formData,
+                    success: function(response) {
+                        $('#editScheduleModal').modal('hide');
+                        $('#editScheduleForm')[0].reset();
+                        table.ajax.reload();
+                        alert(response.message);
+                    },
+                    error: function(response) {
+                        alert('Error updating schedule');
+                        console.error('Error Response:', response);
+                        if (response.responseJSON && response.responseJSON.errors) {
+                            console.log('Validation Errors:', response.responseJSON.errors);
+                        }
+                    }
+                });
             });
         });
     </script>

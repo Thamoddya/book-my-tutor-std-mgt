@@ -72,7 +72,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/class-schedules', [ClassScheduleController::class, 'store'])->name('class-schedules.store');
     Route::put('/class-schedules/{id}', [ClassScheduleController::class, 'update'])->name('class-schedules.update');
     Route::delete('/class-schedules/{id}', [ClassScheduleController::class, 'destroy'])->name('class-schedules.destroy');
-
+    Route::get('/class-schedules/{id}', [ClassScheduleController::class, 'show'])->name('class-schedules.show');
 
     //RECEIPT
     Route::get('/receipt/{filename}', function ($filename) {
