@@ -59,6 +59,7 @@ Route::middleware('auth')->group(function () {
     //API Classes
     Route::post('/classes/store-ajax', [ClassesController::class, 'storeAjax'])->name('classes.store.ajax');
     Route::get('/classes/load-data', [ClassesController::class, 'loadData'])->name('classes.load.data');
+    Route::post('/classes/update/{id}', [ClassesController::class, 'updateAjax'])->name('classes.update.ajax');
 
     //RECEIPT
     Route::get('/receipt/{filename}', function ($filename) {

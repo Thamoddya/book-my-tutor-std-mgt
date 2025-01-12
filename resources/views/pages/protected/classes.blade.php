@@ -1,16 +1,31 @@
 @extends('layout.MainLayout')
+
 @section('content')
-    <div class="row">
-        <div class="col-12">
-            <div class="page-title-box">
-                <div class="page-title-right">
-                    <ol class="breadcrumb m-0">
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">#BookMyTutor</a></li>
-                        <li class="breadcrumb-item"><a href="javascript: void(0);">Main</a></li>
-                        <li class="breadcrumb-item active">Classes</li>
-                    </ol>
+    <div class="container">
+        <div class="row mb-3">
+            <div class="col-md-12 text-end">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Add New Class</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">Classes</div>
+                    <div class="card-body">
+                        <table class="table table-bordered" id="classesDatatable">
+                            <thead>
+                                <tr>
+                                    <th>Class Name</th>
+                                    <th>Class Code</th>
+                                    <th>Description</th>
+                                    <th>Teacher</th>
+                                    <th>Students</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
-                <h4 class="page-title">Class Management</h4>
             </div>
         </div>
     </div>
@@ -48,34 +63,36 @@
         </div>
     </div>
 
-    <!-- Classes Table -->
-    <div class="container">
-        <div class="row mb-3">
-            <div class="col-md-12 text-end">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Add New
-                    Class</button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">Classes</div>
-                    <div class="card-body">
-                        <table class="table table-bordered w-full responsive" id="datatable-buttons">
-                            <thead>
-                                <tr>
-                                    <th>Class Name</th>
-                                    <th>Class Code</th>
-                                    <th>Description</th>
-                                    <th>Teacher</th>
-                                    <th>Students</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
+    <!-- Edit Class Modal -->
+    <div class="modal fade" id="editClassModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form id="editClassForm">
+                    @csrf
+                    <input type="hidden" id="editClassId">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Class</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="editClassName" class="form-label">Class Name</label>
+                            <input type="text" name="name" id="editClassName" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClassDescription" class="form-label">Description</label>
+                            <textarea name="description" id="editClassDescription" class="form-control"></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editClassTeacher" class="form-label">Teacher Name</label>
+                            <input type="text" name="teacher" id="editClassTeacher" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Update</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
@@ -84,73 +101,90 @@
 @section('script')
     <script>
         $(document).ready(function() {
-
-            //Load data to table , datatable already initialized in MainLayout
-            $.ajax({
-                url: "{{ route('classes.load.data') }}",
-                method: 'GET',
-                success: function(response) {
-                    console.log(response);
-
-                    response.forEach(function(data) {
-                        $('#datatable-buttons').DataTable().row.add([
-                            data.name,
-                            data.code,
-                            data.description,
-                            data.teacher,
-                            data.students,
-                            `<button class="btn btn-danger delete-class" data-id="${data.id}">Delete</button>`
-                        ]).draw(false);
-                    });
+            const table = $('#classesDatatable').DataTable({
+                "processing": true,
+                "serverSide": true,
+                "ajax": {
+                    url: "{{ route('classes.load.data') }}",
+                    dataSrc: "data"
                 },
-                error: function(response) {
-                    alert('Failed to load classes.');
-                }
+                "columns": [{
+                        data: 'name',
+                        title: 'Class Name'
+                    },
+                    {
+                        data: 'code',
+                        title: 'Class Code'
+                    },
+                    {
+                        data: 'description',
+                        title: 'Description'
+                    },
+                    {
+                        data: 'teacher',
+                        title: 'Teacher'
+                    },
+                    {
+                        data: 'students',
+                        title: 'Students'
+                    },
+                    {
+                        data: 'id',
+                        title: 'Actions',
+                        render: function(data, type, row) {
+                            return `<button class="btn btn-warning edit-class" data-id="${data}"
+                                data-name="${row.name}"
+                                data-description="${row.description}"
+                                data-teacher="${row.teacher}">Edit</button>`;
+                        }
+                    }
+                ]
             });
 
+            // Open Edit Modal
+            $('#classesDatatable').on('click', '.edit-class', function() {
+                const id = $(this).data('id');
+                const name = $(this).data('name');
+                const description = $(this).data('description');
+                const teacher = $(this).data('teacher');
 
-            // Add Class
-            $('#addClassForm').on('submit', function(e) {
+                $('#editClassId').val(id);
+                $('#editClassName').val(name);
+                $('#editClassDescription').val(description);
+                $('#editClassTeacher').val(teacher);
+
+                $('#editClassModal').modal('show');
+            });
+
+            // Update Class
+            $('#editClassForm').on('submit', function(e) {
                 e.preventDefault();
-                const formData = $(this).serialize();
+                const id = $('#editClassId').val(); // Ensure this has the class ID
+                const formData = {
+                    _token: "{{ csrf_token() }}",
+                    name: $('#editClassName').val(),
+                    description: $('#editClassDescription').val(),
+                    teacher: $('#editClassTeacher').val()
+                };
+
+                // Use Laravel's URL pattern manually and append the ID
+                const updateUrl = `/classes/update/${id}`; // Adjusted to directly include the ID in the URL
 
                 $.ajax({
-                    url: "{{ route('classes.store.ajax') }}",
+                    url: updateUrl,
                     method: 'POST',
                     data: formData,
                     success: function(response) {
-                        $('#addClassModal').modal('hide');
-                        $('#addClassForm')[0].reset();
-                        table.ajax.reload(null, false); // Reload table without reinitializing
+                        $('#editClassModal').modal('hide');
+                        table.ajax.reload(null, false);
                         alert(response.message);
                     },
                     error: function(response) {
-                        alert('Error: ' + response.responseJSON.message);
+                        alert('Error updating class: ' + response.responseJSON.message);
                     }
                 });
             });
 
-            // Delete Class
-            $('#datatable-buttons').on('click', '.delete-class', function() {
-                const id = $(this).data('id');
-                if (confirm('Are you sure you want to delete this class?')) {
-                    $.ajax({
-                        url: `classes/${id}`,
-                        method: 'DELETE',
-                        data: {
-                            _token: "{{ csrf_token() }}"
-                        },
-                        success: function() {
-                            table.ajax.reload(null,
-                                false); // Reload table without reinitializing
-                            alert('Class deleted successfully!');
-                        },
-                        error: function() {
-                            alert('Failed to delete class.');
-                        }
-                    });
-                }
-            });
         });
     </script>
 @endsection

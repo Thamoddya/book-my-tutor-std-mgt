@@ -23,7 +23,12 @@ class ClassesController extends Controller
             ];
         });
 
-        return response()->json($classesData);
+        return response()->json([
+            'draw' => request()->get('draw'),
+            'recordsTotal' => $classes->count(),
+            'recordsFiltered' => $classes->count(),
+            'data' => $classesData
+        ]);
     }
 
     public function storeAjax(Request $request)
@@ -50,6 +55,24 @@ class ClassesController extends Controller
             'message' => 'Class created successfully!',
             'class' => $class,
         ]);
+    }
+
+    public function updateAjax(Request $request, $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'teacher' => 'required|string|max:255',
+        ]);
+
+        $class = Classes::findOrFail($id);
+        $class->update([
+            'name' => $request->name,
+            'description' => $request->description,
+            'teacher' => $request->teacher,
+        ]);
+
+        return response()->json(['message' => 'Class updated successfully!']);
     }
 
     public function index()
