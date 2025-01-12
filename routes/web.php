@@ -61,6 +61,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/classes/load-data', [ClassesController::class, 'loadData'])->name('classes.load.data');
     Route::post('/classes/update/{id}', [ClassesController::class, 'updateAjax'])->name('classes.update.ajax');
 
+    Route::get('/classes/{id}/students', [ClassesController::class, 'getClassStudents'])->name('classes.get.students');
+    Route::post('/classes/{id}/add-student', [ClassesController::class, 'addStudentToClass'])->name('classes.add.student');
+    Route::delete('/classes/{class_id}/remove-student/{student_id}', [ClassesController::class, 'removeStudentFromClass'])->name('classes.remove.student');
+
+
     //RECEIPT
     Route::get('/receipt/{filename}', function ($filename) {
         $path = public_path('storage/receipts/' . $filename);

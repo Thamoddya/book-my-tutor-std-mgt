@@ -15,14 +15,10 @@ class StudentClasses extends Model
         'student_id',
         'class_id',
     ];
-
-    // Belongs to Student
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id');
     }
-
-    // Belongs to Class
     public function class()
     {
         return $this->belongsTo(Classes::class, 'class_id');

@@ -96,10 +96,48 @@
             </div>
         </div>
     </div>
+
+    {{-- Manage Students Modal --}}
+    <div class="modal fade" id="manageStudentsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Manage Students</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addStudentForm">
+                        @csrf
+                        <div class="mb-3">
+                            <label for="studentRegNo" class="form-label">Student Registration Number</label>
+                            <input type="text" id="studentRegNo" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Add Student</button>
+                    </form>
+                    <hr>
+                    <table class="table table-bordered" id="studentsDatatable">
+                        <thead>
+                            <tr>
+                                <th>Student Name</th>
+                                <th>Student Email</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('script')
     <script>
+        const routes = {
+            getStudents: "{{ route('classes.get.students', ':id') }}",
+            addStudent: "{{ route('classes.add.student', ':id') }}",
+            removeStudent: "{{ route('classes.remove.student', [':class_id', ':student_id']) }}"
+        };
+
         $(document).ready(function() {
             const table = $('#classesDatatable').DataTable({
                 "processing": true,
@@ -132,59 +170,109 @@
                         data: 'id',
                         title: 'Actions',
                         render: function(data, type, row) {
-                            return `<button class="btn btn-warning edit-class" data-id="${data}"
-                                data-name="${row.name}"
-                                data-description="${row.description}"
-                                data-teacher="${row.teacher}">Edit</button>`;
+                            return `
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-primary edit-class" data-id="${row.id}" data-name="${row.name}" data-description="${row.description}" data-teacher="${row.teacher}">Edit</button>
+                            <button class="btn btn-sm btn-secondary manage-students" data-id="${row.id}" data-class-name="${row.name}">Students</button>
+                        </div>
+                    `;
                         }
                     }
                 ]
             });
 
-            // Open Edit Modal
-            $('#classesDatatable').on('click', '.edit-class', function() {
-                const id = $(this).data('id');
-                const name = $(this).data('name');
-                const description = $(this).data('description');
-                const teacher = $(this).data('teacher');
+            // Open Manage Students Modal
+            $('#classesDatatable').on('click', '.manage-students', function() {
+                const classId = $(this).data('id');
+                const className = $(this).data('class-name');
 
-                $('#editClassId').val(id);
-                $('#editClassName').val(name);
-                $('#editClassDescription').val(description);
-                $('#editClassTeacher').val(teacher);
+                $('#manageStudentsModal .modal-title').text(`Manage Students for ${className}`);
+                $('#manageStudentsModal').modal('show');
 
-                $('#editClassModal').modal('show');
-            });
+                const getStudentsUrl = routes.getStudents.replace(':id', classId);
+                const addStudentUrl = routes.addStudent.replace(':id', classId);
 
-            // Update Class
-            $('#editClassForm').on('submit', function(e) {
-                e.preventDefault();
-                const id = $('#editClassId').val(); // Ensure this has the class ID
-                const formData = {
-                    _token: "{{ csrf_token() }}",
-                    name: $('#editClassName').val(),
-                    description: $('#editClassDescription').val(),
-                    teacher: $('#editClassTeacher').val()
-                };
-
-                // Use Laravel's URL pattern manually and append the ID
-                const updateUrl = `/classes/update/${id}`; // Adjusted to directly include the ID in the URL
-
-                $.ajax({
-                    url: updateUrl,
-                    method: 'POST',
-                    data: formData,
-                    success: function(response) {
-                        $('#editClassModal').modal('hide');
-                        table.ajax.reload(null, false);
-                        alert(response.message);
-                    },
-                    error: function(response) {
-                        alert('Error updating class: ' + response.responseJSON.message);
-                    }
+                // Destroy and reinitialize DataTable for students
+                const studentsTable = $('#studentsDatatable').DataTable({
+                    "processing": true,
+                    "serverSide": true,
+                    "destroy": true, // Reinitialize the table for each class
+                    "ajax": getStudentsUrl,
+                    "columns": [{
+                            data: 'name',
+                            title: 'Student Name'
+                        },
+                        {
+                            data: 'email',
+                            title: 'Student Email'
+                        },
+                        {
+                            data: 'id',
+                            title: 'Actions',
+                            render: function(data) {
+                                return `<button class="btn btn-danger btn-sm remove-student" data-id="${data}" data-class-id="${classId}">Remove</button>`;
+                            }
+                        }
+                    ]
                 });
-            });
 
+                // Add Student to Class
+                $('#addStudentForm').off('submit').on('submit', function(e) {
+                    e.preventDefault();
+
+                    const regNo = $('#studentRegNo').val();
+
+                    $.ajax({
+                        url: addStudentUrl,
+                        method: 'POST',
+                        data: {
+                            _token: "{{ csrf_token() }}",
+                            reg_no: regNo
+                        },
+                        success: function(response) {
+                            $('#studentRegNo').val('');
+                            studentsTable.ajax.reload(null,
+                                false); // Reload the students table
+                            table.ajax.reload(null,
+                                false); // Reload the main classes table
+                            alert(response.message);
+                        },
+                        error: function(response) {
+                            alert('Error adding student: ' + response.responseJSON
+                                .message);
+                        }
+                    });
+                });
+
+                // Remove Student from Class
+                $('#studentsDatatable').off('click', '.remove-student').on('click', '.remove-student',
+                    function() {
+                        const studentId = $(this).data('id');
+                        const removeUrl = routes.removeStudent.replace(':class_id', classId).replace(
+                            ':student_id', studentId);
+
+                        if (confirm('Are you sure you want to remove this student?')) {
+                            $.ajax({
+                                url: removeUrl,
+                                method: 'DELETE',
+                                data: {
+                                    _token: "{{ csrf_token() }}"
+                                },
+                                success: function(response) {
+                                    studentsTable.ajax.reload(null,
+                                        false); // Reload the students table
+                                    table.ajax.reload(null,
+                                        false); // Reload the main classes table
+                                    alert(response.message);
+                                },
+                                error: function(response) {
+                                    alert('Error removing student: ' + response.responseJSON
+                                        .message);
+                                }
+                            });
+                        }
+                    });
+            });
         });
     </script>
 @endsection

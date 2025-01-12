@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classes;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class ClassesController extends Controller
@@ -75,39 +76,42 @@ class ClassesController extends Controller
         return response()->json(['message' => 'Class updated successfully!']);
     }
 
-    public function index()
+    public function getClassStudents($id)
     {
-        //
-    }
-    public function create()
-    {
-        //
-    }
+        $class = Classes::with('students')->findOrFail($id);
+        $students = $class->students->map(function ($student) {
+            return [
+                'id' => $student->id,
+                'name' => $student->name,
+                'email' => $student->email,
+            ];
+        });
 
-    public function store(Request $request)
-    {
-        //
-    }
-
-
-    public function show(Classes $classes)
-    {
-        //
+        return response()->json(['data' => $students]);
     }
 
-    public function edit(Classes $classes)
+    public function addStudentToClass(Request $request, $id)
     {
-        //
+        $request->validate([
+            'reg_no' => 'required|exists:students,reg_no'
+        ]);
+
+        $class = Classes::findOrFail($id);
+        $student = Student::where('reg_no', $request->reg_no)->firstOrFail();
+
+        $class->students()->syncWithoutDetaching($student->id);
+
+        return response()->json(['message' => 'Student added to class successfully!']);
     }
 
-    public function update(Request $request, Classes $classes)
+    public function removeStudentFromClass($class_id, $student_id)
     {
-        //
-    }
+        $class = Classes::findOrFail($class_id);
+        $student = Student::findOrFail($student_id);
 
+        // Detach the student from the class
+        $class->students()->detach($student_id);
 
-    public function destroy(Classes $classes)
-    {
-        //
+        return response()->json(['message' => 'Student removed from class successfully!']);
     }
 }
