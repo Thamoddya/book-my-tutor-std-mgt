@@ -30,7 +30,6 @@ class ApiController extends Controller
         ], 200);
     }
 
-
     public function uploadImage(Request $request)
     {
         // Validate the request
@@ -86,6 +85,22 @@ class ApiController extends Controller
 
         $responseData = [
             'payments' => Payment::where('student_id', $student->id)->get(),
+        ];
+
+        return response()->json([
+            'data' => $responseData,
+        ]);
+    }
+
+    public function getStudentTodayClasses()
+    {
+        $student = auth()->user();
+
+        $today = date('Y-m-d');
+        $todayClasses = $student->batch->classes()->where('date', $today)->get();
+
+        $responseData = [
+            'classes' => $todayClasses,
         ];
 
         return response()->json([
