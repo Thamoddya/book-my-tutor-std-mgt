@@ -2,65 +2,77 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ClassSchedule;
 use App\Http\Requests\StoreClassScheduleRequest;
-use App\Http\Requests\UpdateClassScheduleRequest;
+use App\Models\ClassSchedule;
+use App\Models\Classes;
+use Request;
 
 class ClassScheduleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        $classes = Classes::all();
+        return view('class-schedule.index', compact('classes'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function loadSchedules(Request $request)
     {
-        //
+        $schedules = ClassSchedule::with('class')->get();
+
+        $data = $schedules->map(function ($schedule) {
+            return [
+                'id' => $schedule->id,
+                'class_name' => $schedule->class->name ?? 'Unknown',
+                'day' => \Carbon\Carbon::parse($schedule->day)->format('F j, Y'), // Format date
+                'start_time' => \Carbon\Carbon::parse($schedule->start_time)->format('g:i A'), // Format time
+                'end_time' => \Carbon\Carbon::parse($schedule->end_time)->format('g:i A'), // Format time
+                'tutor' => $schedule->tutor,
+                'mode' => ucfirst($schedule->mode),
+                'link' => $schedule->link,
+                'note' => $schedule->note,
+            ];
+        });
+
+        return response()->json(['data' => $data]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
+
     public function store(StoreClassScheduleRequest $request)
     {
-        //
+        $data = $request->validated();
+
+        ClassSchedule::create($data);
+
+        return response()->json(['message' => 'Class schedule added successfully!']);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(ClassSchedule $classSchedule)
+
+    public function update(Request $request, $id)
     {
-        //
+        $schedule = ClassSchedule::findOrFail($id);
+
+        $request->validate([
+            'class_id' => 'required|exists:classes,id',
+            'day' => 'required|date', // Validate as date
+            'start_time' => 'required|date_format:H:i',
+            'end_time' => 'required|date_format:H:i|after:start_time',
+            'tutor' => 'required|string',
+            'mode' => 'required|in:online,physical',
+            'link' => 'nullable|string',
+            'any_material_url' => 'nullable|string',
+            'note' => 'nullable|string',
+        ]);
+
+        $schedule->update($request->all());
+
+        return response()->json(['message' => 'Class schedule updated successfully!']);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(ClassSchedule $classSchedule)
+    public function destroy($id)
     {
-        //
-    }
+        $schedule = ClassSchedule::findOrFail($id);
+        $schedule->delete();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateClassScheduleRequest $request, ClassSchedule $classSchedule)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(ClassSchedule $classSchedule)
-    {
-        //
+        return response()->json(['message' => 'Class schedule removed successfully!']);
     }
 }

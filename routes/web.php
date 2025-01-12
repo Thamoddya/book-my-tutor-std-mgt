@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\ClassesController;
+use App\Http\Controllers\ClassScheduleController;
 use App\Http\Controllers\RouterController;
 use Illuminate\Support\Facades\Route;
 
@@ -65,6 +66,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/classes/{id}/students', [ClassesController::class, 'getClassStudents'])->name('classes.get.students');
     Route::post('/classes/{id}/add-student', [ClassesController::class, 'addStudentToClass'])->name('classes.add.student');
     Route::delete('/classes/{class_id}/remove-student/{student_id}', [ClassesController::class, 'removeStudentFromClass'])->name('classes.remove.student');
+
+    //API Class Schedule
+    Route::get('/class-schedules/load', [ClassScheduleController::class, 'loadSchedules'])->name('class-schedules.load');
+    Route::post('/class-schedules', [ClassScheduleController::class, 'store'])->name('class-schedules.store');
+    Route::put('/class-schedules/{id}', [ClassScheduleController::class, 'update'])->name('class-schedules.update');
+    Route::delete('/class-schedules/{id}', [ClassScheduleController::class, 'destroy'])->name('class-schedules.destroy');
 
 
     //RECEIPT
