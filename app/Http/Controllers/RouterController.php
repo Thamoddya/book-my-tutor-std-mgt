@@ -164,4 +164,10 @@ class RouterController extends Controller
         $classes = Classes::all();
         return view('pages.protected.classes', compact(['classes']));
     }
+
+    public function classSchedule()
+    {
+        $classes = Classes::all();
+        return view('pages.protected.ClassSchedule', compact(['classes']));
+    }
 }

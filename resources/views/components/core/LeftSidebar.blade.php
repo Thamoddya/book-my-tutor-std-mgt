@@ -51,6 +51,12 @@
                 </a>
             </li>
             <li class="side-nav-item active">
+                <a href="{{ route('class-schedule') }}" class="side-nav-link">
+                    <i class="ri-file-list-3-fill"></i>
+                    <span> Class Schedule </span>
+                </a>
+            </li>
+            <li class="side-nav-item active">
                 <a href="{{ route('students') }}" class="side-nav-link">
                     <i class="ri-user-2-fill"></i>
                     <span> Students </span>
