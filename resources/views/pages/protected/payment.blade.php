@@ -32,61 +32,61 @@
 
                 <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
                     <thead>
-                        <tr>
-                            <th>INV NO</th>
-                            <th>STD ID</th>
-                            <th>Month</th>
-                            <th>Payment Date</th>
-                            <th>Status</th>
-                            <th>Amount</th>
-                            <th>Receipt PIC</th>
-                            @role('Super_Admin')
-                                <th>Actions</th>
-                            @endrole
-                        </tr>
+                    <tr>
+                        <th>INV NO</th>
+                        <th>STD ID</th>
+                        <th>Month</th>
+                        <th>Payment Date</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                        <th>Receipt PIC</th>
+                        @role('Super_Admin')
+                        <th>Actions</th>
+                        @endrole
+                    </tr>
                     </thead>
                     <tbody>
 
-                        @foreach ($payments as $payment)
-                            <tr>
-                                <td>{{ $payment->invoice_number }}</td>
-                                <td>{{ $payment->student->reg_no }}</td>
-                                <td>{{ ucfirst($payment->paid_month) }}</td>
-                                <td>{{ \Carbon\Carbon::parse($payment->paid_at)->format('Y-m-d') }}</td>
-                                <td>
-                                    @if ($payment->status == 'paid')
-                                        <span class="badge bg-success">Paid</span>
-                                    @elseif ($payment->status == 'pending')
-                                        <span class="badge" style="background-color: blue">Pending</span>
-                                    @else
-                                        <span class="badge bg-danger">Due</span>
-                                    @endif
-                                </td>
-                                <td>{{ $payment->amount }}</td>
-                                <td>
-                                    @if ($payment->receipt_picture)
-                                        <a href="{{ route('receipt.view', ['filename' => basename($payment->receipt_picture)]) }}"
-                                            target="_blank" class="">View</a>
-                                    @else
-                                        No Receipt
-                                    @endif
-                                </td>
+                    @foreach ($payments as $payment)
+                        <tr>
+                            <td>{{ $payment->invoice_number }}</td>
+                            <td>{{ $payment->student->reg_no }}</td>
+                            <td>{{ ucfirst($payment->paid_month) }}</td>
+                            <td>{{ \Carbon\Carbon::parse($payment->paid_at)->format('Y-m-d') }}</td>
+                            <td>
+                                @if ($payment->status == 'paid')
+                                    <span class="badge bg-success">Paid</span>
+                                @elseif ($payment->status == 'pending')
+                                    <span class="badge" style="background-color: blue">Pending</span>
+                                @else
+                                    <span class="badge bg-danger">Due</span>
+                                @endif
+                            </td>
+                            <td>{{ $payment->amount }}</td>
+                            <td>
+                                @if ($payment->receipt_picture)
+                                    <a href="{{ route('receipt.view', ['filename' => basename($payment->receipt_picture)]) }}"
+                                       target="_blank" class="">View</a>
+                                @else
+                                    No Receipt
+                                @endif
+                            </td>
 
-                                <td>
-                                    @role('Super_Admin')
-                                        <button class="btn btn-sm btn-warning " onclick="viewPayment('{{ $payment->id }}')">
-                                            View Payment
-                                        </button>
-                                        <button class="btn btn-sm btn-secondary" onclick="editPayment('{{ $payment->id }}')">
-                                            Edit Payment
-                                        </button>
-                                        <button class="btn btn-sm btn-danger" onclick="deletePayment('{{ $payment->id }}')">
-                                            Delete Payment
-                                        </button>
-                                    @endrole
-                                </td>
-                            </tr>
-                        @endforeach
+                            <td>
+                                @role('Super_Admin')
+                                <button class="btn btn-sm btn-warning " onclick="viewPayment('{{ $payment->id }}')">
+                                    View Payment
+                                </button>
+                                <button class="btn btn-sm btn-secondary" onclick="editPayment('{{ $payment->id }}')">
+                                    Edit Payment
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="deletePayment('{{ $payment->id }}')">
+                                    Delete Payment
+                                </button>
+                                @endrole
+                            </td>
+                        </tr>
+                    @endforeach
 
                     </tbody>
                 </table>
@@ -185,7 +185,7 @@
 
     {{--    View Payment Modal --}}
     <div class="modal fade" id="viewPaymentModal" tabindex="-1" aria-labelledby="viewPaymentModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -239,7 +239,7 @@
 
     {{-- Edit Payment Modal --}}
     <div class="modal fade" id="editPaymentModal" tabindex="-1" aria-labelledby="editPaymentModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <form id="editPaymentForm" enctype="multipart/form-data">
@@ -311,8 +311,8 @@
 @endsection
 @section('script')
     <script>
-        $(document).ready(function() {
-            $('#paymentForm').on('submit', function(e) {
+        $(document).ready(function () {
+            $('#paymentForm').on('submit', function (e) {
                 e.preventDefault();
 
                 // Clear previous errors
@@ -327,14 +327,28 @@
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function(response) {
+                    success: function (response) {
                         // Success feedback
                         $('#paymentModal').modal('hide');
                         $('#paymentForm')[0].reset();
-                        alert(response.message);
-                        window.location.reload();
+
+                        $.ajax({
+                            url: "{{ route('sendNotification') }}",
+                            method: "POST",
+                            data: {
+                                "external_user_id": formData.get('student_id'),
+                                "message": "Payment of " + $('#amount').val() + " for " + $('#paid_month').val() + " " + $('#paid_year').val() + " has been made successfully."
+                            },
+                            success: function (response) {
+                                alert("Payment added successfully.");
+                                window.location.reload();
+                            },
+                            error: function (xhr) {
+                                console.log(xhr);
+                            }
+                        })
                     },
-                    error: function(xhr) {
+                    error: function (xhr) {
                         if (xhr.status === 422) {
                             // Validation errors
                             let errors = xhr.responseJSON.errors;
@@ -354,6 +368,7 @@
                         } else {
                             // General error feedback
                             alert('Something went wrong. Please try again.');
+                            console.log(xhr);
                         }
                     },
                 });
@@ -382,7 +397,7 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                success: function(response) {
+                success: function (response) {
                     $('#viewPaymentMethod').val(response.payment.payment_method);
                     $('#viewPaidMonth').val(response.payment.paid_month);
                     $('#viewPaidYear').val(response.payment.paid_year);
@@ -393,7 +408,7 @@
                     $('#viewReceiptPicture').attr('href', `storage/${response.payment.receipt_picture}`);
                     $('#viewPaymentModal').modal('show');
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     alert('Something went wrong. Please try again.');
                 }
             });
@@ -408,7 +423,7 @@
             $.ajax({
                 url: `/payments/${paymentId}/edit`,
                 method: 'GET',
-                success: function(response) {
+                success: function (response) {
                     // Populate the edit form with fetched data
                     $('#edit_payment_method').val(response.payment.payment_method);
                     $('#edit_paid_month').val(response.payment.paid_month);
@@ -430,12 +445,12 @@
                     $('#editPaymentModal').modal('show');
 
                     // Set form action dynamically
-                    $('#editPaymentForm').off('submit').on('submit', function(e) {
+                    $('#editPaymentForm').off('submit').on('submit', function (e) {
                         e.preventDefault();
                         updatePayment(paymentId);
                     });
                 },
-                error: function() {
+                error: function () {
                     alert('Failed to fetch payment details.');
                 },
             });
@@ -448,12 +463,12 @@
                 url: `/payments/${paymentId}`,
                 method: 'PUT',
                 data: formData,
-                success: function(response) {
+                success: function (response) {
                     $('#editPaymentModal').modal('hide');
                     alert(response.message);
                     location.reload();
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     if (xhr.status === 422) {
                         // Validation errors
                         const errors = xhr.responseJSON.errors;
@@ -476,11 +491,11 @@
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
-                    success: function(response) {
+                    success: function (response) {
                         alert(response.message);
                         location.reload();
                     },
-                    error: function() {
+                    error: function () {
                         alert('Failed to delete payment.');
                     },
                 });

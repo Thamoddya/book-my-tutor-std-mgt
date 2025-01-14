@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\config\OneSignalController;
 use App\Models\Payment;
 use App\Http\Requests\StorePaymentRequest;
 use App\Models\Student;
@@ -12,8 +13,13 @@ use Illuminate\Support\Facades\Auth;
 
 class PaymentController extends Controller
 {
-    public function index() {}
-    public function create() {}
+    public function index()
+    {
+    }
+
+    public function create()
+    {
+    }
 
 
     public function store(StorePaymentRequest $request)
@@ -83,7 +89,7 @@ class PaymentController extends Controller
 
             return response()->json([
                 'error' => 'An error occurred while processing the payment.',
-                'details' => $e->getMessage(),
+                'details' => $e->getLine(),
             ], 500);
         }
     }
@@ -111,6 +117,7 @@ class PaymentController extends Controller
             'message' => 'Payment deleted successfully',
         ]);
     }
+
     public function viewReceipt($filename)
     {
         $payment = Payment::where('receipt_picture', 'receipts/' . $filename)->first();
