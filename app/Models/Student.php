@@ -24,7 +24,8 @@ class Student extends Model
         'address',
         'status',
         'created_at',
-        'profile_pic'
+        'profile_pic',
+        'onesignal_player_id'
     ];
 
     public function batch()
