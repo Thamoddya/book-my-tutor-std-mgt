@@ -4,7 +4,8 @@
     <div class="container">
         <div class="row mb-3">
             <div class="col-md-12 text-end">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Add New Class</button>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Add New Class
+                </button>
             </div>
         </div>
         <div class="row">
@@ -14,14 +15,14 @@
                     <div class="card-body">
                         <table class="table table-bordered" id="classesDatatable">
                             <thead>
-                                <tr>
-                                    <th>Class Name</th>
-                                    <th>Class Code</th>
-                                    <th>Description</th>
-                                    <th>Teacher</th>
-                                    <th>Students</th>
-                                    <th>Actions</th>
-                                </tr>
+                            <tr>
+                                <th>Class Name</th>
+                                <th>Class Code</th>
+                                <th>Description</th>
+                                <th>Teacher</th>
+                                <th>Students</th>
+                                <th>Actions</th>
+                            </tr>
                             </thead>
                         </table>
                     </div>
@@ -117,11 +118,11 @@
                     <hr>
                     <table class="table table-bordered" id="studentsDatatable">
                         <thead>
-                            <tr>
-                                <th>Student Name</th>
-                                <th>Student Email</th>
-                                <th>Actions</th>
-                            </tr>
+                        <tr>
+                            <th>Student Name</th>
+                            <th>Student Email</th>
+                            <th>Actions</th>
+                        </tr>
                         </thead>
                     </table>
                 </div>
@@ -138,7 +139,7 @@
             removeStudent: "{{ route('classes.remove.student', [':class_id', ':student_id']) }}"
         };
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             const table = $('#classesDatatable').DataTable({
                 "processing": true,
                 "serverSide": true,
@@ -147,9 +148,9 @@
                     dataSrc: "data"
                 },
                 "columns": [{
-                        data: 'name',
-                        title: 'Class Name'
-                    },
+                    data: 'name',
+                    title: 'Class Name'
+                },
                     {
                         data: 'code',
                         title: 'Class Code'
@@ -169,7 +170,7 @@
                     {
                         data: 'id',
                         title: 'Actions',
-                        render: function(data, type, row) {
+                        render: function (data, type, row) {
                             return `
                         <div class="btn-group">
                             <button class="btn btn-sm btn-primary edit-class" data-id="${row.id}" data-name="${row.name}" data-description="${row.description}" data-teacher="${row.teacher}">Edit</button>
@@ -182,7 +183,7 @@
             });
 
             // Open Manage Students Modal
-            $('#classesDatatable').on('click', '.manage-students', function() {
+            $('#classesDatatable').on('click', '.manage-students', function () {
                 const classId = $(this).data('id');
                 const className = $(this).data('class-name');
 
@@ -199,9 +200,9 @@
                     "destroy": true, // Reinitialize the table for each class
                     "ajax": getStudentsUrl,
                     "columns": [{
-                            data: 'name',
-                            title: 'Student Name'
-                        },
+                        data: 'name',
+                        title: 'Student Name'
+                    },
                         {
                             data: 'email',
                             title: 'Student Email'
@@ -209,7 +210,7 @@
                         {
                             data: 'id',
                             title: 'Actions',
-                            render: function(data) {
+                            render: function (data) {
                                 return `<button class="btn btn-danger btn-sm remove-student" data-id="${data}" data-class-id="${classId}">Remove</button>`;
                             }
                         }
@@ -217,7 +218,7 @@
                 });
 
                 // Add Student to Class
-                $('#addStudentForm').off('submit').on('submit', function(e) {
+                $('#addStudentForm').off('submit').on('submit', function (e) {
                     e.preventDefault();
 
                     const regNo = $('#studentRegNo').val();
@@ -229,7 +230,7 @@
                             _token: "{{ csrf_token() }}",
                             reg_no: regNo
                         },
-                        success: function(response) {
+                        success: function (response) {
                             $('#studentRegNo').val('');
                             studentsTable.ajax.reload(null,
                                 false); // Reload the students table
@@ -237,7 +238,7 @@
                                 false); // Reload the main classes table
                             alert(response.message);
                         },
-                        error: function(response) {
+                        error: function (response) {
                             alert('Error adding student: ' + response.responseJSON
                                 .message);
                         }
@@ -246,7 +247,7 @@
 
                 // Remove Student from Class
                 $('#studentsDatatable').off('click', '.remove-student').on('click', '.remove-student',
-                    function() {
+                    function () {
                         const studentId = $(this).data('id');
                         const removeUrl = routes.removeStudent.replace(':class_id', classId).replace(
                             ':student_id', studentId);
@@ -258,20 +259,35 @@
                                 data: {
                                     _token: "{{ csrf_token() }}"
                                 },
-                                success: function(response) {
+                                success: function (response) {
                                     studentsTable.ajax.reload(null,
                                         false); // Reload the students table
                                     table.ajax.reload(null,
                                         false); // Reload the main classes table
                                     alert(response.message);
                                 },
-                                error: function(response) {
+                                error: function (response) {
                                     alert('Error removing student: ' + response.responseJSON
                                         .message);
                                 }
                             });
                         }
                     });
+            });
+
+            // Open Edit Class Modal
+            $('#classesDatatable').on('click', '.edit-class', function () {
+                const classId = $(this).data('id');
+                const className = $(this).data('name');
+                const classDescription = $(this).data('description');
+                const classTeacher = $(this).data('teacher');
+
+                $('#editClassId').val(classId);
+                $('#editClassName').val(className);
+                $('#editClassDescription').val(classDescription);
+                $('#editClassTeacher').val(classTeacher);
+
+                $('#editClassModal').modal('show');
             });
         });
     </script>
