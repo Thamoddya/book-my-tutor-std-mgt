@@ -16,5 +16,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/student/update-profile-pic', [ApiController::class, 'updateStudentProfilePic']);
     Route::get('/student/payments', [ApiController::class, 'getStudentPayments']);
 
+    Route::get('/student/today-classes', [ApiController::class, 'getStudentTodayClasses']);
+
 
 });

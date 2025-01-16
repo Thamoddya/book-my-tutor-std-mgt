@@ -25,4 +25,5 @@ class ClassSchedule extends Model
     {
         return $this->belongsTo(Classes::class, 'class_id');
     }
+
 }

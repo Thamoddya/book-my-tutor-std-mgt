@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\StudentTodayClassesResponse;
+use App\Models\ClassSchedule;
 use App\Models\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -94,17 +96,66 @@ class ApiController extends Controller
 
     public function getStudentTodayClasses()
     {
+        // Get the authenticated student
         $student = auth()->user();
 
-        $today = date('Y-m-d');
-        $todayClasses = $student->batch->classes()->where('date', $today)->get();
 
-        $responseData = [
-            'classes' => $todayClasses,
-        ];
+        // Get previous month and year
+        $lastMonth = now()->subMonth();
+        $previousMonth = $lastMonth->format('F');
+        $previousYear = $lastMonth->format('Y');
 
+        // Check payment for the current month
+        $currentMonthPayment = Payment::where('student_id', $student->id)
+            ->where('paid_month', now()->format('F'))
+            ->where('paid_year', now()->format('Y'))
+            ->first();
+
+        if ($currentMonthPayment) {
+            if ($currentMonthPayment->status === 'paid' || $currentMonthPayment->status === 'pending') {
+                // Access granted for current month classes
+                return $this->getTodayClassesForStudent($student);
+            }
+        } else {
+            // Check payment for the previous month
+            $previousMonthPayment = Payment::where('student_id', $student->id)
+                ->where('paid_month', $previousMonth)
+                ->where('paid_year', $previousYear)
+                ->first();
+
+            if ($previousMonthPayment && $previousMonthPayment->status === 'paid') {
+                // Check if the current date is within the first week of the month
+                if (date('d') <= 7) {
+                    // Access granted for the first week of the current month
+                    return $this->getTodayClassesForStudent($student);
+                } else {
+                    // Access denied after the first week of the current month
+                    return response()->json([
+                        'message' => 'Access restricted. Please pay for the current month to continue accessing classes.',
+                    ], 403);
+                }
+            }
+        }
+
+        // Neither current month nor previous month payment found
         return response()->json([
-            'data' => $responseData,
-        ]);
+            'message' => 'Payment not found for the current or previous month. Please make a payment to access classes.',
+        ], 403);
     }
+
+    private function getTodayClassesForStudent($student)
+    {
+
+        $today = now()->format('Y-m-d');
+        // Fetch class schedules for today where the student is enrolled in the corresponding class
+        $classes = ClassSchedule::where('day', $today)
+            ->whereHas('class.students', function ($query) use ($student) {
+                $query->where('students.id', $student->id); // Filter by the student ID
+            })
+            ->with(['class.students']) // Optionally eager load related data
+            ->get();
+
+        return StudentTodayClassesResponse::collection($classes);
+    }
+
 }

@@ -289,6 +289,35 @@
 
                 $('#editClassModal').modal('show');
             });
+
+            $('#editClassForm').on('submit', function (e) {
+                e.preventDefault();
+
+                const classId = $('#editClassId').val();
+                const url = "{{ route('classes.update.ajax', ':id') }}".replace(':id', classId);
+
+                const formData = {
+                    _token: "{{ csrf_token() }}",
+                    name: $('#editClassName').val(),
+                    description: $('#editClassDescription').val(),
+                    teacher: $('#editClassTeacher').val()
+                };
+
+                $.ajax({
+                    url: url,
+                    method: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        alert(response.message);
+                        $('#editClassModal').modal('hide');
+                        $('#classesDatatable').DataTable().ajax.reload(null, false); // Reload the table
+                    },
+                    error: function (xhr) {
+                        alert('Error updating class: ' + xhr.responseJSON.message);
+                    }
+                });
+            });
+
         });
     </script>
 @endsection
