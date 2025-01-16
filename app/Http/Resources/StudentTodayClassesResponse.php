@@ -11,8 +11,8 @@ class StudentTodayClassesResponse extends JsonResource
     {
         return [
             'session_title' => $this->class->name, // Class name as session title
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
+            'start_time' => \Carbon\Carbon::createFromFormat('H:i:s', $this->start_time)->format('g:i A'), // Format time
+            'end_time' => \Carbon\Carbon::createFromFormat('H:i:s', $this->end_time)->format('g:i A'), // Format time
             'venue' => $this->mode, // Mode: online or physical
             'lecturer' => $this->tutor,
             'date' => $this->day,

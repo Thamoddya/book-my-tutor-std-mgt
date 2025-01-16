@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\config\OneSignalController;
 use App\Http\Requests\StoreClassScheduleRequest;
 use App\Http\Requests\UpdateClassScheduleRequest;
 use App\Models\ClassSchedule;
@@ -44,13 +45,26 @@ class ClassScheduleController extends Controller
     }
 
 
-    public function store(StoreClassScheduleRequest $request)
+    public function store(StoreClassScheduleRequest $request, OneSignalController $oneSignalController)
     {
         $data = $request->validated();
 
-        ClassSchedule::create($data);
+        // Create the class schedule
+        $classSchedule = ClassSchedule::create($data);
 
-        return response()->json(['message' => 'Class schedule added successfully!']);
+        // Fetch students in the related class
+        $students = $classSchedule->class->students;
+
+        // Extract registration IDs (reg_no) of students
+        $studentRegIds = $students->pluck('reg_no')->toArray();
+
+        // Message to notify students
+        $message = "A new class schedule has been added for your class: {$classSchedule->class->name} on {$classSchedule->day} from {$classSchedule->start_time } to {$classSchedule->end_time}.";
+
+        // Use the injected OneSignalController to send notifications
+        $oneSignalController->sendNotificationBulk($studentRegIds, $message);
+
+        return response()->json(['message' => 'Class schedule added successfully, and students notified!']);
     }
 
 
