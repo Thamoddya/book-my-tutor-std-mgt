@@ -175,6 +175,7 @@
                         <div class="btn-group">
                             <button class="btn btn-sm btn-primary edit-class" data-id="${row.id}" data-name="${row.name}" data-description="${row.description}" data-teacher="${row.teacher}">Edit</button>
                             <button class="btn btn-sm btn-secondary manage-students" data-id="${row.id}" data-class-name="${row.name}">Students</button>
+                            <button class="btn btn-sm btn-danger delete-class" data-id="${row.id}">Delete</button>
                         </div>
                     `;
                         }
@@ -343,6 +344,31 @@
                         alert('Error updating class: ' + xhr.responseJSON.message);
                     }
                 });
+            });
+
+            // Delete Class
+            $('#classesDatatable').on('click', '.delete-class', function () {
+
+                //Get Confirmation
+                if (confirm('Are you sure you want to delete this class?')) {
+                    const classId = $(this).data('id');
+                    const url = "{{ route('classes.destroy', ':id') }}".replace(':id', classId);
+
+                    $.ajax({
+                        url: url,
+                        method: 'DELETE',
+                        data: {
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function (response) {
+                            alert(response.message);
+                            $('#classesDatatable').DataTable().ajax.reload(null, false); // Reload the table
+                        },
+                        error: function (xhr) {
+                            alert('Error deleting class: ' + xhr.responseJSON.message);
+                        }
+                    });
+                }
             });
 
         });

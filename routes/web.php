@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/classes/store-ajax', [ClassesController::class, 'storeAjax'])->name('classes.store.ajax');
     Route::get('/classes/load-data', [ClassesController::class, 'loadData'])->name('classes.load.data');
     Route::post('/classes/update/{id}', [ClassesController::class, 'updateAjax'])->name('classes.update.ajax');
+    Route::delete('/classes/{id}', [ClassesController::class, 'destroy'])->name('classes.destroy');
 
     Route::get('/classes/{id}/students', [ClassesController::class, 'getClassStudents'])->name('classes.get.students');
     Route::post('/classes/{id}/add-student', [ClassesController::class, 'addStudentToClass'])->name('classes.add.student');

@@ -171,6 +171,13 @@ class ApiController extends Controller
     {
         $student = auth()->user();
         $classes = $student->classes()->get();
+
+        // Access 'getScheduleCountAttribute' for each class
+        $classes->each(function ($class) {
+            $class->schedule_count = $class->scheduleCount; // Call the accessor
+        });
+
         return response()->json($classes);
     }
+
 }

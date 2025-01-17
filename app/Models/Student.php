@@ -28,6 +28,11 @@ class Student extends Model
         'onesignal_player_id'
     ];
 
+    public function classes()
+    {
+        return $this->belongsToMany(Classes::class, 'student_classes', 'student_id', 'class_id');
+    }
+
     public function batch()
     {
         return $this->belongsTo(Batch::class);
@@ -79,10 +84,5 @@ class Student extends Model
     public function studentClasses()
     {
         return $this->hasMany(StudentClasses::class, 'student_id');
-    }
-
-    public function classes()
-    {
-        return $this->belongsToMany(Classes::class, 'student_classes', 'student_id', 'class_id');
     }
 }

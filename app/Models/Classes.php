@@ -22,4 +22,15 @@ class Classes extends Model
     {
         return $this->belongsToMany(Student::class, 'student_classes', 'class_id', 'student_id');
     }
+
+    //Need to get count of schedules for today and future
+    public function getScheduleCountAttribute()
+    {
+        return $this->schedules()->where('day', '>=', now()->format('Y-m-d'))->count();
+    }
+
+    public function schedules()
+    {
+        return $this->hasMany(ClassSchedule::class , 'class_id');
+    }
 }

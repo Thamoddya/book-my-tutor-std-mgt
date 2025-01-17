@@ -114,4 +114,12 @@ class ClassesController extends Controller
 
         return response()->json(['message' => 'Student removed from class successfully!']);
     }
+
+    public function destroy($id)
+    {
+        $class = Classes::findOrFail($id);
+        $class->delete();
+
+        return response()->json(['message' => 'Class deleted successfully!']);
+    }
 }
