@@ -182,6 +182,33 @@
                 ]
             });
 
+            //Add Class
+            $('#addClassForm').on('submit', function (e) {
+                e.preventDefault();
+
+                const formData = {
+                    _token: "{{ csrf_token() }}",
+                    name: $('#className').val(),
+                    description: $('#classDescription').val(),
+                    teacher: $('#classTeacher').val()
+                };
+
+                $.ajax({
+                    url: "{{ route('classes.store.ajax') }}",
+                    method: 'POST',
+                    data: formData,
+                    success: function (response) {
+                        alert(response.message);
+                        $('#addClassModal').modal('hide');
+                        $('#classesDatatable').DataTable().ajax.reload(null, false); // Reload the table
+                        window.location.reload();
+                    },
+                    error: function (xhr) {
+                        alert('Error adding class: ' + xhr.responseJSON.message);
+                    }
+                });
+            });
+
             // Open Manage Students Modal
             $('#classesDatatable').on('click', '.manage-students', function () {
                 const classId = $(this).data('id');

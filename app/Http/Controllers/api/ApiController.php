@@ -131,7 +131,7 @@ class ApiController extends Controller
                 } else {
                     // Access denied after the first week of the current month
                     return response()->json([
-                        'message' => 'Access restricted. Please pay for the current month to continue accessing classes.',
+                        'message' => 'Classes can only be accessed during the first week of the month. Please make a payment to access classes.',
                     ], 403);
                 }
             }
@@ -158,4 +158,19 @@ class ApiController extends Controller
         return StudentTodayClassesResponse::collection($classes);
     }
 
+
+    public static function getClassSchedule($id)
+    {
+        $schedule = ClassSchedule::with(['class'])->findOrFail($id);
+        $schedule->start_time = \Carbon\Carbon::parse($schedule->start_time)->format('g:i A');
+        $schedule->end_time = \Carbon\Carbon::parse($schedule->end_time)->format('g:i A');
+        return response()->json($schedule);
+    }
+
+    public static function getStudentEnrolledClasses()
+    {
+        $student = auth()->user();
+        $classes = $student->classes()->get();
+        return response()->json($classes);
+    }
 }

@@ -17,6 +17,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/student/payments', [ApiController::class, 'getStudentPayments']);
 
     Route::get('/student/today-classes', [ApiController::class, 'getStudentTodayClasses']);
+    Route::get('/class/{id}', [ApiController::class, 'getClassSchedule']);
 
+    Route::get('/student/classes', [ApiController::class, 'getStudentEnrolledClasses']);
 
 });

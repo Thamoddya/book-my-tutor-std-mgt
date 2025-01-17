@@ -55,14 +55,17 @@ class ClassScheduleController extends Controller
         // Fetch students in the related class
         $students = $classSchedule->class->students;
 
-        // Extract registration IDs (reg_no) of students
-        $studentRegIds = $students->pluck('reg_no')->toArray();
+        // Check if there are any students in the class
+        if ($students->isNotEmpty()) {
+            // Extract registration IDs (reg_no) of students
+            $studentRegIds = $students->pluck('reg_no')->toArray();
 
-        // Message to notify students
-        $message = "A new class schedule has been added for your class: {$classSchedule->class->name} on {$classSchedule->day} from {$classSchedule->start_time } to {$classSchedule->end_time}.";
+            // Message to notify students
+            $message = "A new class schedule has been added for your class: {$classSchedule->class->name} on {$classSchedule->day} from {$classSchedule->start_time} to {$classSchedule->end_time}.";
 
-        // Use the injected OneSignalController to send notifications
-        $oneSignalController->sendNotificationBulk($studentRegIds, $message);
+            // Use the injected OneSignalController to send notifications
+            $oneSignalController->sendNotificationBulk($studentRegIds, $message);
+        }
 
         return response()->json(['message' => 'Class schedule added successfully, and students notified!']);
     }
