@@ -12,24 +12,84 @@
                         <li class="breadcrumb-item active">Managers</li>
                     </ol>
                 </div>
-                <h4 class="page-title">Page Management</h4>
+                <h4 class="page-title">Management Dashboard</h4>
             </div>
         </div>
     </div>
 
+    <!-- Dashboard Stats -->
     <div class="row g-4">
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Total Officers</h5>
+                    <h2 class="fw-bold">{{ $managementOfficers->count() }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Active Officers</h5>
+                    <h2 class="fw-bold text-success">{{ $managementOfficers->where('status', 1)->count() }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">Inactive Officers</h5>
+                    <h2 class="fw-bold text-danger">{{ $managementOfficers->where('status', 0)->count() }}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title text-muted">New Registrations</h5>
+                    <h2 class="fw-bold">{{ $newRegistrations }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-12 mt-4">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">Management Officers - Students Added</h4>
+                <p class="text-muted">
+                    Check management officers' performance by the number of students they have added.
+                </p>
+            </div>
+            <div class="card-body">
+                <canvas id="officerBarChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="row mt-4">
         <div class="col-12">
             <div class="mb-4">
-                <h4 class="fs-16">
-                    All Management Officers
-                </h4>
+                <h4 class="fs-16">All Management Officers</h4>
                 <p class="text-muted fs-14">
                     List of all management officers in the system.
                 </p>
-                <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal"
-                        data-bs-target="#addUserModal">
-                    Register New Management Officer
-                </button>
+
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal"
+                                data-bs-target="#addUserModal">
+                            Register New Management Officer
+                        </button>
+                    </div>
+                    <div>
+                        <input type="text" class="form-control" placeholder="Search by name or email" id="searchInput">
+                    </div>
+                </div>
 
                 <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
                     <thead>
@@ -238,8 +298,63 @@
 @endsection
 
 @section('script')
-
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+
+        document.addEventListener('DOMContentLoaded', function () {
+            // Management Officers vs Students Bar Chart
+            const officerCtx = document.getElementById('officerBarChart').getContext('2d');
+            const officerData = @json($officerStudentData);
+
+            const officerLabels = officerData.map(item => item.name);
+            const studentCountsByOfficer = officerData.map(item => item.total_students);
+
+            new Chart(officerCtx, {
+                type: 'bar',
+                data: {
+                    labels: officerLabels,
+                    datasets: [{
+                        label: 'Students Added by Officers',
+                        data: studentCountsByOfficer,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function (tooltipItem) {
+                                    return ` ${tooltipItem.raw} students`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Number of Students'
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Management Officers'
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+
         function addUserProcess() {
             // Collect data from the form inputs
             const officerName = $("#officerName").val();

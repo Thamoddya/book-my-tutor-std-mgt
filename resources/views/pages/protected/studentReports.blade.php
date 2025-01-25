@@ -27,7 +27,7 @@
                             <h4 class="mb-0">Student Reports</h4>
                         </div>
                         <div class="table-responsive">
-                            <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
+                            <table id="datatable" class="table table-striped dt-responsive nowrap w-100">
                                 <thead>
                                 <tr>
                                     <th>Student ID</th>

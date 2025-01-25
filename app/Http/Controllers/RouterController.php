@@ -77,8 +77,17 @@ class RouterController extends Controller
     public function managementOfficers()
     {
         $managementOfficers = User::role('management_officer')->get();
+        $newRegistrations = User::role('management_officer')->where('created_at', '>=', now()->subMonth())->count();
+        $officerStudentData = $managementOfficers->map(function ($officer) {
+            return [
+                'name' => $officer->name,
+                'total_students' => $officer->getAddedStudentCount(),
+            ];
+        });
         return view('pages.protected.management', compact([
-            'managementOfficers'
+            'managementOfficers',
+            'newRegistrations',
+            'officerStudentData'
         ]));
     }
 

@@ -32,7 +32,7 @@
                     Add New Student
                 </button>
 
-                <table id="datatable-buttons" class="table table-striped dt-responsive nowrap w-100">
+                <table id="datatable" class="table table-striped dt-responsive nowrap w-100">
                     <thead>
                         <tr>
                             <th>STD ID</th>

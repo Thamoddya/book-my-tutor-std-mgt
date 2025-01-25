@@ -25,4 +25,12 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+
+    //get added student count
+    public function getAddedStudentCount()
+    {
+        return Student::where('created_by', $this->id)->count();
+    }
+
 }

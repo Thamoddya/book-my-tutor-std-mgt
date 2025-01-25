@@ -17,7 +17,8 @@
     <script src="{{ asset('assets/vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/datatables.net-responsive/js/dataTables.responsive.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js') }}"></script>
-    <script src="{{ asset('assets/vendor/datatables.net-fixedcolumns-bs5/js/fixedColumns.bootstrap5.min.js') }}"></script>
+    <script
+        src="{{ asset('assets/vendor/datatables.net-fixedcolumns-bs5/js/fixedColumns.bootstrap5.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/datatables.net-fixedheader/js/dataTables.fixedHeader.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/datatables.net-buttons/js/dataTables.buttons.min.js') }}"></script>
     <script src="{{ asset('assets/vendor/datatables.net-buttons-bs5/js/buttons.bootstrap5.min.js') }}"></script>
@@ -46,7 +47,7 @@
 
 <script src="{{ asset('assets/vendor/select2/js/select2.min.js') }}"></script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#schoolSelector').select2({
             placeholder: "Search for a school",
             allowClear: true,
@@ -62,4 +63,16 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script
     src="https://cdn.datatables.net/v/bs5/jq-3.7.0/jszip-3.10.1/dt-2.2.1/b-3.2.0/b-colvis-3.2.0/b-html5-3.2.0/cr-2.0.4/date-1.5.5/fc-5.0.4/fh-4.0.1/r-3.0.3/sc-2.4.3/datatables.min.js">
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#datatable").DataTable({
+            responsive: true,
+            autoWidth: false,
+            dom: "Bfrtip",
+            buttons: ["copy", "excel", "print"],
+        });
+    });
 </script>

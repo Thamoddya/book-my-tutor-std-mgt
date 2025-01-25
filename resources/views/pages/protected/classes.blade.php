@@ -140,6 +140,7 @@
         };
 
         $(document).ready(function () {
+
             const table = $('#classesDatatable').DataTable({
                 "processing": true,
                 "serverSide": true,
@@ -147,6 +148,8 @@
                     url: "{{ route('classes.load.data') }}",
                     dataSrc: "data"
                 },
+                dom: "Bfrtip",
+                buttons: ["copy", "excel", "print"],
                 "columns": [{
                     data: 'name',
                     title: 'Class Name'
