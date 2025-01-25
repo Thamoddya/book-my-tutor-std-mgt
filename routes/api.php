@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/student/token', [ApiAuthController::class, 'login']);
 Route::post('/upload/images', [ApiController::class, 'uploadImage']);
 
+Route::post('/test/sms', [\App\Http\Controllers\test\TestingController::class, 'TestSMS']);
+
 // OneSignal
 
 Route::post('/sendNotification', [\App\Http\Controllers\config\OneSignalController::class, 'sendNotificationAPI'])->name('sendNotification');

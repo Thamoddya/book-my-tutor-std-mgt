@@ -60,6 +60,16 @@ class StudentController extends Controller
             'response_message' => 'Student created successfully!'
         ]);
 
+        try {
+            $smsController = new SMSController();
+            $smsController->sendSms(
+                [$request->call_no],
+                "Hi $request->name, welcome to BookMyTutor! \nYour reg no: $newRegNo.\nDownload our app and log in using your reg no and call no."
+            );
+        }catch (\Exception $e){
+            return response()->json(['message' => 'Student created successfully! But failed to send SMS'], 201);
+        }
+
         // Return success response
         return response()->json(['message' => 'Student created successfully!', 'student' => $student], 201);
     }
