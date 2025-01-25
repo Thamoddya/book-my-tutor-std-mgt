@@ -28,37 +28,37 @@
                     List of all students registered in the system.
                 </p>
                 <button type="button" class="btn btn-primary mb-4" data-bs-toggle="modal"
-                    data-bs-target="#addStudentModal">
+                        data-bs-target="#addStudentModal">
                     Add New Student
                 </button>
 
                 <table id="datatable" class="table table-striped dt-responsive nowrap w-100">
                     <thead>
-                        <tr>
-                            <th>STD ID</th>
-                            <th>Full Name :</th>
-                            <th>Call No :</th>
-                            <th>Whatsapp No :</th>
-                            <th>Email :</th>
-                            <th>Actions</th>
-                        </tr>
+                    <tr>
+                        <th>STD ID</th>
+                        <th>Full Name</th>
+                        <th>Call No</th>
+                        <th>WhatsApp No</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
                     </thead>
                     <tbody>
-
-                        @foreach ($students as $student)
-                            <tr>
-                                <td>{{ $student->reg_no }}</td>
-                                <td>{{ $student->name }}</td>
-                                <td>{{ $student->call_no }}</td>
-                                <td>{{ $student->wtp_no }}</td>
-                                <td>{{ $student->email }}</td>
-                                <td>
-                                    <a class="btn btn-primary btn-sm" onclick="openEditModal({{ $student->id }})">Edit</a>
-                                    <a class="btn btn-danger btn-sm">Delete</a>
-                                </td>
-                            </tr>
-                        @endforeach
-
+                    @foreach ($students as $student)
+                        <tr>
+                            <td>{{ $student->reg_no }}</td>
+                            <td>{{ $student->name }}</td>
+                            <td>{{ $student->call_no }}</td>
+                            <td>{{ $student->wtp_no }}</td>
+                            <td>{{ $student->email }}</td>
+                            <td>
+                                <button class="btn btn-info btn-sm" onclick="viewStudent({{ $student->id }})">View
+                                </button>
+                                <a class="btn btn-primary btn-sm" onclick="openEditModal({{ $student->id }})">Edit</a>
+                                <a class="btn btn-danger btn-sm">Delete</a>
+                            </td>
+                        </tr>
+                    @endforeach
                     </tbody>
                 </table>
             </div>
@@ -66,7 +66,8 @@
     </div>
 
     <!-- Add Student Modal -->
-    <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addStudentModal" tabindex="-1" aria-labelledby="addStudentModalLabel"
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -83,11 +84,11 @@
                         <div class="mb-3">
                             <label for="callNo" class="form-label">Call No</label>
                             <input type="number" maxlength="10" class="form-control" id="callNo"
-                                placeholder="Enter Call No">
+                                   placeholder="Enter Call No">
                             <div class="invalid-feedback" id="call_noError"></div>
                             <div class="form-check form-checkbox-success mt-1">
                                 <input type="checkbox" class="form-check-input" id="markCallNoAsWhatsappNo"
-                                    onclick="setWhatsappNo()">
+                                       onclick="setWhatsappNo()">
                                 <label class="form-check-label" for="markCallNoAsWhatsappNo">
                                     Same as Call No
                                 </label>
@@ -106,7 +107,7 @@
                         <div class="mb-3">
                             <label for="schoolSearch" class="form-label">Search School</label>
                             <input type="text" id="schoolSearch" class="form-control"
-                                placeholder="Type to search school">
+                                   placeholder="Type to search school">
                             <input type="hidden" id="schoolId">
                             <ul id="schoolSuggestions" class="list-group"
                                 style="position: absolute; z-index: 1050; display: none;"></ul>
@@ -146,7 +147,7 @@
 
     <!-- Edit Student Modal -->
     <div class="modal fade" id="editStudentModal" tabindex="-1" aria-labelledby="editStudentModalLabel"
-        aria-hidden="true">
+         aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -174,7 +175,7 @@
                         <div class="mb-3">
                             <label for="editSchoolSearch" class="form-label">Search New School</label>
                             <input type="text" id="editSchoolSearch" class="form-control"
-                                placeholder="Type to search school">
+                                   placeholder="Type to search school">
                             <input type="hidden" id="editSchoolId">
                             <ul id="editSchoolSuggestions" class="list-group"
                                 style="position: absolute; z-index: 1050; display: none;"></ul>
@@ -224,15 +225,97 @@
             </div>
         </div>
     </div>
+
+    <!-- View Student Modal -->
+    <div class="modal fade" id="viewStudentModal" tabindex="-1" aria-labelledby="viewStudentModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewStudentModalLabel">Student Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-bordered">
+                        <tbody>
+                        <tr>
+                            <th>Full Name</th>
+                            <td id="studentName"></td>
+                        </tr>
+                        <tr>
+                            <th>Registration No</th>
+                            <td id="studentRegNo"></td>
+                        </tr>
+                        <tr>
+                            <th>Call No</th>
+                            <td id="studentCallNo"></td>
+                        </tr>
+                        <tr>
+                            <th>WhatsApp No</th>
+                            <td id="studentWhatsappNo"></td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td id="studentEmail"></td>
+                        </tr>
+                        <tr>
+                            <th>Address</th>
+                            <td id="studentAddress"></td>
+                        </tr>
+                        <tr>
+                            <th>Batch</th>
+                            <td id="studentBatch"></td>
+                        </tr>
+                        <tr>
+                            <th>School</th>
+                            <td id="studentSchool"></td>
+                        </tr>
+                        <tr>
+                            <th>Status</th>
+                            <td id="studentStatus"></td>
+                        </tr>
+                        <tr>
+                            <th>Created At</th>
+                            <td id="studentCreatedAt"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <!-- Payment Breakdown -->
+                    <div class="mt-4">
+                        <h5>Payment Breakdown</h5>
+                        <table class="table table-bordered">
+                            <thead>
+                            <tr>
+                                <th>This Month</th>
+                                <th>Last Month</th>
+                                <th>Two Months Ago</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td id="paymentThisMonth"></td>
+                                <td id="paymentLastMonth"></td>
+                                <td id="paymentTwoMonthsAgo"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
 @endsection
 @section('script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const schoolSearchInput = $('#schoolSearch');
             const schoolSuggestions = $('#schoolSuggestions');
             const schoolIdInput = $('#schoolId');
 
-            schoolSearchInput.on('input', function() {
+            schoolSearchInput.on('input', function () {
                 const query = $(this).val();
                 if (query.length >= 2) {
                     $.ajax({
@@ -241,7 +324,7 @@
                         data: {
                             search: query
                         },
-                        success: function(response) {
+                        success: function (response) {
                             schoolSuggestions.empty().show();
                             if (response.length > 0) {
                                 response.forEach(school => {
@@ -258,7 +341,7 @@
                                     `<li class="list-group-item">No results found</li>`);
                             }
                         },
-                        error: function() {
+                        error: function () {
                             schoolSuggestions.hide();
                         }
                     });
@@ -268,7 +351,7 @@
             });
 
             // Handle click on suggestion
-            schoolSuggestions.on('click', 'li', function() {
+            schoolSuggestions.on('click', 'li', function () {
                 const schoolName = $(this).data('name');
                 const schoolId = $(this).data('id');
 
@@ -278,14 +361,14 @@
             });
 
             // Hide suggestions when clicking outside
-            $(document).on('click', function(e) {
+            $(document).on('click', function (e) {
                 if (!$(e.target).closest('#schoolSearch, #schoolSuggestions').length) {
                     schoolSuggestions.hide();
                 }
             });
 
             // Ensure WhatsApp No is updated if Call No is edited and checkbox is checked
-            $('#callNo').on('input', function() {
+            $('#callNo').on('input', function () {
                 const checkbox = $('#markCallNoAsWhatsappNo');
                 const whatsappNoField = $('#whatsappNo');
 
@@ -295,12 +378,12 @@
             });
         });
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             const editSchoolSearchInput = $('#editSchoolSearch');
             const editSchoolSuggestions = $('#editSchoolSuggestions');
             const editSchoolIdInput = $('#editSchoolId');
 
-            editSchoolSearchInput.on('input', function() {
+            editSchoolSearchInput.on('input', function () {
                 const query = $(this).val();
                 if (query.length >= 2) {
                     $.ajax({
@@ -309,7 +392,7 @@
                         data: {
                             search: query
                         },
-                        success: function(response) {
+                        success: function (response) {
                             editSchoolSuggestions.empty().show();
                             if (response.length > 0) {
                                 response.forEach(school => {
@@ -326,7 +409,7 @@
                                     `<li class="list-group-item">No results found</li>`);
                             }
                         },
-                        error: function() {
+                        error: function () {
                             editSchoolSuggestions.hide();
                         }
                     });
@@ -335,7 +418,7 @@
                 }
             });
 
-            editSchoolSuggestions.on('click', 'li', function() {
+            editSchoolSuggestions.on('click', 'li', function () {
                 const schoolName = $(this).data('name');
                 const schoolId = $(this).data('id');
 
@@ -344,7 +427,7 @@
                 editSchoolSuggestions.hide();
             });
 
-            $(document).on('click', function(e) {
+            $(document).on('click', function (e) {
                 if (!$(e.target).closest('#editSchoolSearch, #editSchoolSuggestions').length) {
                     editSchoolSuggestions.hide();
                 }
@@ -374,11 +457,11 @@
                 url: '/students', // Adjust this URL to match your store route
                 method: 'POST',
                 data: formData,
-                success: function(response) {
+                success: function (response) {
                     alert(response.message);
                     location.reload(); // Reload the page or reset the form
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     if (xhr.status === 422) {
                         // Validation errors from Laravel
                         const errors = xhr.responseJSON.errors;
@@ -424,7 +507,7 @@
             $.ajax({
                 url: `/students/${id}`,
                 method: 'GET',
-                success: function(response) {
+                success: function (response) {
                     // Populate the fields with the student data
                     $('#editStudentId').val(response.student.id);
                     $('#editFullName').val(response.student.name);
@@ -438,12 +521,12 @@
                     $.ajax({
                         url: `/api/schools/${response.student.school_id}`, // Assuming this endpoint returns school details by ID
                         method: 'GET',
-                        success: function(schoolResponse) {
+                        success: function (schoolResponse) {
                             $('#editSchool').html(`
                         <option value="${schoolResponse.id}" selected>${schoolResponse.name}</option>
                     `);
                         },
-                        error: function() {
+                        error: function () {
                             alert('Failed to fetch school details.');
                         }
                     });
@@ -464,12 +547,11 @@
                     // Show the edit modal
                     $('#editStudentModal').modal('show');
                 },
-                error: function() {
+                error: function () {
                     alert('An error occurred while fetching student details.');
                 }
             });
         }
-
 
 
         function updateStudentProcess() {
@@ -490,11 +572,11 @@
                 url: `/students/${id}`,
                 method: 'PUT',
                 data: formData,
-                success: function(response) {
+                success: function (response) {
                     alert(response.message);
                     location.reload(); // Reload the page
                 },
-                error: function(xhr) {
+                error: function (xhr) {
                     console.log(xhr);
                     if (xhr.status === 422) {
                         // Handle validation errors
@@ -502,7 +584,7 @@
                         for (let field in errors) {
                             $(`#edit${field.charAt(0).toUpperCase() + field.slice(1)}Error`).text(errors[field][
                                 0
-                            ]).show();
+                                ]).show();
                         }
                     } else {
                         alert('An error occurred. Please try again.');
@@ -510,5 +592,50 @@
                 }
             });
         }
+
+        function viewStudent(studentId) {
+            $.ajax({
+                url: `/getStudentByID/${studentId}`,
+                method: 'GET',
+                success: function (response) {
+                    console.log(response);
+                    const student = response.student;
+                    const payment = response.payment_breakdown;
+
+                    // Populate student details
+                    $('#studentName').text(student.name);
+                    $('#studentRegNo').text(student.reg_no);
+                    $('#studentCallNo').text(student.call_no);
+                    $('#studentWhatsappNo').text(student.wtp_no);
+                    $('#studentEmail').text(student.email);
+                    $('#studentAddress').text(student.address);
+                    $('#studentBatch').text(student.batch ? student.batch.name : 'N/A');
+                    $('#studentSchool').text(student.school ? student.school.name : 'N/A');
+                    $('#studentStatus').text(student.status ? 'Active' : 'Inactive');
+                    $('#studentCreatedAt').text(new Date(student.created_at).toLocaleDateString());
+
+                    // Populate payment details
+                    $('#paymentThisMonth').html(payment.this_month
+                        ? '<span class="badge bg-success">Paid</span>'
+                        : '<span class="badge bg-danger">Not Paid</span>');
+
+                    $('#paymentLastMonth').html(payment.last_month
+                        ? '<span class="badge bg-success">Paid</span>'
+                        : '<span class="badge bg-danger">Not Paid</span>');
+
+                    $('#paymentTwoMonthsAgo').html(payment.two_months_ago
+                        ? '<span class="badge bg-success">Paid</span>'
+                        : '<span class="badge bg-danger">Not Paid</span>');
+
+                    // Show the modal
+                    $('#viewStudentModal').modal('show');
+                },
+                error: function (xhr) {
+                    alert('Failed to fetch student details. Please try again.');
+                }
+            });
+        }
+
+
     </script>
 @endsection

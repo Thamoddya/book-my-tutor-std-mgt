@@ -9,6 +9,26 @@ use Illuminate\Support\Facades\Route;
 Route::get('/login', [RouterController::class, 'login'])->name('login');
 Route::post('/auth/login', [AuthController::class, 'LoginProcess'])->name('login-process');
 
+Route::get('/getStudentByID/{id}', function ($id) {
+    $student = \App\Models\Student::with(['batch', 'school', 'payments'])->find($id);
+
+    if (!$student) {
+        return response()->json(['message' => 'Student not found'], 404);
+    }
+
+    // Add payment breakdown manually
+    $paymentBreakdown = [
+        'this_month' => $student->paidToThisMonth(),
+        'last_month' => $student->paidToLastMonth(),
+        'two_months_ago' => $student->paidToTwoMonthsAgo(),
+    ];
+
+    return response()->json([
+        'student' => $student,
+        'payment_breakdown' => $paymentBreakdown
+    ]);
+});
+
 Route::middleware('auth')->group(function () {
     Route::get('/', [RouterController::class, 'index'])->name('index');
     Route::get('/batch-management', [RouterController::class, 'batchManagement'])->name('batch');
@@ -88,7 +108,6 @@ Route::middleware('auth')->group(function () {
 
         abort(404);
     })->name('receipt.view');
-
 
     Route::get('/logout', [AuthController::class, 'LogoutProcess'])->name('logout');
 });
