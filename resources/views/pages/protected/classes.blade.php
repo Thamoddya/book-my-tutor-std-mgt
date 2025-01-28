@@ -1,31 +1,52 @@
 @extends('layout.MainLayout')
 
 @section('content')
-    <div class="container">
-        <div class="row mb-3">
-            <div class="col-md-12 text-end">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Add New Class
-                </button>
+    {{--    @dd($classesForChart)--}}
+
+    <div class="row">
+        <div class="col-12">
+
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <div class="row mb-3">
+                        <div class="col-md-12 text-end">
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClassModal">Add
+                                New Class
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <h4 class="page-title">Classes</h4>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-header">Classes</div>
-                    <div class="card-body">
-                        <table class="table table-bordered" id="classesDatatable">
-                            <thead>
-                            <tr>
-                                <th>Class Name</th>
-                                <th>Class Code</th>
-                                <th>Description</th>
-                                <th>Teacher</th>
-                                <th>Students</th>
-                                <th>Actions</th>
-                            </tr>
-                            </thead>
-                        </table>
-                    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Classes</div>
+                <div class="card-body">
+                    <table class="table table-bordered" id="classesDatatable">
+                        <thead>
+                        <tr>
+                            <th>Class Name</th>
+                            <th>Class Code</th>
+                            <th>Description</th>
+                            <th>Teacher</th>
+                            <th>Students</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="card">
+                <div class="card-header">Payments This Month</div>
+                <div class="card-body">
+                    <canvas id="classMonthIncomeChart"></canvas>
                 </div>
             </div>
         </div>
@@ -132,6 +153,7 @@
 @endsection
 
 @section('script')
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const routes = {
             getStudents: "{{ route('classes.get.students', ':id') }}",
@@ -375,5 +397,46 @@
             });
 
         });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('classMonthIncomeChart').getContext('2d');
+
+            // Pass PHP data to JavaScript
+            const classesForChart = @json($classesForChart);
+
+            const labels = classesForChart.map(classData => classData.name);
+            const data = classesForChart.map(classData => classData.totalAmount);
+
+            // Render the chart
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Payments This Month (Rs.)',
+                        data: data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function (value) {
+                                    return 'Rs.' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
     </script>
 @endsection

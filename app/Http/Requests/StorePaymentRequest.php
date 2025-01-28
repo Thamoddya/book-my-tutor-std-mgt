@@ -24,6 +24,7 @@ class StorePaymentRequest extends FormRequest
             'student_id' => 'required|exists:students,reg_no',
             'receipt_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048', // Image validation
             'created_at' => 'nullable|date',
+            'class_id' => 'required|exists:classes,id',
         ];
     }
 
@@ -45,6 +46,8 @@ class StorePaymentRequest extends FormRequest
             'receipt_picture.image' => 'The receipt must be an image.',
             'receipt_picture.mimes' => 'The receipt must be a JPEG, PNG, JPG, or GIF file.',
             'receipt_picture.max' => 'The receipt must not exceed 2MB.',
+            'created_at.date' => 'The created at must be a valid date.',
+            'class_id.exists' => 'The class does not exist.'
         ];
     }
 }

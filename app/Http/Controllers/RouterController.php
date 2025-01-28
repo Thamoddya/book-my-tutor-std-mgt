@@ -109,8 +109,12 @@ class RouterController extends Controller
         $payments = Payment::with('student')
             ->orderBy('created_at', 'desc')
             ->get();
+
+        $classes = Classes::all();
+
         return view('pages.protected.payment', compact([
-            'payments'
+            'payments',
+            'classes'
         ]));
     }
 
@@ -158,6 +162,7 @@ class RouterController extends Controller
     public function systemLog()
     {
         $logs = UserLog::all();
+
         return view('pages.protected.UserLog', compact([
             'logs'
         ]));
@@ -170,8 +175,22 @@ class RouterController extends Controller
 
     public function classes()
     {
-        $classes = Classes::all();
-        return view('pages.protected.classes', compact(['classes']));
+        $classes = Classes::with('payments')->get();
+
+        // Map data for the chart
+        $classesForChart = $classes->map(function ($class) {
+            $totalAmount = $class->payments
+                ->where('created_at', '>=', now()->startOfMonth())
+                ->where('status', 'paid') // Include only paid payments
+                ->sum('amount');
+
+            return [
+                'name' => $class->name,
+                'totalAmount' => $totalAmount,
+            ];
+        });
+
+        return view('pages.protected.classes', compact('classes', 'classesForChart'));
     }
 
     public function classSchedule()

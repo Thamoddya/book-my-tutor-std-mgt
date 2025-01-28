@@ -115,6 +115,17 @@
                             <div class="invalid-feedback" id="payment_methodError"></div>
                         </div>
 
+                        {{--Select Class--}}
+                        <div class="form-group mt-2">
+                            <label for="class_id">Class</label>
+                            <select name="class_id" id="class_id" class="form-control">
+                                @foreach ($classes as $class)
+                                    <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback" id="class_idError"></div>
+                        </div>
+
                         <div class="form-group mt-2">
                             <label for="created_at">Created At (Optional)</label>
                             <input type="datetime-local" name="created_at" id="created_at" class="form-control">

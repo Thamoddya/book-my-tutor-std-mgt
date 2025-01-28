@@ -22,6 +22,7 @@ class Payment extends Model
         'receipt_picture',
         'processed_by',
         'created_at',
+        'class_id'
     ];
     protected $dates = ['paid_at'];
 
@@ -110,5 +111,10 @@ class Payment extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'processed_by');
+    }
+
+    public function class()
+    {
+        return $this->belongsTo(Classes::class, 'class_id');
     }
 }

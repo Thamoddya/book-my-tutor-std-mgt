@@ -2,9 +2,20 @@
 
 @section('content')
     <div class="container">
+
+
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-12">
+                    <h4>Payments by Class (Last 6 Months)</h4>
+                    <canvas id="paymentBarChart"></canvas>
+                </div>
+            </div>
+        </div>
         <div class="row mb-3">
             <div class="col-md-12 text-end">
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addScheduleModal">Add Schedule</button>
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addScheduleModal">Add Schedule
+                </button>
             </div>
         </div>
         <div class="row">
@@ -13,15 +24,15 @@
                     <div class="card-body">
                         <table class="table table-bordered" id="schedulesTable">
                             <thead>
-                                <tr>
-                                    <th>Class Name</th>
-                                    <th>Day</th>
-                                    <th>Start Time</th>
-                                    <th>End Time</th>
-                                    <th>Tutor</th>
-                                    <th>Mode</th>
-                                    <th>Actions</th>
-                                </tr>
+                            <tr>
+                                <th>Class Name</th>
+                                <th>Day</th>
+                                <th>Start Time</th>
+                                <th>End Time</th>
+                                <th>Tutor</th>
+                                <th>Mode</th>
+                                <th>Actions</th>
+                            </tr>
                             </thead>
                         </table>
                     </div>
@@ -148,7 +159,7 @@
                         <div class="mb-3">
                             <label for="edit_any_material_url" class="form-label">Material URL</label>
                             <input type="url" id="edit_any_material_url" name="any_material_url"
-                                class="form-control">
+                                   class="form-control">
                         </div>
                         <div class="mb-3">
                             <label for="edit_note" class="form-label">Note</label>
@@ -167,7 +178,7 @@
 
 @section('script')
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             const table = $('#schedulesTable').DataTable({
                 "processing": true,
                 "serverSide": false,
@@ -178,17 +189,17 @@
                 "ajax": {
                     url: "{{ route('class-schedules.load') }}",
                     type: "GET",
-                    dataSrc: function(json) {
+                    dataSrc: function (json) {
                         return json.data;
                     },
-                    error: function(xhr, status, error) {
+                    error: function (xhr, status, error) {
                         console.error('DataTables Error:', error);
                     }
                 },
                 "columns": [{
-                        data: 'class_name',
-                        title: 'Class Name'
-                    },
+                    data: 'class_name',
+                    title: 'Class Name'
+                },
                     {
                         data: 'day',
                         title: 'Day'
@@ -212,7 +223,7 @@
                     {
                         data: 'id',
                         title: 'Actions',
-                        render: function(data) {
+                        render: function (data) {
                             return `
                     <button class="btn btn-sm btn-warning edit-schedule" data-id="${data}">Edit</button>
                     <button class="btn btn-sm btn-danger delete-schedule" data-id="${data}">Delete</button>
@@ -223,26 +234,26 @@
             });
 
             // Add Schedule
-            $('#addScheduleForm').on('submit', function(e) {
+            $('#addScheduleForm').on('submit', function (e) {
                 e.preventDefault();
                 $.ajax({
                     url: "{{ route('class-schedules.store') }}",
                     method: "POST",
                     data: $(this).serialize(),
-                    success: function(response) {
+                    success: function (response) {
                         $('#addScheduleModal').modal('hide');
                         $('#addScheduleForm')[0].reset();
                         table.ajax.reload();
                         alert(response.message);
                     },
-                    error: function(response) {
+                    error: function (response) {
                         alert('Error adding schedule');
                         console.log(response);
 
                         // Display errors
                         $('#errors').html('');
                         $('#errors').show();
-                        $.each(response.responseJSON.errors, function(key, value) {
+                        $.each(response.responseJSON.errors, function (key, value) {
                             $('#errors').append(`<p>${value}</p>`);
                         });
 
@@ -252,7 +263,7 @@
             });
 
             // Delete Schedule
-            $('#schedulesTable').on('click', '.delete-schedule', function() {
+            $('#schedulesTable').on('click', '.delete-schedule', function () {
                 const id = $(this).data('id');
                 if (confirm('Are you sure you want to delete this schedule?')) {
                     $.ajax({
@@ -261,11 +272,11 @@
                         data: {
                             _token: "{{ csrf_token() }}"
                         },
-                        success: function(response) {
+                        success: function (response) {
                             table.ajax.reload();
                             alert(response.message);
                         },
-                        error: function(response) {
+                        error: function (response) {
                             alert('Error deleting schedule');
                         }
                     });
@@ -273,12 +284,12 @@
             });
 
             // Open Edit Modal
-            $('#schedulesTable').on('click', '.edit-schedule', function() {
+            $('#schedulesTable').on('click', '.edit-schedule', function () {
                 const scheduleId = $(this).data('id');
                 $.ajax({
                     url: `/class-schedules/${scheduleId}`,
                     method: "GET",
-                    success: function(response) {
+                    success: function (response) {
                         // Populate the form with the schedule data
                         $('#edit_schedule_id').val(response.id);
                         $('#edit_class_id').val(response.class_id);
@@ -294,7 +305,7 @@
                         // Show the modal
                         $('#editScheduleModal').modal('show');
                     },
-                    error: function(response) {
+                    error: function (response) {
                         alert('Error fetching schedule data');
                         console.log(response);
                     }
@@ -302,7 +313,7 @@
             });
 
             // Update Schedule
-            $('#editScheduleForm').on('submit', function(e) {
+            $('#editScheduleForm').on('submit', function (e) {
                 e.preventDefault();
 
                 const scheduleId = $('#edit_schedule_id').val();
@@ -312,13 +323,13 @@
                     url: `/class-schedules/${scheduleId}`,
                     method: "PUT",
                     data: formData,
-                    success: function(response) {
+                    success: function (response) {
                         $('#editScheduleModal').modal('hide');
                         $('#editScheduleForm')[0].reset();
                         table.ajax.reload();
                         alert(response.message);
                     },
-                    error: function(response) {
+                    error: function (response) {
                         alert('Error updating schedule');
                         console.error('Error Response:', response);
                         if (response.responseJSON && response.responseJSON.errors) {
@@ -328,5 +339,7 @@
                 });
             });
         });
+
+
     </script>
 @endsection

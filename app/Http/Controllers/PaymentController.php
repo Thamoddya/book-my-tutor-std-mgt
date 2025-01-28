@@ -49,6 +49,7 @@ class PaymentController extends Controller
                 'paid_year' => $request->paid_year,
                 'processed_by' => Auth::id(),
                 'created_at' => $request->created_at,
+                'class_id' => $request->class_id,
             ];
 
             if ($request->hasFile('receipt_picture')) {

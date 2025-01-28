@@ -33,4 +33,9 @@ class Classes extends Model
     {
         return $this->hasMany(ClassSchedule::class , 'class_id');
     }
+
+    public function payments()
+    {
+        return $this->hasMany(Payment::class, 'class_id');
+    }
 }
