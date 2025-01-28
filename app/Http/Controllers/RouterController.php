@@ -68,10 +68,17 @@ class RouterController extends Controller
 
     public function batchManagement()
     {
-        $batches = Batch::all();
-        return view('pages.protected.batch', compact([
-            'batches'
-        ]));
+        $batches = Batch::withCount('students')->get();
+
+        // Prepare data for the donut chart
+        $chartData = $batches->map(function ($batch) {
+            return [
+                'name' => $batch->name,
+                'students_count' => $batch->students_count,
+            ];
+        });
+
+        return view('pages.protected.batch', compact('batches', 'chartData'));
     }
 
     public function managementOfficers()
