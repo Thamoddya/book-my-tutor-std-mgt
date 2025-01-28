@@ -151,6 +151,7 @@ class PaymentController extends Controller
             'amount' => 'required|numeric|min:0',
             'status' => 'required|in:' . implode(',', Payment::statuses()),
             'created_at' => 'nullable|date', // Allow updating created_at
+            'class_id' => 'required|exists:classes,id',
         ]);
 
         // Update the payment with the validated data

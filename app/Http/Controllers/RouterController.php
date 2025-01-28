@@ -112,6 +112,7 @@ class RouterController extends Controller
 
         $classes = Classes::all();
 
+
         return view('pages.protected.payment', compact([
             'payments',
             'classes'

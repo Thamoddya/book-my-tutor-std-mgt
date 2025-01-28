@@ -48,7 +48,11 @@
                     <tbody>
 
                     @foreach ($payments as $payment)
-                        <tr>
+                        <tr
+                            @if ($payment->class_id == null)
+                            style="background-color: rgba(94,181,250,0.8)"
+                            @endif
+                        >
                             <td>{{ $payment->invoice_number }}</td>
                             <td>{{ $payment->student->reg_no }}</td>
                             <td>{{ ucfirst($payment->paid_month) }}</td>
@@ -272,6 +276,17 @@
                         </div>
 
                         <div class="form-group mt-2">
+                            <label for="edit_class_id">Class</label>
+                            <select name="class_id" id="edit_class_id" class="form-control">
+                                <option value="">Select Class</option>
+                                @foreach ($classes as $class)
+                                    <option value="{{ $class->id }}">{{ $class->name }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback" id="edit_class_idError"></div>
+                        </div>
+
+                        <div class="form-group mt-2">
                             <label for="edit_paid_month">Paid Month</label>
                             <select name="paid_month" id="edit_paid_month" class="form-control">
                                 @foreach (App\Models\Payment::months() as $month)
@@ -441,6 +456,7 @@
                     $('#edit_paid_year').val(response.payment.paid_year);
                     $('#edit_amount').val(response.payment.amount);
                     $('#edit_payment_status').val(response.payment.status);
+                    $('#edit_class_id').val(response.payment.class_id);
 
                     // Format and set created_at value
                     if (response.payment.created_at) {
