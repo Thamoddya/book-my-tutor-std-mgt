@@ -55,7 +55,8 @@
                                 <button class="btn btn-info btn-sm" onclick="viewStudent({{ $student->id }})">View
                                 </button>
                                 <a class="btn btn-primary btn-sm" onclick="openEditModal({{ $student->id }})">Edit</a>
-                                <a class="btn btn-danger btn-sm">Delete</a>
+                                <a class="btn btn-danger btn-sm"
+                                   onclick="deleteStudent({{ $student->id }})">Delete</a>
                             </td>
                         </tr>
                     @endforeach
@@ -632,6 +633,30 @@
                 },
                 error: function (xhr) {
                     alert('Failed to fetch student details. Please try again.');
+                }
+            });
+        }
+
+        function deleteStudent(id) {
+
+            //Confirm the action
+            if (!confirm('Are you sure you want to delete this student?')) {
+                return;
+            }
+
+            $.ajax({
+                url: `/students/${id}`,
+                method: 'DELETE',
+                headers: {
+                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content")
+                },
+                success: function (response) {
+                    alert(response.message);
+                    location.reload(); // Reload the page
+                },
+                error: function (xhr) {
+                    console.log(xhr);
+                    alert('An error occurred. Please try again.');
                 }
             });
         }

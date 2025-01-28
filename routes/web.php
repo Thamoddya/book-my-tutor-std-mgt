@@ -69,6 +69,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/students/{student}', [\App\Http\Controllers\StudentController::class, 'show'])->name('students.get');
     Route::patch('/students/{student}/activate', [\App\Http\Controllers\StudentController::class, 'activate'])->name('students.activate');
     Route::patch('/students/{student}/deactivate', [\App\Http\Controllers\StudentController::class, 'deactivate'])->name('students.deactivate');
+    Route::delete('/students/{student}', [\App\Http\Controllers\StudentController::class, 'destroy'])->name('students.destroy');
+
 
     //API Payments
     Route::post('/payments/store', [\App\Http\Controllers\PaymentController::class, 'store'])->name('payments.store');

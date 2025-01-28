@@ -144,6 +144,12 @@ class StudentController extends Controller
 
     public function destroy(Student $student)
     {
-        //
+        //Delete all payments made by the student
+        $student->payments()->delete();
+
+        //Delete the student record
+        $student->delete();
+
+        return response()->json(['message' => 'Student deleted successfully!'], 200);
     }
 }
