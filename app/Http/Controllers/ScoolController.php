@@ -4,31 +4,29 @@ namespace App\Http\Controllers;
 
 use App\Models\School;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class ScoolController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $schools = School::all();
-        return view('pages.protected.schools', compact([
-            'schools'
-        ]));
+        if ($request->ajax()) {
+            $schools = School::query();
+
+            return DataTables::of($schools)
+                ->addColumn('actions', function ($school) {
+                    return '
+                        <button class="btn btn-sm btn-warning edit-school-btn" data-id="' . $school->id . '" data-name="' . $school->name . '">Edit</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteSchool(' . $school->id . ')">Delete</button>
+                    ';
+                })
+                ->rawColumns(['actions'])
+                ->make(true);
+        }
+
+        return view('pages.protected.schools');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -46,20 +44,6 @@ class ScoolController extends Controller
         }
     }
 
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(School $scool)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(School $scool) {}
-
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -74,26 +58,14 @@ class ScoolController extends Controller
         return response()->json(['success' => 'School updated successfully']);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(School $scool)
+    public function destroy($id)
     {
-        //
-    }
-
-    public function searchSchools(Request $request)
-    {
-        $search = $request->input('search');
-        $schools = School::where('name', 'LIKE', "%$search%")
-            ->limit(10)
-            ->get(['id', 'name']);
-
-        return response()->json($schools);
+        try {
+            $school = School::findOrFail($id);
+            $school->delete();
+            return response()->json(['success' => 'School deleted successfully']);
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
 }

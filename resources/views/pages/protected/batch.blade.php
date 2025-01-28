@@ -44,56 +44,60 @@
     </div>
 
     <!-- Batches Table -->
-    <div class="row">
+    <div class="row g-4">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header bg-secondary text-white">
-                    <h5 class="card-title mb-0">All Batches</h5>
-                </div>
-                <div class="card-body">
-                    <table id="datatable" class="table table-striped table-hover dt-responsive nowrap w-100">
-                        <thead>
+            <div class="mb-4">
+                <table id="datatable" class="table table-striped dt-responsive nowrap w-100">
+                    <thead>
+                    <tr>
+                        <th>Batch ID</th>
+                        <th>Batch Name</th>
+                        <th>Batch Created Date :</th>
+                        <th>Batch Updated Date :</th>
+                        <th>Batch Status :</th>
+                        <th>Batch Students Count :</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    @foreach($batches as $batch)
                         <tr>
-                            <th>Batch ID</th>
-                            <th>Batch Name</th>
-                            <th>Created Date</th>
-                            <th>Updated Date</th>
-                            <th>Status</th>
-                            <th>Students Count</th>
-                            <th>Actions</th>
+                            <td>{{ $batch->id }}</td>
+                            <td>{{ $batch->name }}</td>
+                            <td>{{$batch->created_at->format('d M, Y')    }}</td>
+                            <td>{{$batch->updated_at->format('d M, Y')    }}</td>
+                            <td>
+                                @if($batch->status == 1)
+                                    <span class="badge bg-success">Active</span>
+                                @else
+                                    <span class="badge bg-danger">Inactive</span>
+                                @endif
+                            </td>
+                            <td>{{ $batch->students->count() }}</td>
+                            <td>
+                                <a class="btn btn-primary btn-sm"
+                                   onclick="openEditBatchModal({{ $batch->id }}, '{{ $batch->name }}')">Edit</a>
+                                @if($batch->status == 1)
+                                    <a class="btn btn-danger btn-sm"
+                                       onclick="confirmDeactivateBatch({{ $batch->id }})"
+                                    >Deactivate</a>
+                                @else
+                                    <a class="btn btn-success btn-sm"
+                                       onclick="confirmActivateBatch({{ $batch->id }})">Activate batch</a>
+                                @endif
+
+                            </td>
                         </tr>
-                        </thead>
-                        <tbody>
-                        @foreach($batches as $batch)
-                            <tr>
-                                <td>{{ $batch->id }}</td>
-                                <td>{{ $batch->name }}</td>
-                                <td>{{ $batch->created_at->format('d M, Y') }}</td>
-                                <td>{{ $batch->updated_at->format('d M, Y') }}</td>
-                                <td>
-                                    @if($batch->status == 1)
-                                        <span class="badge bg-success">Active</span>
-                                    @else
-                                        <span class="badge bg-danger">Inactive</span>
-                                    @endif
-                                </td>
-                                <td>{{ $batch->students_count }}</td>
-                                <td>
-                                    <button class="btn btn-sm btn-primary" onclick="openEditBatchModal({{ $batch->id }}, '{{ $batch->name }}')">Edit</button>
-                                    @if($batch->status == 1)
-                                        <button class="btn btn-sm btn-danger" onclick="confirmDeactivateBatch({{ $batch->id }})">Deactivate</button>
-                                    @else
-                                        <button class="btn btn-sm btn-success" onclick="confirmActivateBatch({{ $batch->id }})">Activate</button>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+
+                    @endforeach
+                    </tbody>
+                </table>
+
+            </div> <!-- end card -->
+        </div><!-- end col-->
+    </div> <!-- end row-->
     {{-- Add Batch Modal --}}
     <div id="addBatchModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="addBatchModalLabel"
          aria-hidden="true">

@@ -119,7 +119,8 @@ Route::get('/api/schools/{id}', function ($id) {
     $school = App\Models\School::findOrFail($id);
     return response()->json($school);
 });
-
+Route::delete('/schools/{id}', [\App\Http\Controllers\ScoolController::class, 'destroy'])->name('api.schools.destroy');
+Route::get('/all-schools', [\App\Http\Controllers\ScoolController::class, 'index'])->name('schools.index');
 
 Route::get('/schools/create', [RouterController::class, 'createSchool'])->name('schools.create');
 Route::post('/schools/store', [\App\Http\Controllers\ScoolController::class, 'store'])->name('schools.store');
