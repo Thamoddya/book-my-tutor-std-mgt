@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\config\OneSignalController;
+use App\Models\Classes;
 use App\Models\Payment;
 use App\Http\Requests\StorePaymentRequest;
 use App\Models\Student;
@@ -76,6 +77,20 @@ class PaymentController extends Controller
                     ? 'Payment updated successfully'
                     : 'Payment created successfully',
             ]);
+
+            //SMS Notification
+            try {
+
+                $class = Classes::where('id', $request->class_id)->first();
+
+                $phoneNumbers = [$student->call_no];
+                $message = "Hi $student->name, your payment of Rs. $request->amount for $request->paid_month $request->paid_year has been received.\nThank you for choosing BookMyTutor.\nPaid for $class->name";
+
+                $sms = new SMSController();
+                $sms->sendSms($phoneNumbers, $message);
+            } catch (\Exception $e) {
+                \Log::error('Failed to send SMS: ' . $e->getMessage());
+            }
 
             DB::commit();
 
