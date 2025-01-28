@@ -154,6 +154,47 @@
 
 @section('script')
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const ctx = document.getElementById('classMonthIncomeChart').getContext('2d');
+
+            // Pass PHP data to JavaScript
+            const classesForChart = @json($classesForChart);
+
+            const labels = classesForChart.map(classData => classData.name);
+            const data = classesForChart.map(classData => classData.totalAmount);
+
+            // Render the chart
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Payments This Month (Rs.)',
+                        data: data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function (value) {
+                                    return 'Rs.' + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+
+    </script>
     <script>
         const routes = {
             getStudents: "{{ route('classes.get.students', ':id') }}",
@@ -399,44 +440,5 @@
         });
     </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const ctx = document.getElementById('classMonthIncomeChart').getContext('2d');
 
-            // Pass PHP data to JavaScript
-            const classesForChart = @json($classesForChart);
-
-            const labels = classesForChart.map(classData => classData.name);
-            const data = classesForChart.map(classData => classData.totalAmount);
-
-            // Render the chart
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Payments This Month (Rs.)',
-                        data: data,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                callback: function (value) {
-                                    return 'Rs.' + value;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        });
-
-    </script>
 @endsection

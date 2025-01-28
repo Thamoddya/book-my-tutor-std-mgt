@@ -188,7 +188,7 @@ class RouterController extends Controller
         // Map data for the chart
         $classesForChart = $classes->map(function ($class) {
             $totalAmount = $class->payments
-                ->where('created_at', '>=', now()->startOfMonth())
+                ->where('paid_at', '>=', now()->startOfMonth())
                 ->where('status', 'paid') // Include only paid payments
                 ->sum('amount');
 
