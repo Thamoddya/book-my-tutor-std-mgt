@@ -68,4 +68,16 @@ class ScoolController extends Controller
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public function searchSchools(Request $request)
+    {
+        $schools = School::query();
+
+        if ($request->has('search')) {  // Match 'search' instead of 'name'
+            $schools->where('name', 'like', '%' . $request->input('search') . '%');
+        }
+
+        return response()->json($schools->get());
+    }
+
 }

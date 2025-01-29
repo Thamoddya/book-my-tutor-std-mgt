@@ -326,6 +326,7 @@
                             search: query
                         },
                         success: function (response) {
+                            console.log(response);
                             schoolSuggestions.empty().show();
                             if (response.length > 0) {
                                 response.forEach(school => {
